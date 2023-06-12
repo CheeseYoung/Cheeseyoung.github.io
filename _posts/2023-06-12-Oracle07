@@ -1,0 +1,93 @@
+---
+layout: post
+title: Oracle_07_DDL,DML 예제 연습하기
+subtitle: exercise DDL,DML Statement
+author: Jo
+categories: Oracle
+banner:
+  video: "./assets/images/banners/typing.gif"
+  loop: true
+  volume: 0.8
+  start_at: 8.5
+  image: "assets/images/banners/typing.gif"
+  opacity: 0.618
+  background: "#000"
+  height: "100vh"
+  min_height: "38vh"
+  heading_style: "font-size: 4.25em; font-weight: bold; text-decoration: underline"
+  subheading_style: "color: gold"
+tags: Oracle Database SQL
+sidebar: []
+
+---
+
+오늘의 주제 :  테이블 생성, 수정, 제약조건 설정 연습2 <br>
+ * * *
+ 
+저번 시간에 데이터 테이블을 만들 때는, 테이블을 먼저 만들고, 제약조건들을 추가해줬다.<br>
+이번에는 테이블을 만들 때 제약조건을 한 번에 설정하면서 만들어보자.<br>
+* 외래키(FOREIN KEY)를 설정하려면, 참조되는 테이블을 우선적으로 만들어야한다.<br>
+
+```sql
+-- 제약 조건 포함 한번에 다 만들기
+
+create table theaterTBL(
+    t_no number(3) not null PRIMARY KEY,
+    t_name NVARCHAR2(10) not null,
+    t_addr nvarchar2(10) not null);
+
+create table cinemaTBL(
+    t_no number(3) not null,
+    c_no number(3) not null CHECK(c_no BETWEEN 1 AND 10),
+    title nvarchar2(50) not null,
+    price number(5) not null CHECK(PRICE<20000),
+    seatCount number(4) not NULL,
+    CONSTRAINT cinema_pk PRIMARY KEY(t_no,c_no),
+    CONSTRAINT cinema_theater_fk FOREIGN KEY(t_no) REFERENCES theaterTBL(t_no));
+
+create table customer(
+    cust_no number(10) not null primary key,
+    cust_name nvarchar2(10) not null,
+    cust_addr NVARCHAR2(50));
+
+create table reservationTBL(
+    t_no number(3) not null,
+    c_no number(3) not null,
+    cust_no number(10) not null,
+    seat_no number(3) not null,
+    vdate date default sysdate,
+    CONSTRAINT theater_pk PRIMARY KEY(t_no,c_no,cust_no),
+    CONSTRAINT reservation_cinema_fk FOREIGN KEY(t_no,c_no) REFERENCES cinemaTBL(t_no,c_no),
+    CONSTRAINT reservation_customer_fk FOREIGN KEY(cust_no) REFERENCES customer(cust_no));
+```
+
+- t_no는 시퀀스로 설정하기 위해 시퀀스를 생성해준다.
+```sql
+CREATE SEQUENCE theater_seq;
+```
+
+- 이제 theaterTBL,customer,cinemaTBL,reservationTBL에 데이터를 넣고, 사용해보자.<br>
+
+-- 데이터 삽입
+```sql
+INSERT INTO theaterTBL VALUES(theater_seq.nextval,'롯데','잠실');
+INSERT INTO theaterTBL VALUES(theater_seq.nextval,'메가','강남');
+INSERT INTO theaterTBL VALUES(theater_seq.nextval,'대한','잠실');
+
+INSERT INTO customer VALUES(3,'조영','관악구 신림동');
+INSERT INTO customer VALUES(4,'조효','송파구 잠실');
+INSERT INTO customer VALUES(9,'조현','동대문구 이문동');
+
+INSERT INTO cinemaTBL VALUES(1,1,'킹메이커',15000,48);
+INSERT INTO cinemaTBL VALUES(3,1,'해적:도깨비 깃발',7500,120);
+INSERT INTO cinemaTBL VALUES(3,2,'스파이더맨:노 웨이 홈',8000,11);
+
+INSERT INTO reservationTBL VALUES(3,2,3,15,'2022-02-01');
+INSERT INTO reservationTBL VALUES(3,1,4,16,'2022-02-01');
+INSERT INTO reservationTBL VALUES(1,1,9,48,'2022-02-01');
+```
+ -> 여기서 시퀀스 이름.nextval : 해당 시퀀스에 저장되어있는 다음 차례의 넘버를 입력<br>
+ -> 여기서 시퀀스 이름.
+
+
+
