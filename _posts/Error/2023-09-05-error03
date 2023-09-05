@@ -1,0 +1,20 @@
+---
+layout: post
+title: log4j.xml 에러
+subtitle: log4j.xml 빨간줄 뜰 때
+author: Jo 
+categories: Spring
+banner:
+  video: "./assets/images/banners/typing.gif"
+  loop: true
+  volume: 0.8
+  start_at: 8.5
+  image: "assets/images/banners/typing.gif"
+  opacity: 0.618
+  background: "#000"
+  height: "100vh"
+  min_height: "38vh"
+  heading_style: "font-size: 4.25em; font-weight: bold; text-decoration: underline"
+  subheading_style: "color: gold"
+tags: java eclipse spring error
+---
