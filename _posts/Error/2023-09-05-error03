@@ -3,7 +3,7 @@ layout: post
 title: log4j.xml 에러
 subtitle: log4j.xml 빨간줄 뜰 때
 author: Jo 
-categories: Spring
+categories: Error
 banner:
   video: "./assets/images/banners/typing.gif"
   loop: true
