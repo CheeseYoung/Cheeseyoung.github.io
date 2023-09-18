@@ -46,8 +46,8 @@ description: >- # this means to ignore newlines until "baseurl:"
   매일 기록하고자 하지만 힘과 시간이 남을 경우만 가능한 공부 일기
 
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "" # the base hostname & protocol for your site, e.g. https://example.com
-favicon: "" # the favicon for your site
+url: "https://cheeseyoung.github.io/" # the base hostname & protocol for your site, e.g. https://example.com
+favicon: "🐱" # the favicon for your site
 
 # Yat date format
 # refer to https://shopify.github.io/liquid/filters/date/ if you want to customize this
