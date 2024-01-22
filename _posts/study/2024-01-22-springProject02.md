@@ -50,6 +50,7 @@ sidebar: []
 - 신고 데이터
   ![image](https://github.com/CheeseYoung/Cheeseyoung.github.io/assets/132384527/c3b3eea4-fb08-40aa-b03c-e8f6529012f2)
   - 신고당한 것이 커뮤니티인지 상품인지 구분하고, 해당 게시글/상품 번호 작성
+  - 대댓글의 경우엔 참조댓글번호를 추가
 
 
 
