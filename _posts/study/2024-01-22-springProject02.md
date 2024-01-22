@@ -33,15 +33,23 @@ sidebar: []
 
 - 커뮤니티 데이터
   ![image](https://github.com/CheeseYoung/Cheeseyoung.github.io/assets/132384527/067ee3ab-798d-46a4-b17f-48cc15265bc7)
+  - 카테고리별/ 날짜별/ 작성자별로 다양하게 작성
+  - 신고 기능을 위해 신고당할만한 게시글도 작성
+  - 사진이 있는 게시글도 작성
 
 - 상품 데이터
   ![image](https://github.com/CheeseYoung/Cheeseyoung.github.io/assets/132384527/c7afc8e8-c0cb-428f-a6f0-4bf69572cde0)
+  - 일반 거래와 경매 거래로 나누고, 카테고리별로 다양하게 작성
+  - 물품 사진은 링크로 등록
+  - 신고당할만한 판매물품도 작성
 
 - 댓글 데이터
   ![image](https://github.com/CheeseYoung/Cheeseyoung.github.io/assets/132384527/237ea50e-139a-49d6-9c81-394acf7ca831)
+  - 일반 댓글과 대댓글 작성
 
 - 신고 데이터
   ![image](https://github.com/CheeseYoung/Cheeseyoung.github.io/assets/132384527/c3b3eea4-fb08-40aa-b03c-e8f6529012f2)
+  - 신고당한 것이 커뮤니티인지 상품인지 구분하고, 해당 게시글/상품 번호 작성
 
 
 
