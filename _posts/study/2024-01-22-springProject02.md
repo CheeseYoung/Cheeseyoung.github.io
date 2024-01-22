@@ -27,13 +27,23 @@ sidebar: []
 
 
 
-
 ## 데이터
-: 프로그램을 만드는동안 기능을 테스트할 데이터가 있으면 더 편할 것 같아서 작성했다. <br>
-![image](https://github.com/CheeseYoung/cheeseyoung.github.io/assets/132384527/d8fc7390-1f65-4e81-80fd-7766d381ed81) <br>
-- 데이터는 실제 숙박업소 목록을 사용했고, 3만건 중에 일반호텔,관광호텔으로 분류된 3500건만 사용했다.
-- 가격대의 다양성을 위해 주중가격은 랜덤으로 생성했고, 주말가격 또한 주중가격 * 1.2~1.5 로 랜덤으로 생성했다.
-- 쿠폰 적용 여부는 나중에 사용할 때를 대비해서 쿠폰사용불가를 0으로, 쿠폰사용가능을 1로 설정했다.
+: 프로그램을 만드는동안 작성한 코드를 바로 테스트할 수 있게 데이터가 있으면 더 편할 것 같아서 미리 작성했다.
+: 설계해놓은 테이블 열에 맞춰서 작성해서, 다운받은 그대로 sql디벨로퍼로 추가할 수 있게 했다.
+
+- 커뮤니티 데이터
+  ![image](https://github.com/CheeseYoung/Cheeseyoung.github.io/assets/132384527/067ee3ab-798d-46a4-b17f-48cc15265bc7)
+
+- 상품 데이터
+  ![image](https://github.com/CheeseYoung/Cheeseyoung.github.io/assets/132384527/c7afc8e8-c0cb-428f-a6f0-4bf69572cde0)
+
+- 댓글 데이터
+  ![image](https://github.com/CheeseYoung/Cheeseyoung.github.io/assets/132384527/237ea50e-139a-49d6-9c81-394acf7ca831)
+
+- 신고 데이터
+  ![image](https://github.com/CheeseYoung/Cheeseyoung.github.io/assets/132384527/c3b3eea4-fb08-40aa-b03c-e8f6529012f2)
+
+
 
 
 
