@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 스프링 팀프로젝트 1.주제 선정 및 프로젝트 설계
+title: 스프링 팀프로젝트 1. 주제 선정 및 프로젝트 설계
 subtitle: Preparing Team Project 
 author: Jo
 categories: STUDY
@@ -36,7 +36,7 @@ sidebar: []
 
 
 ## 요구사항 명세서
-![image](https://i.ibb.co/yPTrzw0/image.png) <br>
+![image](https://github.com/CheeseYoung/Cheeseyoung.github.io/assets/132384527/f6de7a2d-7ed7-464d-a394-74394ad72ece) <br>
 - 주제를 선정한 이후에, 스프레드 시트에 요구사항 명세서를 작성했다.
 - 팀원들이 각자 생각나는대로 추가하고, 추가된 항목에 문제점이 보이면 수정했다.
 - 일주일동안 추가와 수정을 거쳤고, 마지막 날은 부족하거나 필요없는 내용을 추가/삭제했다.
