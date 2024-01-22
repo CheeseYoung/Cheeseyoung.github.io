@@ -1,6 +1,6 @@
 ---
 layout: post
-title: STUDY_스프링 팀프로젝트1 -주제 선정 및 프로젝트 설계
+title: 스프링 팀프로젝트 1. 주제 선정 및 프로젝트 설계
 subtitle: Preparing Team Project 
 author: Jo
 categories: STUDY
