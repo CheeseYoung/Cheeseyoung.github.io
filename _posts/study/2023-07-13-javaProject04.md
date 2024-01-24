@@ -1,6 +1,6 @@
 ---
 layout: post
-title: STUDY_자바 팀프로젝트4 - 결과물 및 리뷰
+title: 자바 팀프로젝트 4. 결과물 및 리뷰
 subtitle: Preparing Team Project 
 author: Jo
 categories: STUDY
