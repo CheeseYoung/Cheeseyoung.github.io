@@ -1,6 +1,6 @@
 ---
 layout: post
-title: STUDY_자바 팀프로젝트3- 프로그램 제작
+title: STUDY_자바 팀프로젝트3. 프로그램 제작
 subtitle: Preparing Team Project 
 author: Jo
 categories: STUDY
