@@ -1,6 +1,6 @@
 ---
 layout: post
-title: STUDY_자바 팀프로젝트 준비2- 프로젝트 구체화
+title: 자바 팀프로젝트 2. 프로젝트 구체화
 subtitle: Preparing Team Project 
 author: Jo
 categories: STUDY
