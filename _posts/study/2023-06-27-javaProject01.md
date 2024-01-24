@@ -1,6 +1,6 @@
 ---
 layout: post
-title: STUDY_자바 팀프로젝트1-프로젝트 준비
+title: 자바 팀프로젝트 1. 프로젝트 준비
 subtitle: Preparing Team Project 
 author: Jo
 categories: STUDY
