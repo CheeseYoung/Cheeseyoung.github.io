@@ -1,0 +1,47 @@
+---
+layout: post
+title: 개발 상식 공부하기 36. 로드 밸런싱(Load Balancing)
+subtitle: Engineer Information Processing
+author: Jo
+categories: STUDY
+banner:
+  video: "./assets/images/banners/typing.gif"
+  loop: true
+  volume: 0.8
+  start_at: 8.5
+  image: "assets/images/banners/typing.gif"
+  opacity: 0.618
+  background: "#000"
+  height: "100vh"
+  min_height: "38vh"
+  heading_style: "font-size: 4.25em; font-weight: bold; text-decoration: underline"
+  subheading_style: "color: gold"
+tags: Study
+
+---
+
+# 목차
+📌 로드 밸런싱(Load Balancing) <br>
+🕳 HTTP와 HTTPS <br>
+🕳 공개키 암호 & 대칭키 암호 <br>
+🕳 RESTful의미와 설계규칙 <br>
+🕳 GET, POST 방식의 차이점 <br>
+🕳 DNS(Domain Name System) <br>
+<br>
+<hr>
+
+
+## 로드밸런싱(Load Balancing)
+- 컴퓨터 네트워크 기술의 일종으로 둘 혹은 셋 이상의 중앙처리장치 혹은 저장장치와 같은 컴퓨터 자원들에게 작업(Work), 즉, 부하(Load)를 나누는 것을 의미
+
+
+
+
+
+
+https://velog.io/@cks8483/2-be-week-Load-Balancing
+
+
+
+
+
