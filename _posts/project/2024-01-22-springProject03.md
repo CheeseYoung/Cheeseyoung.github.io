@@ -3,7 +3,7 @@ layout: post
 title: 스프링 팀프로젝트 3. 프로젝트 발표
 subtitle: Preparing Team Project 
 author: Jo
-categories: STUDY
+categories: Project
 banner:
   video: "./assets/images/banners/typing.gif"
   loop: true
