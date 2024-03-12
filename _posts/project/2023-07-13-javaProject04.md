@@ -3,7 +3,7 @@ layout: post
 title: 자바 팀프로젝트 4. 결과물 및 리뷰
 subtitle: Preparing Team Project 
 author: Jo
-categories: STUDY
+categories: Project
 banner:
   video: "./assets/images/banners/typing.gif"
   loop: true
