@@ -50,7 +50,7 @@ sidebar:
       <ul>
         {% assign posts = site[page.collection] | sample:4 %}
         {%- for post in posts -%}
-        {%- assign post_item_class = "" -%}
+          {%- assign post_item_class = "" -%}
           {%- if post.top -%}
             {%- assign post_item_class = "top-post" -%}
           {%- endif -%}
