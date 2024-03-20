@@ -24,9 +24,9 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 
-title: 매일 기록하는 코딩 공부 일지
-email: eundyd@naver.com
-author: YoungEun Jo
+title: 우린 왜 자꾸 코딩하는가
+email: staytion42@naver.com
+author: Bonazoey
 
 # Copyright setting
 # You can use any html code, currently below placeholders are available:
@@ -40,14 +40,14 @@ author: YoungEun Jo
 #   "Copyright (c) 2017-{currentYear} <a href="https://example.com">{author}</a>"
 #   "Copyright © 2017-2021 Foobar"
 #
-copyright: "Unpublished Work (cleft) 2017-{currentYear} {YoungEun Jo}"
+copyright: "Unpublished Work (cleft) 2024-{currentYear} {Bonazoey}"
 
 description: >- # this means to ignore newlines until "baseurl:"
-  매일 기록하고자 하지만 힘과 시간이 남을 경우만 가능한 공부 일기
+  각박한 세상 속 우리가 자꾸 코딩하는 이유를 찾아가는 페이지
 
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "https://cheeseyoung.github.io/" # the base hostname & protocol for your site, e.g. https://example.com
-favicon: "🐱" # the favicon for your site
+url: "" # the base hostname & protocol for your site, e.g. https://example.com
+favicon: "" # the favicon for your site
 
 # Yat date format
 # refer to https://shopify.github.io/liquid/filters/date/ if you want to customize this
@@ -63,8 +63,9 @@ yat:
 # If you want to change the content width, you can set to another value
 # content_width: "920px"
 
-# Google analytics
-# google_analytics: [Tracking ID]
+# Google analytics - GA4
+# google_analytics: [Measurement ID]
+# enableDNT: "false"
 
 # If you want to generate website sitemap, you can set true
 # sitemap: false
@@ -121,6 +122,11 @@ yat:
 # Custom color as below:
 # brand_color: "#1a8e42"
 
+# You can custom selection style
+# selection:
+#   color: "#ff00ff"
+#   background_color: "yellow"
+
 # Night/Dark mode
 # Default mode is "auto", "auto" is for auto nightshift
 # (19:00 - 07:00), "manual" is for manual toggle, and
@@ -154,9 +160,9 @@ yat:
 # Page default value
 # defaults:
 #   home:
-#     heading: "매일 기록하는 코딩 공부 "
-#     subheading: "힘든 날은 건너뜀"
-#     banner: ![내가 그린 배너](./images/Screenshot_20230607_125954_Gallery)
+#     heading: "Your awesome heading"
+#     subheading: "Your awesome subheading"
+#     banner: "Your image url"
 
 # Banner default settings
 # These banner settings are for global banner default, but you can also
@@ -174,11 +180,37 @@ yat:
 #   heading_style: null     # Custom heading style (e.g. "font-weight: bold; text-decoration: underline")
 #   subheading_style: null  # Custom subheading style (e.g. color: gold)
 
-# Excerpt size setting
-# excerpt_size: 350
+# Excerpt settings
+# excerpt:
+#   default_image: /assets/images/default-image.jpeg  # Default image when the image style is not none
+#   image_style: z          # Image layout style (It's value could be none, left, right, top, z, z-reverse)
+#   image_width: 38.2%      # Image default width
+#   image_height: 160px     # Image default height
+#   text_size: 350          # Words default size
 
 # Pagination setting
 # paginate: 5
+
+# Photo previewer settings (PhotoSwipe 5)
+# the options please refer to: https://photoswipe.com/options/
+# photo_previewer:
+#  gallery: "section.main"
+#  children: "a.photo-swipe"
+#  bgOpacity: 0.8
+#  padding:
+#    top: 20
+#    bottom: 40
+#    left: 100
+#    right: 100
+
+# Click to top settings
+# click_to_top:
+#   light:
+#     background_color: "white"
+#     color: "#454545"
+#   dark:
+#     background_color: "#34323d"
+#     color: "#bbb"
 
 # Disqus comments
 # disqus:
@@ -206,7 +238,7 @@ yat:
 # Build settings
 # highlighter: none
 markdown: kramdown
-kmarkdown:
+kramdown:
   input: GFM
 
 plugins:
