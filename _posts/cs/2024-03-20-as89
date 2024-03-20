@@ -1,0 +1,72 @@
+---
+layout: post
+title: <데이터베이스> 16. 장애와 회복기법
+subtitle: Engineer Information Processing
+author: Jo
+categories: CS
+banner:
+  image: 
+  opacity: 0.618
+  background: "#000"
+  height: "100vh"
+  min_height: "38vh"
+  heading_style: "font-size: 4.25em; font-weight: bold; text-decoration: underline"
+  subheading_style: "color: gold"
+tags: Study
+
+---
+
+# 목차
+🕳 DBMS / RDBMS / SQL / NoSQL <br>
+🕳 레디스(Redis) <br>
+🕳 DB Lock <br>
+🕳 클러스터링 vs 리플리케이션(Clustering vs Replication) <br>
+📌 장애와 회복기법 <br>
+🕳 SQL의 종류 (DDL, DML, DCL, TCL) <br>
+<br>
+<hr>
+
+
+
+## 장애
+# 트랜잭션을 더이상 수행할 수 없는 시스템 중단 상태
+- 데이터베이스에 장애가 발생해도 DBMS의 회복 기능을 통해 데이터베이스는 정확하고 일관된 상태로 유지할 수 있다
+- 장애가 발생하는 원인은 정전, 사용자의 실수, 하드웨어 고장, 소프트웨어 오류, 미디어 장치 고장, 트랜잭션 논리적 오류 등 다양하다.
+- 장애의 유형
+  - 실행 장애 : 데이터베이스 연산 실패
+  - 트랜잭션 장애 : 프로그램 실행 중지
+  - 시스템 장애 : 하드웨어 결함
+  - 미디어 장애 : 디스크 장치 결함
+
+
+## 회복
+# 장애로 인해 제대로 실행되지 못한 DB를 이전 상태로 복구하는 작업
+
+- 회복 유형
+  - 덤프(Dump) : 주기적으로 데이터베이스 전체를 다른 저장 장치에 복제하는 것
+  - 로그(Log) : 데이터베이스가 변경될 때마다 예전 값과 변경 값을 기록해두는 것
+  - 재실행(Redo) : 장애 발생 전, 이미 완료된 트랜잭션을 재실행
+  - 취소(Undo) : 장애 발생 후, 진행중이던 트랜잭션을 취소하고 이전 상태로 복구
+
+
+
+
+
+
+https://star7sss.tistory.com/824
+
+https://gunjoon.tistory.com/97#%EC%9E%A5%EC%95%A0%EC%9D%98%20%EC%9C%A0%ED%98%95-1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
