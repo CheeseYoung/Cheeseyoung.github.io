@@ -1,0 +1,1393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>[개발상식] 12. 도커와 쿠버네티스(Docker &amp; Kubernetes) | 매일 기록하는 코딩 공부 일지</title>
+<meta name="generator" content="Jekyll v4.3.3">
+<meta property="og:title" content="[개발상식] 12. 도커와 쿠버네티스(Docker &amp; Kubernetes)">
+<meta name="author" content="Jo">
+<meta property="og:locale" content="en_US">
+<meta name="description" content="목차 🕳 프레임워크(Framework) vs 라이브러리(Library) 🕳 메시지 큐란? 📌 도커와 쿠버네티스(Docker &amp; Kubernetes) 🕳 MSA(MicroService Architecture)란?">
+<meta property="og:description" content="목차 🕳 프레임워크(Framework) vs 라이브러리(Library) 🕳 메시지 큐란? 📌 도커와 쿠버네티스(Docker &amp; Kubernetes) 🕳 MSA(MicroService Architecture)란?">
+<link rel="canonical" href="https://cheeseyoung.github.io//jekyll-theme-yat/cs/2024/02/20/as12.html">
+<meta property="og:url" content="https://cheeseyoung.github.io//jekyll-theme-yat/cs/2024/02/20/as12.html">
+<meta property="og:site_name" content="매일 기록하는 코딩 공부 일지">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2024-02-20T00:00:00+00:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="[개발상식] 12. 도커와 쿠버네티스(Docker &amp; Kubernetes)">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Jo"},"dateModified":"2024-02-20T00:00:00+00:00","datePublished":"2024-02-20T00:00:00+00:00","description":"목차 🕳 프레임워크(Framework) vs 라이브러리(Library) 🕳 메시지 큐란? 📌 도커와 쿠버네티스(Docker &amp; Kubernetes) 🕳 MSA(MicroService Architecture)란?","headline":"[개발상식] 12. 도커와 쿠버네티스(Docker &amp; Kubernetes)","mainEntityOfPage":{"@type":"WebPage","@id":"https://cheeseyoung.github.io//jekyll-theme-yat/cs/2024/02/20/as12.html"},"url":"https://cheeseyoung.github.io//jekyll-theme-yat/cs/2024/02/20/as12.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="icon" href="%F0%9F%90%B1">
+  <link rel="canonical" href="https://cheeseyoung.github.io/">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-noto-sans@0.0.72/index.min.css">
+  <link rel="stylesheet" href="/jekyll-theme-yat/assets/css/main.css">
+  <script src="/jekyll-theme-yat/assets/js/main.js"></script><link type="application/atom+xml" rel="alternate" href="https://cheeseyoung.github.io//jekyll-theme-yat/feed.xml" title="매일 기록하는 코딩 공부 일지">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/languages/go.min.js" async></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #ff4e00;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: uppercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+<script src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe-lightbox.umd.min.js" async></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe.umd.min.js" async></script>
+<link href="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/photoswipe.min.css" rel="stylesheet">
+<style>
+  .pswp .pswp__container .pswp__img {
+    background-color: white;
+  }
+</style>
+
+<script>
+  function initPhotoSwipe() {
+    let customOptions = {};
+
+    try {
+      const data = ``.replaceAll("=>", ":");
+      customOptions = JSON.parse(data);
+    } catch (e) {
+      console.info("Invalid custom photo previewer options! " + e.message);
+    }
+
+    // Define object and gallery options
+    const options = Object.assign(
+      {
+        gallery: "section.main",
+        children: "a.photo-swipe",
+        photo_scale: 2,
+        // dynamic import is not supported in UMD version
+        pswpModule: PhotoSwipe,
+      },
+      customOptions
+    );
+
+    const galleryEl = document.querySelector(options.gallery);
+    if (!galleryEl) {
+      return;
+    }
+
+    const imgEls = [];
+    const els = galleryEl.querySelectorAll("img:not(.emoji)");
+    els.forEach((el) => {
+      if (el.src.trim() == "") {
+        return;
+      }
+      if (!imgEls.includes(el)) {
+        imgEls.push(el);
+      }
+    });
+
+    if (imgEls.length === 0) {
+      return;
+    }
+
+    imgEls.forEach((imgEl) => {
+      imgEl.outerHTML = `
+      <a class="photo-swipe"
+        href="${imgEl.src}"
+        data-pswp-width="${
+          Math.max(imgEl.naturalWidth, imgEl.width) * options.photo_scale
+        }"
+        data-pswp-height="${
+          Math.max(imgEl.naturalHeight, imgEl.height) * options.photo_scale
+        }"
+        data-pswp-caption="${imgEl.getAttribute("caption") || imgEl.alt}"
+        target="_blank">
+        ${imgEl.outerHTML}
+      </a>`;
+    });
+
+    // Initialize PhotoSwipe 5
+    var lightbox = new PhotoSwipeLightbox(options);
+
+    lightbox.init();
+  }
+
+  window.addEventListener("load", initPhotoSwipe);
+</script>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header site-header-transparent" role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/jekyll-theme-yat/">
+  <img class="site-favicon" title="매일 기록하는 코딩 공부 일지" src="%F0%9F%90%B1" onerror="this.style.display='none'">
+  매일 기록하는 코딩 공부 일지
+</a>
+</span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/jekyll-theme-yat/about.html">ABOUT</a><a class="page-link" href="/jekyll-theme-yat/archives.html">ARCHIVES</a><a class="page-link" href="/jekyll-theme-yat/categories.html">CATEGORIES</a><a class="page-link" href="/jekyll-theme-yat/">HOME</a><a class="page-link" href="/jekyll-theme-yat/tags.html">TAGS</a>
+
+
+
+
+
+
+
+
+
+<span class="page-link">
+
+
+
+<div id="google_translate_element" style="display: none;">
+</div>
+
+<span class="ct-language">
+  <ul class="list-unstyled ct-language-dropdown">
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="en">
+          
+          <img src="https://cdn.countryflags.com/thumbs/united-states-of-america/flag-400.png" title="English">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="fr">
+          
+          <img src="https://cdn.countryflags.com/thumbs/france/flag-400.png" title="French">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="zh-CN">
+          
+          <img src="https://cdn.countryflags.com/thumbs/china/flag-400.png" title="Chinese(Simple)">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ja">
+          
+          <img src="https://cdn.countryflags.com/thumbs/japan/flag-400.png" title="Japanese">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ko">
+          
+          <img src="https://cdn.countryflags.com/thumbs/south-korea/flag-400.png" title="Korean">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ru">
+          
+          <img src="https://cdn.countryflags.com/thumbs/russia/flag-400.png" title="Russian">
+          
+        </a>
+      </li>
+    
+  </ul>
+</span>
+
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({
+    pageLanguage: 'en',
+    autoDisplay: false,
+    layout: google.translate.TranslateElement.InlineLayout.VERTICAL
+  }, 'google_translate_element');
+
+  // Links to cross-origin destinations are unsafe
+  var gll = document.getElementsByClassName('goog-logo-link')[0];
+  if (gll) {
+    gll.setAttribute('rel', 'noopener');
+  }
+
+  function restoreLang() {
+    var iframe = document.getElementsByClassName('goog-te-banner-frame')[0];
+    if (!iframe) return;
+
+    var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+    var restore_el = innerDoc.getElementsByTagName("button");
+
+    for (var i = 0; i < restore_el.length; i++) {
+      if (restore_el[i].id.indexOf("restore") >= 0) {
+        restore_el[i].click();
+        var close_el = innerDoc.getElementsByClassName("goog-close-link");
+        close_el[0].click();
+        return;
+      }
+    }
+  }
+
+  function triggerHtmlEvent(element, eventName) {
+    var event;
+    if (document.createEvent) {
+      event = document.createEvent('HTMLEvents');
+      event.initEvent(eventName, true, true);
+      element.dispatchEvent(event);
+    } else {
+      event = document.createEventObject();
+      event.eventType = eventName;
+      element.fireEvent('on' + event.eventType, event);
+    }
+  }
+
+  var googleCombo = document.querySelector("select.goog-te-combo");
+  var langSelect = document.querySelector('.ct-language');
+  langSelect.addEventListener('click', function(event) {
+    if (!event.target) {
+      return;
+    }
+
+    var selected = document.querySelector('.ct-language .ct-language-selected');
+    if (selected) {
+      selected.classList.remove('ct-language-selected');
+    }
+
+    var target = event.target;
+    while (target && target !== langSelect ) {
+      if (target.matches('.lang-select')) {
+        break;
+      }
+      target = target.parentElement;
+    }
+
+    if (target && target.matches('.lang-select')) {
+      var lang = target.getAttribute('data-lang');
+      if (googleCombo.value == lang) {
+        restoreLang();
+      } else {
+        target.parentElement.classList.add('ct-language-selected');
+        googleCombo.value = lang;
+        triggerHtmlEvent(googleCombo, 'change');
+      }
+    }
+
+    event.preventDefault();
+  });
+}
+</script>
+
+<script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>
+</span>
+</div>
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;documentElement.setAttribute("data-header-transparent", "");var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+    html .page-banner {
+      background: #000;
+    }
+  </style>
+<style>html .page-banner {
+      height:  36.8vh;
+      min-height: 38vh;
+    }
+    html[data-scroll-status="top"] .page-banner {
+      height: 100vh;
+    }
+  </style>
+<style>
+    html .page-banner .page-banner-img > *:first-child {
+      opacity: 0.618;
+    }
+
+    html[data-theme="dark"] .page-banner .page-banner-img > *:first-child {
+      opacity: 0.443724;
+    }
+  </style>
+<style>
+    html .page-banner .page-banner-inner > *:first-child > *:nth-child(1) {
+      font-size: 3em; font-weight: bold;
+    }
+  </style>
+<style>
+    html .page-banner .page-banner-inner > *:first-child > *:nth-child(2) {
+      color: gold
+    }
+  </style>
+<section class="page-banner">
+    <div class="page-banner-img">
+<div style="background-image: url(https://github.com/CheeseYoung/Cheeseyoung.github.io/assets/132384527/22f41b77-a354-400c-a479-c86633e77bd0)"></div>
+        <img class="img-placeholder" src="https://github.com/CheeseYoung/Cheeseyoung.github.io/assets/132384527/22f41b77-a354-400c-a479-c86633e77bd0">
+</div>
+    <div class="wrapper">
+      <div class="page-banner-inner">
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">[개발상식] 12. 도커와 쿠버네티스(Docker &amp; Kubernetes)</h1>
+  <h2 class="post-subtitle">Engineer Information Processing</h2>
+
+  <div class="post-meta">
+    <time class="dt-published" datetime="2024-02-20T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Feb 20, 2024
+    </time><span class="post-author left-vsplit"><i class="fa fa-pencil"></i> Jo</span>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 6 mins</span>
+  </div>
+<div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#Study">#Study</a></div></header>
+</div>
+    </div>
+  </section><script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div class="theme-toggle">
+  <input type="checkbox" id="theme-switch">
+  <label for="theme-switch">
+    <div class="toggle"></div>
+    <div class="names">
+      <p class="light">Light</p>
+      <p class="dark">Dark</p>
+    </div>
+  </label>
+</div>
+
+
+
+
+<script>
+  (function() {
+    var sw = document.getElementById('theme-switch');
+    var html = document.getElementsByTagName('html')[0];
+    var nightModeOption = ('auto' || 'auto').toLowerCase();
+    var storage = nightModeOption === 'manual'
+        ? localStorage
+        : sessionStorage;
+    var themeData = loadThemeData();
+
+    function saveThemeData(data) {
+      storage.setItem('theme', JSON.stringify(data));
+    }
+
+    function loadThemeData() {
+      var data = storage.getItem('theme');
+      try {
+        data = JSON.parse(data ? data : '');
+      } catch(e) {
+        data = { nightShift: undefined, autoToggleAt: 0 };
+        saveThemeData(data);
+      }
+      return data;
+    }
+
+    function handleThemeToggle(nightShift) {
+      themeData.nightShift = nightShift;
+      saveThemeData(themeData);
+      html.dataset.theme = nightShift ? 'dark' : 'light';
+      setTimeout(function() {
+        sw.checked = nightShift ? true : false;
+      }, 50);
+    }
+
+    function autoThemeToggle() {
+      // Next time point of theme toggle
+      var now = new Date();
+      var toggleAt = new Date();
+      var hours = now.getHours();
+      var nightShift = hours >= 19 || hours <=7;
+
+      if (nightShift) {
+        if (hours > 7) {
+          toggleAt.setDate(toggleAt.getDate() + 1);
+        }
+        toggleAt.setHours(7);
+      } else {
+        toggleAt.setHours(19);
+      }
+
+      toggleAt.setMinutes(0);
+      toggleAt.setSeconds(0);
+      toggleAt.setMilliseconds(0)
+
+      var delay = toggleAt.getTime() - now.getTime();
+
+      // auto toggle theme mode
+      setTimeout(function() {
+        handleThemeToggle(!nightShift);
+      }, delay);
+
+      return {
+        nightShift: nightShift,
+        toggleAt: toggleAt.getTime()
+      };
+    }
+
+    // Listen the theme toggle event
+    sw.addEventListener('change', function(event) {
+      handleThemeToggle(event.target.checked);
+    });
+
+    if (nightModeOption == 'auto') {
+      var data = autoThemeToggle();
+
+      // Toggle theme by local setting
+      if (data.toggleAt > themeData.autoToggleAt) {
+        themeData.autoToggleAt = data.toggleAt;
+        handleThemeToggle(data.nightShift);
+      } else {
+        handleThemeToggle(themeData.nightShift);
+      }
+    } else if (nightModeOption == 'manual') {
+      handleThemeToggle(themeData.nightShift);
+    } else {
+      var nightShift = themeData.nightShift;
+      if (nightShift === undefined) {
+        nightShift = nightModeOption === 'on';
+      }
+      handleThemeToggle(nightShift);
+    }
+  })();
+</script>
+<div id="click-to-top" class="click-to-top">
+  <i class="fa fa-arrow-up"></i>
+</div>
+<script>
+  (function () {
+    const clickToTop = document.getElementById('click-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 100) {
+        clickToTop.classList.add('show')
+      }else {
+        clickToTop.classList.remove('show')
+      }
+    });
+    clickToTop.addEventListener('click', () => {
+      window.smoothScrollTo(0);
+    });
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <h1 id="목차">목차</h1>
+<p>🕳 프레임워크(Framework) vs 라이브러리(Library) <br>
+🕳 메시지 큐란? <br>
+📌 도커와 쿠버네티스(Docker &amp; Kubernetes) <br>
+🕳 MSA(MicroService Architecture)란? <br></p>
+
+<p><br></p>
+<hr>
+
+<h2 id="관련-용어-정리">관련 용어 정리</h2>
+<ul>
+  <li>컨테이너 : 앱이 구동되는 환경까지 감싸서, 어디서든 쉽게 실행할 수 있도록 해주는 기술</li>
+  <li>
+    <dl>
+      <dt>컨테이너 런타임 : 컨테이너를 다루는 도구</dt>
+      <dd>컨테이너를 쉽게 내려받거나 공유하고 구동할 수 있도록 해주는 도구</dd>
+    </dl>
+  </li>
+  <li>도커 : 컨테이너를 다루는 도구(=컨테이너 런타임) 중 가장 유명한 것</li>
+  <li>
+    <dl>
+      <dt>쿠버네티스 : 컨테이너 런타임을 통해 컨테이너를 오케스트레이션 하는 도구</dt>
+      <dd>여러 서버에 컨테이너를 분산해서 배치하거나, 문제가 생긴 컨테이너를 교체하거나, 컨테이너가 사용할 비밀번호나 환경설정을 관리하고 주입해주는 일 등</dd>
+    </dl>
+  </li>
+  <li>오케스트레이션 : 여러 서버에 걸친 컨테이너 및 사용하는 환경설정을 관리하는 행위</li>
+</ul>
+
+<blockquote>
+  <p>음.. 어렵다…!
+다음 시간에 계속..</p>
+</blockquote>
+
+<h2 id="도커란">도커란</h2>
+<dl>
+  <dt><img src="https://github.com/CheeseYoung/Cheeseyoung.github.io/assets/132384527/22f41b77-a354-400c-a479-c86633e77bd0" alt="image"></dt>
+  <dd>도커는 컨테이너 기반의 오픈 소스 가상화 플랫폼. 위 그림처럼 컨테이너를 관리하는 플랫폼</dd>
+</dl>
+
+<ul>
+  <li>도커가 나오기 + 대중화되기 전
+    <ul>
+      <li>서버환경이 바뀌고, 새로운 툴도 추가되면 관리해야할 것들이 수없이 생김</li>
+      <li>거기에 갈수록 개발주기가 짧아지면서 배포는 더 자주 이루어지고, 프로그램은 더 잘게 쪼개어져 관리가 갈수록 더 복잡해짐</li>
+    </ul>
+  </li>
+  <li>컨테이너&gt; 다양한 프로그램, 실행환경을 컨테이너로 추상화하고, 동일한 인터페이스를 제공하여 프로그램의 배포 및 관리를 단순하게 해줌</li>
+  <li>백엔드 프로그램, 데이터베이스 서버, 메시지 큐 등 어떤 프로그램도 컨테이너로 추상화할 수 있다.</li>
+  <li>컨테이너는 격리된 공간에서 프로세스가 동작하는 가상화 기술의 하나</li>
+  <li>기존의 가상화 방식은 주로 OS를 가상화한 것
+    <ul>
+      <li>
+<b>VMware</b>나 VirtualBox같은 가상머신은 호스트OS 위에 게스트OS 전체를 가상화하여 사용하는 방식</li>
+      <li>이 방식은 여러가지 OS를 가상화할 수 있고, 비교적 사용법이 간단하지만 무겁고 느리다.</li>
+      <li>성능 문제를 개선하기 위해 <b>프로세스를 격리</b>하는 방식이 등장</li>
+      <li>단순히 프로세스를 격리시키기 때문에 가볍고 빠르게 동작 / CPU나 메모리는 필요한 만큼만 추가로 사용하고 성능적으로도 거의 손실이 X</li>
+      <li>하나의 서버에 여러개의 컨테이너를 실행하면 서로 영향을 미치지 않고 독립적으로 실행되어 마치 가벼운 VM을 사용하는 느낌을 준다.</li>
+      <li>세로운 컨테이너를 만드는데 걸리는 시간은 가상머신과 비교할 수 없이 빠름</li>
+      <li>이러한 컨테이너라는 개념은 도커가 처음 만든 것은 아님
+<img src="https://github.com/CheeseYoung/Cheeseyoung.github.io/assets/132384527/a229ffef-47e2-4baa-8494-88e79ca77e91" alt="image">
+</li>
+    </ul>
+  </li>
+  <li>도커의 <b>이미지</b>
+<img src="https://github.com/CheeseYoung/Cheeseyoung.github.io/assets/132384527/ab4d851b-b3ea-4c08-903d-5cae8444b123" alt="image">
+    <ul>
+      <li>이미지는 컨테이너 실행에 필요한 파일과 설정값 등을 포함하고 있는 것</li>
+      <li>상태값을 가지지 않고(Stateless), 변하지 않음(Immutable)</li>
+      <li>컨테이너는 이미지를 실행한 상태라고 볼 수 있고, 추가되거나 변하는 값은 컨테이너에 저장</li>
+      <li>같은 이미지에서 여러개의 컨테이너를 생성할 수 있고 컨테이너의 상태가 바뀌거나 컨테이너가 삭제되더라도 이미지는 그대로 남아있음</li>
+      <li>이미지는 컨테이너를 실행하기 위한 모든 정보를 가지고 있기 때문에, 더이상 의존성 파일을 컴파일하고 이것저것 설치할 필요가 없음</li>
+    </ul>
+  </li>
+</ul>
+
+<dl>
+  <dt>## 도커가 인기있는 이유</dt>
+  <dd>도커는 완전히 새로운 기술이 아니라 이미 존재하는 기술을 잘 포장했다고 보면 된다.<br>
+사용자들의 니즈에 맞게 존재하는 기술들을 잘 조합하고 사용하기 쉽게 구현했다.
+    <ul>
+      <li>
+        <h1 id="레이어-저장방식">레이어 저장방식</h1>
+        <p><img src="https://github.com/CheeseYoung/Cheeseyoung.github.io/assets/132384527/3ff16d14-f669-4122-bd79-b4768351ea37" alt="image"></p>
+      </li>
+      <li>도커 이미지는 컨테이너를 실행하기 위한 모든 정보를 가지고 있기 때문에, 이미지에 파일이 추가될 때마다 이미지를 다시 다운받는다면 매우 비효율적</li>
+      <li>그래서 <b>레이어</b>라는 개념을 사용</li>
+      <li>이미지는 여러개의 읽기전용 레이어로 구성되고, 파일이 추가되거나 수정되면 새로운 레이어가 생성</li>
+      <li>이미지 레이어를 그대로 사용하면서 컨테이너가 실행중에 생성하는 파일이나 변경된 내용은 읽기/쓰기 레이어에 저장되므로 여러개의 컨테이너를 생성해도 최소한의 용량만 사용</li>
+      <li>
+        <h1 id="이미지-경로">이미지 경로</h1>
+        <p><img src="https://github.com/CheeseYoung/Cheeseyoung.github.io/assets/132384527/a9f5fa00-382c-4f6e-96c4-b504a8c00de2" alt="image"></p>
+      </li>
+      <li>이미지는 url 방식으로 관리하여 태그를 붙일 수 있다.</li>
+      <li>앞의 디폴트 주소는 생략 가능</li>
+      <li>이미지 경로를 이용하는 방식은 이해하기 쉽고 편리하게 사용할 수 있다.</li>
+      <li>
+        <h1 id="dockerfile">Dockerfile</h1>
+        <p><code class="language-plaintext highlighter-rouge">도커파일 일부분
+ADD build/distributions/app-3.3.1.tar /
+ADD config.template.json /app-3.3.1/bin/config.json
+ADD docker/script/start.sh /usr/local/bin/
+RUN ln -s /usr/local/bin/start.sh /start.sh
+</code></p>
+      </li>
+      <li>도커는 이미지를 만들기 위해 <code class="language-plaintext highlighter-rouge">Dockerfile</code>에 자체 DSL언어를 이용하여 이미지 생성과정을 적는다.</li>
+      <li>과정을 블로깅하거나 메모장에 적지 않고 Dockerfile로 관리하면 된다.</li>
+      <li>소스와 함께 버전 관리되고 원한다면 누구나 이미지 생성과정을 보고 수정할 수 있다.</li>
+      <li>
+        <h1 id="docker-hub">Docker Hub</h1>
+        <p><img src="https://github.com/CheeseYoung/Cheeseyoung.github.io/assets/132384527/fe5e091f-0546-4a68-a2f7-cdf5ce7db7e9" alt="image"></p>
+      </li>
+      <li>도커 이미지의 용량은 보통 수백메가로, 수기가가 넘는 경우도 존재한다.</li>
+      <li>도커는 ``Docker hub’‘를 통해 공개 이미지를 무료로 관리해준다.</li>
+      <li>
+        <h1 id="command와-api">Command와 Api</h1>
+      </li>
+      <li>도커 클라이언트의 커맨드 명령어는 직관적이고 사용하기 쉬움</li>
+      <li>http기반의 RestAPI도 지원하여 확장성이 좋고 3rd party 툴이 나오기 좋은 환경</li>
+      <li>
+        <h1 id="새로운-기능들-추가">새로운 기능들 추가</h1>
+      </li>
+      <li>도커는 발전속도가 아주 빠른 오픈소스</li>
+      <li>사용하면서 부족하다고 느낀 부분은 빠르게 개선이 되고, 새로운 버전이 나오면 유용한 기능이 대폭 추가됨</li>
+    </ul>
+  </dd>
+</dl>
+
+<h2 id="쿠버네티스kubernetes">쿠버네티스(Kubernetes)</h2>
+<p>: 컨테이너화된 워크로드와 서비스를 관리하기 위한 이식성이 있고 확장가능한 오픈소스 플랫폼</p>
+<ul>
+  <li>도커의 등장으로 많은 서비스들이 도커라이징 되어 이미지로 관리되기 시작</li>
+  <li>점점 이미지가 많아지면서, 관리해야할 컨테이너와 서버들 또한 많아짐</li>
+  <li>
+<b>컨테이너들의 관리를 자동화할 도구(컨테이너 오케스트레이션 툴)</b>의 필요성이 대두</li>
+  <li>많은 컨테이너 오케스트레이션 도구들 중에 쿠버네티스가 사실상 표준으로 자리매김
+<code class="language-plaintext highlighter-rouge">비결</code>
+    <ul>
+      <li>대규모 컨테이너를 관리했던 구글의 노하우와 강력한 확장성</li>
+      <li>마이크로소프트, RedHat, IBM 등 수많은 기업의 참여</li>
+      <li>AWS, GCP, Zure, Digital Ocean, IBM Cloud, Oracle Cloud 등에서 관리형 서비스를 내놓음으로써 클라우드 컨테이너 시장을 평정</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="쿠버네티스의-특징">쿠버네티스의 특징</h2>
+<ul>
+  <li>
+    <h1 id="거대한-생태계">거대한 생태계</h1>
+    <p><img src="https://github.com/CheeseYoung/Cheeseyoung.github.io/assets/132384527/d446ba3e-7730-4799-91f2-51ae2cd69523" alt="image"></p>
+    <ul>
+      <li>대기업들의 참여로 거대한 생태계를 이루고 있음</li>
+      <li>전세계적 스케일의 경험과 기술</li>
+      <li>거대한 커뮤니티와 생태계</li>
+      <li>잘 안되는 건 찾아보면 되고, 이런거 만들어볼까 하면 이미 있음</li>
+    </ul>
+  </li>
+  <li>
+    <h1 id="다양한-배포-방식-지원">다양한 배포 방식 지원</h1>
+    <p><img src="https://github.com/CheeseYoung/Cheeseyoung.github.io/assets/132384527/b2f238b6-9424-4554-8392-ac8ded6e2579" alt="image"></p>
+    <ul>
+      <li>Deployment, StatefulSets, DaemonSet, Job, CronJob 등 다양한 배포 방식을 지원</li>
+    </ul>
+  </li>
+  <li>
+    <h1 id="namespace--label">Namespace &amp; Label</h1>
+    <p><img src="https://github.com/CheeseYoung/Cheeseyoung.github.io/assets/132384527/33cfec16-bdd6-4fd2-b467-62c4c7243601" alt="image"></p>
+    <ul>
+      <li>네임스페이스 기능으로 하나의 클러스터를 논리적으로 구분하여 사용가능</li>
+      <li>라벨 기능으로 유연하면서 확장성 있게 리소스를 관리</li>
+    </ul>
+  </li>
+  <li>
+    <h1 id="rbacrole-based-access-control">RBAC(Role-Based Access Control)</h1>
+    <p><img src="https://github.com/CheeseYoung/Cheeseyoung.github.io/assets/132384527/4dd45094-8b0e-44f9-ac5f-d1741f130290" alt="image"></p>
+    <ul>
+      <li>역할기반 엑세스 제어</li>
+      <li>누가(주체), 무엇을(동사), 어디에(네임스페이스) 실행할 수 있는지 결정하는 권한 또는 템플릿 집합을 수반하는 Identity 및 엑세스 관리 형식</li>
+      <li>각각의 리소스에 대해 유저별로 권한을 손쉽게 지정</li>
+      <li>클러스터 전체에 적용하거나 특정 네임스페이스에 적용</li>
+      <li>AWS의 경우 IAM을 연동해서 사용 가능</li>
+    </ul>
+  </li>
+  <li>
+    <h1 id="auto-scaling">Auto Scaling</h1>
+    <ul>
+      <li>손쉽게 리소스 확장 가능</li>
+      <li>Horizontal Pod Autoscaling(HPA) : CPU, MEM 사용량에 따라 Pod 수평 확장 기능</li>
+      <li>Vertical Pod Autoscaling(VPA) : Pod 리소스 할당량 조정 (CPU, memory..)</li>
+      <li>Cluster Autoscaling(CA) : 노드(서버) 개수 조정 가능 (클라우드 환경에서만)</li>
+    </ul>
+  </li>
+  <li>
+    <h1 id="federation-multi-cluster">Federation, Multi Cluster</h1>
+    <ul>
+      <li>Federation : 연방, 연맹, 연방화 등 / 여러개의 모델들을 통합</li>
+      <li>클라우드에 설치한 쿠버네티스 클러스터와 자체 서버에 설치한 쿠버네티스를 묶어서 하나로 사용 가능</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="쿠버네티스-기본-개념과-구성요소">쿠버네티스 기본 개념과 구성요소</h2>
+<ul>
+  <li>
+    <h1 id="마스터-노드-구조">마스터-노드 구조</h1>
+    <p><img src="https://github.com/CheeseYoung/Cheeseyoung.github.io/assets/132384527/396f465c-51f7-4fd3-a369-6f063740d5e1" alt="image"></p>
+    <ul>
+      <li>중앙(마스터)에 API 서버와 상태 저장소를 두고 각 서버(Node)의 에이전트(kubelet)과 통신하는 단순한 구조</li>
+      <li>모든 명령은 마스터의 API 서버를 호출하고, 노드는 마스터와 통신하면서 필요한 작업 수행</li>
+      <li>Kubectl이라는 Client 도구로 API 서버 접근 가능</li>
+    </ul>
+  </li>
+  <li>
+    <h1 id="desired-state">Desired State</h1>
+    <p><img src="https://github.com/CheeseYoung/Cheeseyoung.github.io/assets/132384527/314bd21e-d92d-484f-9ebe-9b3ecb1e0948" alt="image"></p>
+    <ul>
+      <li>관리자가 서버를 배포할 때 직접적인 동작을 명령하지 않고 <b>원하는 상태를 선언하는 방식을 사용</b> (RUN x, Create o)
+        <blockquote>
+          <p>“nginx 컨테이너를 실행해줘. 그리고 80 포트로 오픈해줘.”: 현재 상태를 원하는 상태로 바꾸기 위한 명령(imperative) ///
+“80 포트를 오픈한 nginx 컨테이너를 1개 유지해줘”: 원하는 상태를 선언(declarative)</p>
+        </blockquote>
+      </li>
+      <li>Desired State(원하는 상태) : 관리자가 바라는 환경</li>
+      <li>현재 상태를 모니터링하면서 관리자가 설정한 원하는 상태를 유지하는 방향으로 동작</li>
+      <li>쿠버네티스의 핵심은 상태</li>
+    </ul>
+  </li>
+</ul>
+
+<h1 id="참고한-글">참고한 글</h1>
+<p><a href="https://subicura.com/2017/01/19/docker-guide-for-beginners-1.html">초보를 위한 도커 안내서</a>
+<a href="https://velog.io/@holicme7/K8s-%EC%BF%A0%EB%B2%84%EB%84%A4%ED%8B%B0%EC%8A%A4%EB%9E%80-%EB%AC%B4%EC%97%87%EC%9D%B8%EA%B0%80">쿠버네티스란 무엇인가</a></p>
+
+
+
+    </div>
+
+</article>
+<div class="post-nav">
+<a class="previous" href="/jekyll-theme-yat/cs/2024/02/20/as11.html" title="[개발상식] 11. 메시지 큐란?">[개발상식] 11. 메시지 큐란?</a><a class="next" href="/jekyll-theme-yat/cs/2024/02/26/as13.html" title="[개발상식] 13. MSA(MicroService Architecture)란?">[개발상식] 13. MSA(MicroService Architecture)란?</a>
+</div>
+<div class="post-related">
+      <div>Related Articles</div>
+      <ul>
+        <li class="">
+          <a class="post-link" href="/jekyll-theme-yat/cs/2024/02/01/as02.html" title="[개발상식] 2. MVC 패턴">
+            [개발상식] 2. MVC 패턴<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/jekyll-theme-yat/java/2023/06/16/JAVA29.html" title="JAVA_29 스레드 사용하기">
+            JAVA_29 스레드 사용하기<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/jekyll-theme-yat/java/2023/06/15/JAVA28.html" title="JAVA_28_자바로 끝말잇기 게임 만들기">
+            JAVA_28_자바로 끝말잇기 게임 만들기<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/jekyll-theme-yat/oracle/2023/06/12/Oracle07_1.html" title="Oracle_07_2_오라클 내장 함수">
+            Oracle_07_2_오라클 내장 함수<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+        </li>
+</ul>
+    </div>
+<div class="post-comments"></div></section>
+</div>
+
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --><style type="text/css" media="screen">
+.post-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+</style>
+
+<div class="post-menu">
+  <div class="post-menu-title">TOC</div>
+  <div class="post-menu-content"></div>
+</div>
+
+<script>
+  function generateContent() {
+    var menu = document.querySelector(".post-menu");
+    var menuContent =  menu.querySelector(".post-menu-content");
+    var headings = document.querySelector(".post-content").querySelectorAll("h2, h3, h4, h5, h6");
+
+    // Hide menu when no headings
+    if (headings.length === 0) {
+      return menu.style.display = "none";
+    }
+
+    // Generate post menu
+    var menuHTML = '';
+    for (var i = 0; i < headings.length; i++) {
+      var h = headings[i];
+      menuHTML += (
+        '<li class="h-' + h.tagName.toLowerCase() + '">'
+        + '<a href="#h-' + h.getAttribute('id') + '">' + h.textContent + '</a></li>');
+    }
+
+    menuContent.innerHTML = '<ul>' + menuHTML + '</ul>';
+
+    // The header element
+    var header = document.querySelector('header.site-header');
+
+    function doMenuCollapse(index, over_items) {
+      var items = menuContent.firstChild.children;
+
+      if (over_items == undefined) {
+        over_items = 20;
+      }
+
+      if (items.length < over_items) {
+        return;
+      }
+
+      var activeItem = items[index];
+      var beginItem = activeItem
+      var endItem = activeItem
+      var beginIndex = index;
+      var endIndex = index + 1;
+      while (beginIndex >= 0
+        && !items[beginIndex].classList.contains('h-h2')) {
+        beginIndex -= 1;
+      }
+      while (endIndex < items.length
+        && !items[endIndex].classList.contains('h-h2')) {
+        endIndex += 1;
+      }
+      for (var i = 0; i < beginIndex; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+      for (var i = beginIndex + 1; i < endIndex; i++) {
+        item = items[i]
+        // if (!item.classList.contains('h-h2')) {
+          item.style.display = '';
+        // }
+      }
+      for (var i = endIndex; i < items.length; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+    }
+
+    // Init menu collapsed
+    doMenuCollapse(-1);
+
+    // Active the menu item
+    window.addEventListener('scroll', function (event) {
+      var lastActive = menuContent.querySelector('.active');
+      var changed = true;
+      var activeIndex = -1;
+      for (var i = headings.length - 1; i >= 0; i--) {
+        var h = headings[i];
+        var headingRect = h.getBoundingClientRect();
+        var headerRect = header.getBoundingClientRect();
+        var headerTop = Math.floor(headerRect.top);
+        var headerHeight = Math.floor(headerRect.height);
+        var headerHeight = headerTop + headerHeight + 20;
+        if (headingRect.top <= headerHeight) {
+          var id = 'h-' + h.getAttribute('id');
+          var a = menuContent.querySelector('a[href="#' + id  + '"]');
+          var curActive = a.parentNode;
+          if (curActive) {
+            curActive.classList.add('active');
+            activeIndex = i;
+          }
+          if (lastActive == curActive) {
+            changed = false;
+          }
+          break;
+        }
+      }
+      if (changed) {
+        if (lastActive) {
+          lastActive.classList.remove('active');
+        }
+        doMenuCollapse(activeIndex);
+      }
+      event.preventDefault();
+    });
+  }
+  generateContent();
+</script>
+</section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jekyll-theme-yat/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>Unpublished Work <span class="copyleft">©</span> 2017-2024 {YoungEun Jo}</div>
+      <div>Powered by <a title="Jekyll is a simple, blog-aware, static site
+      generator." href="https://jekyllrb.com/">Jekyll</a> &amp; <a title="Yat, yet
+      another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.</div>
+      <div class="footer-col rss-subscribe">Subscribe <a href="/jekyll-theme-yat/feed.xml">via RSS</a>
+</div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,1314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>[데이터베이스] 14. 레디스(Redis) | 매일 기록하는 코딩 공부 일지</title>
+<meta name="generator" content="Jekyll v4.3.3">
+<meta property="og:title" content="[데이터베이스] 14. 레디스(Redis)">
+<meta name="author" content="Jo">
+<meta property="og:locale" content="en_US">
+<meta name="description" content="목차 🕳 DBMS / RDBMS / SQL / NoSQL 📌 레디스(Redis) 🕳 DB Lock 🕳 클러스터링 vs 리플리케이션(Clustering vs Replication) 🕳 장애와 회복기법 🕳 SQL의 종류 (DDL, DML, DCL, TCL)">
+<meta property="og:description" content="목차 🕳 DBMS / RDBMS / SQL / NoSQL 📌 레디스(Redis) 🕳 DB Lock 🕳 클러스터링 vs 리플리케이션(Clustering vs Replication) 🕳 장애와 회복기법 🕳 SQL의 종류 (DDL, DML, DCL, TCL)">
+<link rel="canonical" href="https://cheeseyoung.github.io//jekyll-theme-yat/cs/2024/03/20/as86.html">
+<meta property="og:url" content="https://cheeseyoung.github.io//jekyll-theme-yat/cs/2024/03/20/as86.html">
+<meta property="og:site_name" content="매일 기록하는 코딩 공부 일지">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2024-03-20T00:00:00+00:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="[데이터베이스] 14. 레디스(Redis)">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Jo"},"dateModified":"2024-03-20T00:00:00+00:00","datePublished":"2024-03-20T00:00:00+00:00","description":"목차 🕳 DBMS / RDBMS / SQL / NoSQL 📌 레디스(Redis) 🕳 DB Lock 🕳 클러스터링 vs 리플리케이션(Clustering vs Replication) 🕳 장애와 회복기법 🕳 SQL의 종류 (DDL, DML, DCL, TCL)","headline":"[데이터베이스] 14. 레디스(Redis)","mainEntityOfPage":{"@type":"WebPage","@id":"https://cheeseyoung.github.io//jekyll-theme-yat/cs/2024/03/20/as86.html"},"url":"https://cheeseyoung.github.io//jekyll-theme-yat/cs/2024/03/20/as86.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="icon" href="%F0%9F%90%B1">
+  <link rel="canonical" href="https://cheeseyoung.github.io/">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-noto-sans@0.0.72/index.min.css">
+  <link rel="stylesheet" href="/jekyll-theme-yat/assets/css/main.css">
+  <script src="/jekyll-theme-yat/assets/js/main.js"></script><link type="application/atom+xml" rel="alternate" href="https://cheeseyoung.github.io//jekyll-theme-yat/feed.xml" title="매일 기록하는 코딩 공부 일지">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/languages/go.min.js" async></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #ff4e00;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: uppercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+<script src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe-lightbox.umd.min.js" async></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe.umd.min.js" async></script>
+<link href="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/photoswipe.min.css" rel="stylesheet">
+<style>
+  .pswp .pswp__container .pswp__img {
+    background-color: white;
+  }
+</style>
+
+<script>
+  function initPhotoSwipe() {
+    let customOptions = {};
+
+    try {
+      const data = ``.replaceAll("=>", ":");
+      customOptions = JSON.parse(data);
+    } catch (e) {
+      console.info("Invalid custom photo previewer options! " + e.message);
+    }
+
+    // Define object and gallery options
+    const options = Object.assign(
+      {
+        gallery: "section.main",
+        children: "a.photo-swipe",
+        photo_scale: 2,
+        // dynamic import is not supported in UMD version
+        pswpModule: PhotoSwipe,
+      },
+      customOptions
+    );
+
+    const galleryEl = document.querySelector(options.gallery);
+    if (!galleryEl) {
+      return;
+    }
+
+    const imgEls = [];
+    const els = galleryEl.querySelectorAll("img:not(.emoji)");
+    els.forEach((el) => {
+      if (el.src.trim() == "") {
+        return;
+      }
+      if (!imgEls.includes(el)) {
+        imgEls.push(el);
+      }
+    });
+
+    if (imgEls.length === 0) {
+      return;
+    }
+
+    imgEls.forEach((imgEl) => {
+      imgEl.outerHTML = `
+      <a class="photo-swipe"
+        href="${imgEl.src}"
+        data-pswp-width="${
+          Math.max(imgEl.naturalWidth, imgEl.width) * options.photo_scale
+        }"
+        data-pswp-height="${
+          Math.max(imgEl.naturalHeight, imgEl.height) * options.photo_scale
+        }"
+        data-pswp-caption="${imgEl.getAttribute("caption") || imgEl.alt}"
+        target="_blank">
+        ${imgEl.outerHTML}
+      </a>`;
+    });
+
+    // Initialize PhotoSwipe 5
+    var lightbox = new PhotoSwipeLightbox(options);
+
+    lightbox.init();
+  }
+
+  window.addEventListener("load", initPhotoSwipe);
+</script>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header site-header-transparent" role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/jekyll-theme-yat/">
+  <img class="site-favicon" title="매일 기록하는 코딩 공부 일지" src="%F0%9F%90%B1" onerror="this.style.display='none'">
+  매일 기록하는 코딩 공부 일지
+</a>
+</span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/jekyll-theme-yat/about.html">ABOUT</a><a class="page-link" href="/jekyll-theme-yat/archives.html">ARCHIVES</a><a class="page-link" href="/jekyll-theme-yat/categories.html">CATEGORIES</a><a class="page-link" href="/jekyll-theme-yat/">HOME</a><a class="page-link" href="/jekyll-theme-yat/tags.html">TAGS</a>
+
+
+
+
+
+
+
+
+
+<span class="page-link">
+
+
+
+<div id="google_translate_element" style="display: none;">
+</div>
+
+<span class="ct-language">
+  <ul class="list-unstyled ct-language-dropdown">
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="en">
+          
+          <img src="https://cdn.countryflags.com/thumbs/united-states-of-america/flag-400.png" title="English">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="fr">
+          
+          <img src="https://cdn.countryflags.com/thumbs/france/flag-400.png" title="French">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="zh-CN">
+          
+          <img src="https://cdn.countryflags.com/thumbs/china/flag-400.png" title="Chinese(Simple)">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ja">
+          
+          <img src="https://cdn.countryflags.com/thumbs/japan/flag-400.png" title="Japanese">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ko">
+          
+          <img src="https://cdn.countryflags.com/thumbs/south-korea/flag-400.png" title="Korean">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ru">
+          
+          <img src="https://cdn.countryflags.com/thumbs/russia/flag-400.png" title="Russian">
+          
+        </a>
+      </li>
+    
+  </ul>
+</span>
+
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({
+    pageLanguage: 'en',
+    autoDisplay: false,
+    layout: google.translate.TranslateElement.InlineLayout.VERTICAL
+  }, 'google_translate_element');
+
+  // Links to cross-origin destinations are unsafe
+  var gll = document.getElementsByClassName('goog-logo-link')[0];
+  if (gll) {
+    gll.setAttribute('rel', 'noopener');
+  }
+
+  function restoreLang() {
+    var iframe = document.getElementsByClassName('goog-te-banner-frame')[0];
+    if (!iframe) return;
+
+    var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+    var restore_el = innerDoc.getElementsByTagName("button");
+
+    for (var i = 0; i < restore_el.length; i++) {
+      if (restore_el[i].id.indexOf("restore") >= 0) {
+        restore_el[i].click();
+        var close_el = innerDoc.getElementsByClassName("goog-close-link");
+        close_el[0].click();
+        return;
+      }
+    }
+  }
+
+  function triggerHtmlEvent(element, eventName) {
+    var event;
+    if (document.createEvent) {
+      event = document.createEvent('HTMLEvents');
+      event.initEvent(eventName, true, true);
+      element.dispatchEvent(event);
+    } else {
+      event = document.createEventObject();
+      event.eventType = eventName;
+      element.fireEvent('on' + event.eventType, event);
+    }
+  }
+
+  var googleCombo = document.querySelector("select.goog-te-combo");
+  var langSelect = document.querySelector('.ct-language');
+  langSelect.addEventListener('click', function(event) {
+    if (!event.target) {
+      return;
+    }
+
+    var selected = document.querySelector('.ct-language .ct-language-selected');
+    if (selected) {
+      selected.classList.remove('ct-language-selected');
+    }
+
+    var target = event.target;
+    while (target && target !== langSelect ) {
+      if (target.matches('.lang-select')) {
+        break;
+      }
+      target = target.parentElement;
+    }
+
+    if (target && target.matches('.lang-select')) {
+      var lang = target.getAttribute('data-lang');
+      if (googleCombo.value == lang) {
+        restoreLang();
+      } else {
+        target.parentElement.classList.add('ct-language-selected');
+        googleCombo.value = lang;
+        triggerHtmlEvent(googleCombo, 'change');
+      }
+    }
+
+    event.preventDefault();
+  });
+}
+</script>
+
+<script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>
+</span>
+</div>
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;documentElement.setAttribute("data-header-transparent", "");var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+    html .page-banner {
+      background: #000;
+    }
+  </style>
+<style>html .page-banner {
+      height:  36.8vh;
+      min-height: 38vh;
+    }
+    html[data-scroll-status="top"] .page-banner {
+      height: 100vh;
+    }
+  </style>
+<style>
+    html .page-banner .page-banner-img > *:first-child {
+      opacity: 0.618;
+    }
+
+    html[data-theme="dark"] .page-banner .page-banner-img > *:first-child {
+      opacity: 0.443724;
+    }
+  </style>
+<style>
+    html .page-banner .page-banner-inner > *:first-child > *:nth-child(1) {
+      font-size: 4.25em; font-weight: bold; text-decoration: underline
+    }
+  </style>
+<style>
+    html .page-banner .page-banner-inner > *:first-child > *:nth-child(2) {
+      color: gold
+    }
+  </style>
+<section class="page-banner">
+    <div class="page-banner-img">
+<div style="background-image: url(https://github.com/CheeseYoung/Cheeseyoung.github.io/assets/132384527/a46cc019-201d-4884-8866-c136769d5d16)"></div>
+        <img class="img-placeholder" src="https://github.com/CheeseYoung/Cheeseyoung.github.io/assets/132384527/a46cc019-201d-4884-8866-c136769d5d16">
+</div>
+    <div class="wrapper">
+      <div class="page-banner-inner">
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">[데이터베이스] 14. 레디스(Redis)</h1>
+  <h2 class="post-subtitle">Engineer Information Processing</h2>
+
+  <div class="post-meta">
+    <time class="dt-published" datetime="2024-03-20T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Mar 20, 2024
+    </time><span class="post-author left-vsplit"><i class="fa fa-pencil"></i> Jo</span>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 5 mins</span>
+  </div>
+<div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#Study">#Study</a></div></header>
+</div>
+    </div>
+  </section><script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div class="theme-toggle">
+  <input type="checkbox" id="theme-switch">
+  <label for="theme-switch">
+    <div class="toggle"></div>
+    <div class="names">
+      <p class="light">Light</p>
+      <p class="dark">Dark</p>
+    </div>
+  </label>
+</div>
+
+
+
+
+<script>
+  (function() {
+    var sw = document.getElementById('theme-switch');
+    var html = document.getElementsByTagName('html')[0];
+    var nightModeOption = ('auto' || 'auto').toLowerCase();
+    var storage = nightModeOption === 'manual'
+        ? localStorage
+        : sessionStorage;
+    var themeData = loadThemeData();
+
+    function saveThemeData(data) {
+      storage.setItem('theme', JSON.stringify(data));
+    }
+
+    function loadThemeData() {
+      var data = storage.getItem('theme');
+      try {
+        data = JSON.parse(data ? data : '');
+      } catch(e) {
+        data = { nightShift: undefined, autoToggleAt: 0 };
+        saveThemeData(data);
+      }
+      return data;
+    }
+
+    function handleThemeToggle(nightShift) {
+      themeData.nightShift = nightShift;
+      saveThemeData(themeData);
+      html.dataset.theme = nightShift ? 'dark' : 'light';
+      setTimeout(function() {
+        sw.checked = nightShift ? true : false;
+      }, 50);
+    }
+
+    function autoThemeToggle() {
+      // Next time point of theme toggle
+      var now = new Date();
+      var toggleAt = new Date();
+      var hours = now.getHours();
+      var nightShift = hours >= 19 || hours <=7;
+
+      if (nightShift) {
+        if (hours > 7) {
+          toggleAt.setDate(toggleAt.getDate() + 1);
+        }
+        toggleAt.setHours(7);
+      } else {
+        toggleAt.setHours(19);
+      }
+
+      toggleAt.setMinutes(0);
+      toggleAt.setSeconds(0);
+      toggleAt.setMilliseconds(0)
+
+      var delay = toggleAt.getTime() - now.getTime();
+
+      // auto toggle theme mode
+      setTimeout(function() {
+        handleThemeToggle(!nightShift);
+      }, delay);
+
+      return {
+        nightShift: nightShift,
+        toggleAt: toggleAt.getTime()
+      };
+    }
+
+    // Listen the theme toggle event
+    sw.addEventListener('change', function(event) {
+      handleThemeToggle(event.target.checked);
+    });
+
+    if (nightModeOption == 'auto') {
+      var data = autoThemeToggle();
+
+      // Toggle theme by local setting
+      if (data.toggleAt > themeData.autoToggleAt) {
+        themeData.autoToggleAt = data.toggleAt;
+        handleThemeToggle(data.nightShift);
+      } else {
+        handleThemeToggle(themeData.nightShift);
+      }
+    } else if (nightModeOption == 'manual') {
+      handleThemeToggle(themeData.nightShift);
+    } else {
+      var nightShift = themeData.nightShift;
+      if (nightShift === undefined) {
+        nightShift = nightModeOption === 'on';
+      }
+      handleThemeToggle(nightShift);
+    }
+  })();
+</script>
+<div id="click-to-top" class="click-to-top">
+  <i class="fa fa-arrow-up"></i>
+</div>
+<script>
+  (function () {
+    const clickToTop = document.getElementById('click-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 100) {
+        clickToTop.classList.add('show')
+      }else {
+        clickToTop.classList.remove('show')
+      }
+    });
+    clickToTop.addEventListener('click', () => {
+      window.smoothScrollTo(0);
+    });
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <h1 id="목차">목차</h1>
+<p>🕳 DBMS / RDBMS / SQL / NoSQL <br>
+📌 레디스(Redis) <br>
+🕳 DB Lock <br>
+🕳 클러스터링 vs 리플리케이션(Clustering vs Replication) <br>
+🕳 장애와 회복기법 <br>
+🕳 SQL의 종류 (DDL, DML, DCL, TCL) <br>
+<br></p>
+<hr>
+
+<h2 id="레디스redis">레디스(Redis)</h2>
+<p><img src="https://github.com/CheeseYoung/Cheeseyoung.github.io/assets/132384527/a46cc019-201d-4884-8866-c136769d5d16" alt="image"></p>
+<h1 id="remote-dictionary-storage">
+<strong>Re</strong>mote <strong>Di</strong>ctionary <strong>S</strong>torage</h1>
+<ul>
+  <li>레디스는 빠른 오픈 소스인 메모리 키 값 데이터 구조 데이터베이스로, 일종의 NoSQL이다.</li>
+  <li>주요 레디스 사용 사례는 캐싱, 세션 관리, pub/sub 및 순위표를 들 수 있다.</li>
+  <li>레디스는 <strong>속도가 빠르고 사용이 간편</strong>하여 최고의 성능이 필요한 웹, 모바일, 게임, 광고 기술 및 IoT 애플리캐이션에서 사용된다.</li>
+</ul>
+
+<h2 id="레디스의-특징-및-장점">레디스의 특징 및 장점</h2>
+<h1 id="1-인-메모리-데이터베이스">1. 인 메모리 데이터베이스</h1>
+<ul>
+  <li>레디스는 디스크가 아닌 <strong>메모리 기반의 데이터 저장소</strong>이다.</li>
+  <li>데이터 대부분을 디스크 또는 SSD에 저장하는 다른 데이터베이스와는 달리 모든 레디스 데이터는 서버의 주 메모리에 상주한다.</li>
+  <li>레디스와 같은 인 메모리 데이터 스토어는 작업을 위해 디스크까지 왕복해야 하는 단점이 없다.</li>
+  <li>NoSQL &amp; Cache 솔루션이며 메모리 기반으로 구성된다.</li>
+  <li>명시적으로 삭제를 설정하지 않으면 <strong>데이터는 삭제되지 않는 영구적 보존</strong>이다.</li>
+  <li>여러 대의 서버로 구성이 가능하며 <strong>데이터베이스로도 사용할 수 있고, cache 서버로도 사용</strong>할수 있다.</li>
+  <li>성능은 서버에 따라 다르지만 1초당 수백만건의 작업이 가능하다.</li>
+  <li>메모리 위에서 동작하는 레디스는 <strong>NoSQL DBMS</strong>로 분류되며 동시에 Memcached와 같은 <strong>인메모리(In-memory) 솔루션</strong>으로 분리된다.</li>
+  <li>데이터 저장소로 입/출력이 가장 빠른 메모리를 채택하고 <strong>단순한 구조의 데이터 모델</strong>을 사용하여 속도가 빠르다.</li>
+  <li>캐시 및 데이터 스토어에 유리하고 다양한 API를 지원한다.</li>
+  <li>레디스는 대형 서비스 업체들이 사용자들의 <strong>대규모 메시지를 실시간으로 처리</strong>하기 위해서 사용하고 있다.</li>
+  <li>레디스와 멤캐시드(Memcashed)는 특징이 유사하다.
+<img src="https://github.com/CheeseYoung/Cheeseyoung.github.io/assets/132384527/05c8557e-512a-408a-9603-5707024491d2" alt="image">
+</li>
+</ul>
+
+<h1 id="2-5가지형-자료구조를-지원">2. 5가지형 자료구조를 지원</h1>
+<p>Redis가 지원하는 데이터 형식은 String, Set, Sorted, Hash, List가 있다.</p>
+<ul>
+  <li>다양한 자료구조를 지원하게 되면 개발의 편의성이 좋아지고 난이도가 낮아진다.</li>
+  <li>Strings : 값에 문자, 숫자 등을 저장하고, 저장시에 별도로 숫자 문자 구분이 없다.</li>
+  <li>Lists : 값에 리스트를 작성하며, 중복이 가능하다.</li>
+  <li>Sets : 값을 집합 형태로 가지고 있으며, 중복이 되지 않는다.</li>
+  <li>Hashes : key/value 목록을 값으로 가진다.</li>
+  <li>Sorted sets : 값을 집합 형태로 가지고 있는다. 중복이 되지 않으며, 정렬이 된다는 장점이 있다.</li>
+</ul>
+
+<h1 id="3-리스트형-데이터-입력과-삭제-성능">3. 리스트형 데이터 입력과 삭제 성능</h1>
+<ul>
+  <li>리스트, 배열과 같은 데이터를 처리하는데 유용하다.</li>
+  <li>value 값으로 문자열, 리스트, Set, Sorted Set, Hash 등 여러 데이터 형식을 지원한다.</li>
+  <li>리스트형 데이터 입력과 삭제가 MySQL에 비해서 10배 정도 빠르다고 한다.</li>
+</ul>
+
+<h1 id="4-기본-복제-아키텍처를-제공복구기능-및-확장">4. 기본-복제 아키텍처를 제공(복구기능 및 확장)</h1>
+<ul>
+  <li>
+<strong>기본-복제 아키텍처(architecture)</strong> 를 사용하며 <strong>비동기식 복제를 지원</strong>하므로 데이터가 여러 복제 서버에 복제될 수 있다.</li>
+  <li>주 서버에 장애가 발생하는 경우 요청이 여러 서버로 분산될 수 있음으로 향상된 읽기 성능과 <strong>더 빠른 복구 기능을 사용</strong>할 수 있다.</li>
+  <li>그리고 단일 노드 또는 클러스터링된 토폴로지에서도 기본-복제 아키텍처를 제공한다.</li>
+  <li>따라서 가용성이 뛰어난 솔루션을 구축하여 일관된 성능과 안정성을 사용할 수 있다.</li>
+  <li>클러스터 크기를 조정해야할 경우 스케일 업,인,아웃할 다양한 옵션이 있다. 따라서 수요에 맞춰 <strong>클러스터를 확장</strong>할 수 있다.</li>
+</ul>
+
+<h1 id="5-메모리를-활용하면서-영속성-데이터-보존">5. 메모리를 활용하면서 영속성 데이터 보존</h1>
+<ul>
+  <li>스냅샷(기억장치) 기능을 제공하여 메모리의 내용을 .rdb 파일로 저장하여 해당 시점으로 복구할 수 있다.</li>
+  <li>즉, 명령어로 삭제,만료를 설정하지 않으면 영구적이라는 말이다.</li>
+</ul>
+
+<h2 id="레디스-단점">레디스 단점</h2>
+<ul>
+  <li>메모리를 2배 사용</li>
+  <li>싱글 스레드
+    <ul>
+      <li>스냅샷을 뜰 때 자식 프로세스를 하나 만들어낸 후 새로 변경된 메모리 페이지를 복사해서 사용한다.</li>
+    </ul>
+  </li>
+  <li>copy-on-write 방식
+    <ul>
+      <li>보통 레디스를 사용할 때는 데이터 변경이 자주 있기 때문에 실제 메모리만큼 자식 프로세스가 복사하게 해서 사용하게 된다.</li>
+      <li>그러면 실제로 필요한 메모리양 보다 더 많은 메모리를 잡아먹게 된다.</li>
+    </ul>
+  </li>
+  <li>대규모 트래픽으로 인한 속도 불안정
+    <ul>
+      <li>대규모 트래픽으로 인해 많은 데이터가 업데이트되면 레디스는 Memcached에 비해서 속도가 불안정하다.</li>
+      <li>이것은 레디스와 Memcached의 메모리 할당 구조가 다르기 때문에 발생하는 현상이다.</li>
+    </ul>
+  </li>
+  <li>메모리 파편화 발생
+    <ul>
+      <li>jemalloc을 사용하기 때문에 매번 malloc과 free를 통해서 메모리 할당이 이루어진다.</li>
+      <li>이로 인해 레디스는 메모리 파편화가 발생하여 이 할당 비용 때문에 응답 속도가 느려진다.</li>
+      <li>(다만 이는 극단적으로 봤을 때 발생하는 일이다.)</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="활용-부분">활용 부분</h2>
+<h1 id="1-캐싱-전략-look-aside-lazy-loading">1. 캐싱 전략: Look Aside (=Lazy Loading)</h1>
+<p><img src="https://github.com/CheeseYoung/Cheeseyoung.github.io/assets/132384527/206ecdec-7a8d-41cc-b817-8fdb8f21e04d" alt="image">
+캐시를 옆에 두고 필요할 때만 데이터를 캐시에 로드하는 전략이다. ( key-value 형태로 저장됨 )
+  1) 데이터 가져오는 요청
+  2) Redis에 먼저 요청 -&gt; 있으면 반환
+  3) 없으면 데이터베이스에 데이터 요청
+  4) 이 데이터를 레디스에 저장</p>
+<ul>
+  <li>레디스를 사용하면 빈번하게 요청되는 항목을 1ms 안으로 처리할 수 있으며</li>
+  <li>고가의 백엔드를 추가하지 않아도 손쉽게 확장하여 더 많은 로드를 처리할 수 있다.</li>
+</ul>
+
+<h1 id="2-채팅-메시징-및-대기열">2. 채팅, 메시징 및 대기열</h1>
+<ul>
+  <li>레디스는 패턴 매칭과 다양한 구조 옵션으로 게시/구독을 사용할 수 있다.</li>
+  <li>따라서 레디스에서는 채팅방, 실시간 코멘드 스트림, 소셜 미디어 피드 및 <strong>서버 상호 통신을 지원</strong>한다.</li>
+  <li>레디스 목록 데이터 구조를 사용하면 간단한 대기열을 손쉽게 구현할 수 있다.</li>
+  <li>목록은 자동 작업 및 차단 기능을 제공하므로</li>
+  <li>신뢰할 수 있는 메시지 브로커 또는 순환 목록이 필요한 다양한 애플리케이션에 적합하다.</li>
+</ul>
+
+<h1 id="3-다양한-미디어-스트리밍">3. 다양한 미디어 스트리밍</h1>
+<ul>
+  <li>레디스는 <em>라이브 스트리밍</em> 사용 사례를 지원할 수 있는 빠른 인 메모리 데이터 스토어를 제공한다.</li>
+  <li>레디스는 CDN(Contents Delivery Network)이 동시에 수백만 명의 모바일 및 데스크톱 사용자에게 비디오를 스트리밍할 수 있도록</li>
+  <li>사용자 프로필 및 열람 기록에 대한 메타데이터, 수백만 <em>사용자의 인증 정보/토큰, 매니페스트 파일을 저장</em>하는 데 사용할 수 있다.</li>
+</ul>
+
+<h1 id="4-지리-공간">4. 지리 공간</h1>
+<ul>
+  <li>대규모의 실시간 지리 공간 데이터를 빠르게 관리할 수 있도록 구축된 인 메모리 데이터 구조 및 연산자를 제공한다.</li>
+  <li>지리 공간 데이터를 실시간으로 저장, 처리 및 분석하는 명령을 사용하면</li>
+  <li>레디스에서 쉽고 빠르게 지리 공간을 처리할 수 있다.</li>
+  <li>레디스를 사용하여 주행 시간, 주행 거리, 안내 표시와 같은 <em>위치 기반 기능</em>을 애플리케이션에 추가할 수 있다.</li>
+</ul>
+
+<h1 id="5-실시간-분석">5. 실시간 분석</h1>
+<ul>
+  <li>레디스는 스트리밍 솔루션에 인 메모리 데이터 스토어로 사용하여</li>
+  <li>1밀리초 미만의 지연 시간으로 <em>실시간 데이터를 수집, 처리 및 분석</em>할 수 있다.</li>
+  <li>레디스는 소셜 미디어 분석, 광고 타게팅(Targeting), 개인화 및 IoT와 같은 실시간 분석 사용 사례에 적합하다.</li>
+</ul>
+
+<h2 id="활용-사례">활용 사례</h2>
+<ul>
+  <li>좋아요 철</li>
+  <li>일일 순 방문자수 구하기</li>
+  <li>출석 이벤트 구현하기</li>
+</ul>
+
+
+
+    </div>
+
+</article>
+<div class="post-nav">
+<a class="previous" href="/jekyll-theme-yat/cs/2024/03/19/as85.html" title="[데이터베이스] 13. DBMS / RDBMS / SQL / NoSQL">[데이터베이스] 13. DBMS / RDBMS /...</a><a class="next" href="/jekyll-theme-yat/cs/2024/03/20/as87.html" title="[데이터베이스] 15. DB Lock">[데이터베이스] 15. DB Lock</a>
+</div>
+<div class="post-related">
+      <div>Related Articles</div>
+      <ul>
+        <li class="">
+          <a class="post-link" href="/jekyll-theme-yat/oracle/2023/06/15/Oracle10.html" title="Oracle_10_오라클 서브 쿼리">
+            Oracle_10_오라클 서브 쿼리<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/jekyll-theme-yat/cs/2024/02/01/as06.html" title="[개발상식] 6. 객체지향과 절차지향">
+            [개발상식] 6. 객체지향과 절차지향<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/jekyll-theme-yat/oracle/2023/06/23/Oracle16_2.html" title="Oracle_16_2_PL/SQL 프로그래밍">
+            Oracle_16_2_PL/SQL 프로그래밍<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/jekyll-theme-yat/spring/2023/08/23/spring03.html" title="Spring_게시판 만들기 03">
+            Spring_게시판 만들기 03<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+        </li>
+</ul>
+    </div>
+<div class="post-comments"></div></section>
+</div>
+
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --><style type="text/css" media="screen">
+.post-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+</style>
+
+<div class="post-menu">
+  <div class="post-menu-title">TOC</div>
+  <div class="post-menu-content"></div>
+</div>
+
+<script>
+  function generateContent() {
+    var menu = document.querySelector(".post-menu");
+    var menuContent =  menu.querySelector(".post-menu-content");
+    var headings = document.querySelector(".post-content").querySelectorAll("h2, h3, h4, h5, h6");
+
+    // Hide menu when no headings
+    if (headings.length === 0) {
+      return menu.style.display = "none";
+    }
+
+    // Generate post menu
+    var menuHTML = '';
+    for (var i = 0; i < headings.length; i++) {
+      var h = headings[i];
+      menuHTML += (
+        '<li class="h-' + h.tagName.toLowerCase() + '">'
+        + '<a href="#h-' + h.getAttribute('id') + '">' + h.textContent + '</a></li>');
+    }
+
+    menuContent.innerHTML = '<ul>' + menuHTML + '</ul>';
+
+    // The header element
+    var header = document.querySelector('header.site-header');
+
+    function doMenuCollapse(index, over_items) {
+      var items = menuContent.firstChild.children;
+
+      if (over_items == undefined) {
+        over_items = 20;
+      }
+
+      if (items.length < over_items) {
+        return;
+      }
+
+      var activeItem = items[index];
+      var beginItem = activeItem
+      var endItem = activeItem
+      var beginIndex = index;
+      var endIndex = index + 1;
+      while (beginIndex >= 0
+        && !items[beginIndex].classList.contains('h-h2')) {
+        beginIndex -= 1;
+      }
+      while (endIndex < items.length
+        && !items[endIndex].classList.contains('h-h2')) {
+        endIndex += 1;
+      }
+      for (var i = 0; i < beginIndex; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+      for (var i = beginIndex + 1; i < endIndex; i++) {
+        item = items[i]
+        // if (!item.classList.contains('h-h2')) {
+          item.style.display = '';
+        // }
+      }
+      for (var i = endIndex; i < items.length; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+    }
+
+    // Init menu collapsed
+    doMenuCollapse(-1);
+
+    // Active the menu item
+    window.addEventListener('scroll', function (event) {
+      var lastActive = menuContent.querySelector('.active');
+      var changed = true;
+      var activeIndex = -1;
+      for (var i = headings.length - 1; i >= 0; i--) {
+        var h = headings[i];
+        var headingRect = h.getBoundingClientRect();
+        var headerRect = header.getBoundingClientRect();
+        var headerTop = Math.floor(headerRect.top);
+        var headerHeight = Math.floor(headerRect.height);
+        var headerHeight = headerTop + headerHeight + 20;
+        if (headingRect.top <= headerHeight) {
+          var id = 'h-' + h.getAttribute('id');
+          var a = menuContent.querySelector('a[href="#' + id  + '"]');
+          var curActive = a.parentNode;
+          if (curActive) {
+            curActive.classList.add('active');
+            activeIndex = i;
+          }
+          if (lastActive == curActive) {
+            changed = false;
+          }
+          break;
+        }
+      }
+      if (changed) {
+        if (lastActive) {
+          lastActive.classList.remove('active');
+        }
+        doMenuCollapse(activeIndex);
+      }
+      event.preventDefault();
+    });
+  }
+  generateContent();
+</script>
+</section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jekyll-theme-yat/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>Unpublished Work <span class="copyleft">©</span> 2017-2024 {YoungEun Jo}</div>
+      <div>Powered by <a title="Jekyll is a simple, blog-aware, static site
+      generator." href="https://jekyllrb.com/">Jekyll</a> &amp; <a title="Yat, yet
+      another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.</div>
+      <div class="footer-col rss-subscribe">Subscribe <a href="/jekyll-theme-yat/feed.xml">via RSS</a>
+</div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

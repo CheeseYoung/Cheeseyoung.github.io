@@ -1,0 +1,1439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>자바스크립트 문법 공부 | 매일 기록하는 코딩 공부 일지</title>
+<meta name="generator" content="Jekyll v4.3.3">
+<meta property="og:title" content="자바스크립트 문법 공부">
+<meta name="author" content="Jo">
+<meta property="og:locale" content="en_US">
+<meta name="description" content="이번 포스트 : JavaScript를 공부해보자">
+<meta property="og:description" content="이번 포스트 : JavaScript를 공부해보자">
+<link rel="canonical" href="https://cheeseyoung.github.io//jekyll-theme-yat/html/2024/01/30/javaScript01.html">
+<meta property="og:url" content="https://cheeseyoung.github.io//jekyll-theme-yat/html/2024/01/30/javaScript01.html">
+<meta property="og:site_name" content="매일 기록하는 코딩 공부 일지">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2024-01-30T00:00:00+00:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="자바스크립트 문법 공부">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Jo"},"dateModified":"2024-01-30T00:00:00+00:00","datePublished":"2024-01-30T00:00:00+00:00","description":"이번 포스트 : JavaScript를 공부해보자","headline":"자바스크립트 문법 공부","mainEntityOfPage":{"@type":"WebPage","@id":"https://cheeseyoung.github.io//jekyll-theme-yat/html/2024/01/30/javaScript01.html"},"url":"https://cheeseyoung.github.io//jekyll-theme-yat/html/2024/01/30/javaScript01.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="icon" href="%F0%9F%90%B1">
+  <link rel="canonical" href="https://cheeseyoung.github.io/">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-noto-sans@0.0.72/index.min.css">
+  <link rel="stylesheet" href="/jekyll-theme-yat/assets/css/main.css">
+  <script src="/jekyll-theme-yat/assets/js/main.js"></script><link type="application/atom+xml" rel="alternate" href="https://cheeseyoung.github.io//jekyll-theme-yat/feed.xml" title="매일 기록하는 코딩 공부 일지">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/languages/go.min.js" async></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #ff4e00;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: uppercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+<script src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe-lightbox.umd.min.js" async></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe.umd.min.js" async></script>
+<link href="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/photoswipe.min.css" rel="stylesheet">
+<style>
+  .pswp .pswp__container .pswp__img {
+    background-color: white;
+  }
+</style>
+
+<script>
+  function initPhotoSwipe() {
+    let customOptions = {};
+
+    try {
+      const data = ``.replaceAll("=>", ":");
+      customOptions = JSON.parse(data);
+    } catch (e) {
+      console.info("Invalid custom photo previewer options! " + e.message);
+    }
+
+    // Define object and gallery options
+    const options = Object.assign(
+      {
+        gallery: "section.main",
+        children: "a.photo-swipe",
+        photo_scale: 2,
+        // dynamic import is not supported in UMD version
+        pswpModule: PhotoSwipe,
+      },
+      customOptions
+    );
+
+    const galleryEl = document.querySelector(options.gallery);
+    if (!galleryEl) {
+      return;
+    }
+
+    const imgEls = [];
+    const els = galleryEl.querySelectorAll("img:not(.emoji)");
+    els.forEach((el) => {
+      if (el.src.trim() == "") {
+        return;
+      }
+      if (!imgEls.includes(el)) {
+        imgEls.push(el);
+      }
+    });
+
+    if (imgEls.length === 0) {
+      return;
+    }
+
+    imgEls.forEach((imgEl) => {
+      imgEl.outerHTML = `
+      <a class="photo-swipe"
+        href="${imgEl.src}"
+        data-pswp-width="${
+          Math.max(imgEl.naturalWidth, imgEl.width) * options.photo_scale
+        }"
+        data-pswp-height="${
+          Math.max(imgEl.naturalHeight, imgEl.height) * options.photo_scale
+        }"
+        data-pswp-caption="${imgEl.getAttribute("caption") || imgEl.alt}"
+        target="_blank">
+        ${imgEl.outerHTML}
+      </a>`;
+    });
+
+    // Initialize PhotoSwipe 5
+    var lightbox = new PhotoSwipeLightbox(options);
+
+    lightbox.init();
+  }
+
+  window.addEventListener("load", initPhotoSwipe);
+</script>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header site-header-transparent" role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/jekyll-theme-yat/">
+  <img class="site-favicon" title="매일 기록하는 코딩 공부 일지" src="%F0%9F%90%B1" onerror="this.style.display='none'">
+  매일 기록하는 코딩 공부 일지
+</a>
+</span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/jekyll-theme-yat/about.html">ABOUT</a><a class="page-link" href="/jekyll-theme-yat/archives.html">ARCHIVES</a><a class="page-link" href="/jekyll-theme-yat/categories.html">CATEGORIES</a><a class="page-link" href="/jekyll-theme-yat/">HOME</a><a class="page-link" href="/jekyll-theme-yat/tags.html">TAGS</a>
+
+
+
+
+
+
+
+
+
+<span class="page-link">
+
+
+
+<div id="google_translate_element" style="display: none;">
+</div>
+
+<span class="ct-language">
+  <ul class="list-unstyled ct-language-dropdown">
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="en">
+          
+          <img src="https://cdn.countryflags.com/thumbs/united-states-of-america/flag-400.png" title="English">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="fr">
+          
+          <img src="https://cdn.countryflags.com/thumbs/france/flag-400.png" title="French">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="zh-CN">
+          
+          <img src="https://cdn.countryflags.com/thumbs/china/flag-400.png" title="Chinese(Simple)">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ja">
+          
+          <img src="https://cdn.countryflags.com/thumbs/japan/flag-400.png" title="Japanese">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ko">
+          
+          <img src="https://cdn.countryflags.com/thumbs/south-korea/flag-400.png" title="Korean">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ru">
+          
+          <img src="https://cdn.countryflags.com/thumbs/russia/flag-400.png" title="Russian">
+          
+        </a>
+      </li>
+    
+  </ul>
+</span>
+
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({
+    pageLanguage: 'en',
+    autoDisplay: false,
+    layout: google.translate.TranslateElement.InlineLayout.VERTICAL
+  }, 'google_translate_element');
+
+  // Links to cross-origin destinations are unsafe
+  var gll = document.getElementsByClassName('goog-logo-link')[0];
+  if (gll) {
+    gll.setAttribute('rel', 'noopener');
+  }
+
+  function restoreLang() {
+    var iframe = document.getElementsByClassName('goog-te-banner-frame')[0];
+    if (!iframe) return;
+
+    var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+    var restore_el = innerDoc.getElementsByTagName("button");
+
+    for (var i = 0; i < restore_el.length; i++) {
+      if (restore_el[i].id.indexOf("restore") >= 0) {
+        restore_el[i].click();
+        var close_el = innerDoc.getElementsByClassName("goog-close-link");
+        close_el[0].click();
+        return;
+      }
+    }
+  }
+
+  function triggerHtmlEvent(element, eventName) {
+    var event;
+    if (document.createEvent) {
+      event = document.createEvent('HTMLEvents');
+      event.initEvent(eventName, true, true);
+      element.dispatchEvent(event);
+    } else {
+      event = document.createEventObject();
+      event.eventType = eventName;
+      element.fireEvent('on' + event.eventType, event);
+    }
+  }
+
+  var googleCombo = document.querySelector("select.goog-te-combo");
+  var langSelect = document.querySelector('.ct-language');
+  langSelect.addEventListener('click', function(event) {
+    if (!event.target) {
+      return;
+    }
+
+    var selected = document.querySelector('.ct-language .ct-language-selected');
+    if (selected) {
+      selected.classList.remove('ct-language-selected');
+    }
+
+    var target = event.target;
+    while (target && target !== langSelect ) {
+      if (target.matches('.lang-select')) {
+        break;
+      }
+      target = target.parentElement;
+    }
+
+    if (target && target.matches('.lang-select')) {
+      var lang = target.getAttribute('data-lang');
+      if (googleCombo.value == lang) {
+        restoreLang();
+      } else {
+        target.parentElement.classList.add('ct-language-selected');
+        googleCombo.value = lang;
+        triggerHtmlEvent(googleCombo, 'change');
+      }
+    }
+
+    event.preventDefault();
+  });
+}
+</script>
+
+<script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>
+</span>
+</div>
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;documentElement.setAttribute("data-header-transparent", "");var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+    html .page-banner {
+      background: #000;
+    }
+  </style>
+<style>html .page-banner {
+      height:  36.8vh;
+      min-height: 38vh;
+    }
+    html[data-scroll-status="top"] .page-banner {
+      height: 100vh;
+    }
+  </style>
+<style>
+    html .page-banner .page-banner-img > *:first-child {
+      opacity: 0.618;
+    }
+
+    html[data-theme="dark"] .page-banner .page-banner-img > *:first-child {
+      opacity: 0.443724;
+    }
+  </style>
+<style>
+    html .page-banner .page-banner-inner > *:first-child > *:nth-child(1) {
+      font-size: 4.25em; font-weight: bold; text-decoration: underline
+    }
+  </style>
+<style>
+    html .page-banner .page-banner-inner > *:first-child > *:nth-child(2) {
+      color: gold
+    }
+  </style>
+<section class="page-banner">
+    <div class="page-banner-img">
+<video autoplay="" poster="/jekyll-theme-yat/assets/images/banners/typing.gif" playsinline>
+          <source src="./assets/images/banners/typing.gif">
+        </source></video>
+        <script>
+          (function() {
+            var video = document.querySelector('.page-banner .page-banner-img > video');
+            var videoPlay = function() {
+              video.play().catch (function() {
+                  video.muted = true;
+                  video.play();
+                });
+            }
+
+            video.onloadstart = function() {
+              video.currentTime = 8.5;
+              video.volume = 0.8;
+              video.muted = (video.volume == 0);
+              videoPlay();
+            }
+
+            video.onended = function() {
+              video.currentTime = 8.5;
+              video.volume = 0;video.play();}
+          })();
+        </script>
+</div>
+    <div class="wrapper">
+      <div class="page-banner-inner">
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">자바스크립트 문법 공부</h1>
+  <h2 class="post-subtitle">JavaScript</h2>
+
+  <div class="post-meta">
+    <time class="dt-published" datetime="2024-01-30T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Jan 30, 2024
+    </time><span class="post-author left-vsplit"><i class="fa fa-pencil"></i> Jo</span>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 6 mins</span>
+  </div>
+<div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#JavaScript">#JavaScript</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#Study">#Study</a>
+</div></header>
+</div>
+    </div>
+  </section><script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div class="theme-toggle">
+  <input type="checkbox" id="theme-switch">
+  <label for="theme-switch">
+    <div class="toggle"></div>
+    <div class="names">
+      <p class="light">Light</p>
+      <p class="dark">Dark</p>
+    </div>
+  </label>
+</div>
+
+
+
+
+<script>
+  (function() {
+    var sw = document.getElementById('theme-switch');
+    var html = document.getElementsByTagName('html')[0];
+    var nightModeOption = ('auto' || 'auto').toLowerCase();
+    var storage = nightModeOption === 'manual'
+        ? localStorage
+        : sessionStorage;
+    var themeData = loadThemeData();
+
+    function saveThemeData(data) {
+      storage.setItem('theme', JSON.stringify(data));
+    }
+
+    function loadThemeData() {
+      var data = storage.getItem('theme');
+      try {
+        data = JSON.parse(data ? data : '');
+      } catch(e) {
+        data = { nightShift: undefined, autoToggleAt: 0 };
+        saveThemeData(data);
+      }
+      return data;
+    }
+
+    function handleThemeToggle(nightShift) {
+      themeData.nightShift = nightShift;
+      saveThemeData(themeData);
+      html.dataset.theme = nightShift ? 'dark' : 'light';
+      setTimeout(function() {
+        sw.checked = nightShift ? true : false;
+      }, 50);
+    }
+
+    function autoThemeToggle() {
+      // Next time point of theme toggle
+      var now = new Date();
+      var toggleAt = new Date();
+      var hours = now.getHours();
+      var nightShift = hours >= 19 || hours <=7;
+
+      if (nightShift) {
+        if (hours > 7) {
+          toggleAt.setDate(toggleAt.getDate() + 1);
+        }
+        toggleAt.setHours(7);
+      } else {
+        toggleAt.setHours(19);
+      }
+
+      toggleAt.setMinutes(0);
+      toggleAt.setSeconds(0);
+      toggleAt.setMilliseconds(0)
+
+      var delay = toggleAt.getTime() - now.getTime();
+
+      // auto toggle theme mode
+      setTimeout(function() {
+        handleThemeToggle(!nightShift);
+      }, delay);
+
+      return {
+        nightShift: nightShift,
+        toggleAt: toggleAt.getTime()
+      };
+    }
+
+    // Listen the theme toggle event
+    sw.addEventListener('change', function(event) {
+      handleThemeToggle(event.target.checked);
+    });
+
+    if (nightModeOption == 'auto') {
+      var data = autoThemeToggle();
+
+      // Toggle theme by local setting
+      if (data.toggleAt > themeData.autoToggleAt) {
+        themeData.autoToggleAt = data.toggleAt;
+        handleThemeToggle(data.nightShift);
+      } else {
+        handleThemeToggle(themeData.nightShift);
+      }
+    } else if (nightModeOption == 'manual') {
+      handleThemeToggle(themeData.nightShift);
+    } else {
+      var nightShift = themeData.nightShift;
+      if (nightShift === undefined) {
+        nightShift = nightModeOption === 'on';
+      }
+      handleThemeToggle(nightShift);
+    }
+  })();
+</script>
+<div id="click-to-top" class="click-to-top">
+  <i class="fa fa-arrow-up"></i>
+</div>
+<script>
+  (function () {
+    const clickToTop = document.getElementById('click-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 100) {
+        clickToTop.classList.add('show')
+      }else {
+        clickToTop.classList.remove('show')
+      }
+    });
+    clickToTop.addEventListener('click', () => {
+      window.smoothScrollTo(0);
+    });
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <p>이번 포스트 : JavaScript를 공부해보자</p>
+
+<h2 id="자바스크립트-문법">자바스크립트 문법</h2>
+<p>: 자바랑 다르거나 기억할만한 것 중 간단한 것만 기록</p>
+<ol>
+  <li>숫자 연산 : Math.*
+    <ul>
+      <li>pow(,x): x 제곱, round: 반올림, ceil: 올림, floor: 내림, sqrt: 제곱근, random: 0-1사이랜덤수</li>
+    </ul>
+  </li>
+  <li>변수 선언 : <br>var&lt;/br&gt; x = 1;</li>
+  <li>=== 은 양쪽이 정확히 같을 때만 참이다. 1 == ‘1’은 true지만 1 === ‘1’은 false</li>
+  <li>조건문에서 0은 false, 1은 true로 간주</li>
+  <li>함수 선언 : function 함수명(인자..){실행될 내용} / 함수 호출 : 함수명(인자..);</li>
+  <li>함수에 return 값을 줄 수 있음</li>
+  <li>var numbering = function(){실행될 내용}  //함수를 이렇게 정의할 수도 있다.</li>
+</ol>
+
+<h2 id="배열">배열</h2>
+<ol>
+  <li>배열은 <code class="language-plaintext highlighter-rouge">[]</code>, 각 원소는 <code class="language-plaintext highlighter-rouge">배열명[인덱스]</code>로 불러올 수 있다.</li>
+  <li>배열.length 하면 배열에 담긴 원소의 개수(배열의 크기)가 반환</li>
+  <li>원소 추가
+    <ul>
+      <li>push(원소) : 배열 끝에 추가(기본)</li>
+      <li>concat([원소1,원소2..]) : 배열에 여러 원소 추가(list + list같은 느낌)</li>
+      <li>unshift(원소) : 배열 맨 앞에 추가</li>
+      <li>splice(넣을 인덱스, 제거할 개수, 원소..) : 배열의 해당 인덱스에 원소 추가</li>
+    </ul>
+  </li>
+  <li>원소 제거
+    <ul>
+      <li>pop() : 배열의 끝 원소 제거</li>
+      <li>shift() : 배열의 첫번째 원소 제거</li>
+    </ul>
+  </li>
+  <li>정렬하고 싶으면 배열이름.sort() / 배열이름.reverse()하면 역순</li>
+</ol>
+
+<h2 id="객체dictionary">객체(Dictionary)</h2>
+<ol>
+  <li>객체는 자바에서는 맵(Map), 파이썬에서는 딕셔너리(Dictionary)와 같은 것,,,</li>
+  <li>배열의 인덱스를 문자로 사용하는 것</li>
+  <li>객체 만들기
+    <ul>
+      <li>
+<code class="language-plaintext highlighter-rouge">var dict = {key:value, key2:value2 , ...}</code> 이렇게 생성</li>
+      <li>
+<code class="language-plaintext highlighter-rouge">var dict = {}; dict[key] = value; dict[key2] = value2;</code> 이렇게도 생성 가능</li>
+      <li>
+<code class="language-plaintext highlighter-rouge">var dict = new Object(); dict[key] = value; dict[key2] = value2;</code> 이렇게도 생성 가능</li>
+    </ul>
+  </li>
+  <li>key 값으로 value 값을 찾을 수 있다. <code class="language-plaintext highlighter-rouge">dict[key2]</code> 또는 <code class="language-plaintext highlighter-rouge">dict.key2</code>
+</li>
+  <li>객체를 향상된 for문을 돌리면 key값이 하나씩 빠져나온다.</li>
+  <li>객체에는 객체나 함수도 담을수도 있다.
+    <div class="language-plaintext highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code>  var menu = {
+ 'list': {'Americano': 2000, 'Latte': 3000, 'IceTea': 2500},
+ 'show' : function(){
+   for(var name in this.list){
+     document.write(name + ':' + this.list[name]+ "&lt;br /&gt;");
+   }  
+ }
+  };
+  menu.show(); // 출력-&gt; Americano: 2000~
+</code></pre></div>    </div>
+    <blockquote>
+      <p>자바처럼 동일한 타입의 값이 들어갈 필요가 없다.
+자유도가 훨씬 높음</p>
+    </blockquote>
+  </li>
+</ol>
+
+<h2 id="함수지향">함수지향</h2>
+<ul>
+  <li>전역변수는 어디서든 사용할 수 있지만, 지역변수의 유효범위는 함수 안이다.</li>
+  <li>var을 사용하지 않은 지역변수는 전역변수가 된다.</li>
+  <li>var을 사용하지 않은 지역변수를 변경하면 전역변수의 값도 변경된다.</li>
+  <li>자바스크립트는 함수에 대한 유효범위만을 제공한다.
+    <div class="language-plaintext highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code>// 자바에서는 에러
+for(int i=0; i&lt;1; i++){
+  String name = "jo";
+}
+System.out.println(name);
+
+// 자바스크립트에서는 됨
+for(var i=0; i&lt;1; i++){
+  var name = 'jo';
+}
+alert(name);
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <dl>
+      <dt>정적 유효범위(Static Scoping), 렉시컬(Lexical Scoping)</dt>
+      <dd>함수가 선언된 시점에서의 유효범위를 가진다.
+        <div class="language-plaintext highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code>var i = 5;
+function a(){
+  var i = 10;
+  b();
+ }    
+ function b(){
+  document.write(i);
+ }    
+ a();
+</code></pre></div>        </div>
+        <blockquote>
+          <p>실행 결과는 5다. function b()가 선언되었을 때의 i는 5기 때문에..
+여기서 b()가 b(i)라면 실행 결과는 10이다.</p>
+        </blockquote>
+      </dd>
+    </dl>
+  </li>
+  <li>함수도 객체</li>
+  <li>메소드(method) : 객체의 속성 값으로 담겨진 함수</li>
+  <li>함수도 값이기 때문에 다른 함수의 인자로 전달될 수도 있고, 리턴 값으로 사용할 수도 있음</li>
+  <li>배열에도 넣을 수 있음 «쓸 수 없는 곳 말하는게 빠를 듯</li>
+</ul>
+
+<h2 id="클로저closure">클로저(closure)</h2>
+<p>: 내부함수는 외부함수의 지역변수에 접근할 수 있는데, 외부함수의 실행이 끝나도 내부함수가 해당 변수에 접근가능</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    function factory_movie(title){
+        return {
+            get_title : function (){
+                return title;
+            },
+            set_title : function(newT){
+                title = newT;
+            }
+        }
+    }
+    ghost = factory_movie('Ghost in the shell');
+    // ghost = {get_title : function(){return Ghost in the shell;}, set_title : function(newT){title= newT} }
+    matrix = factory_movie('Matrix');
+    // matrix = {get_title : function(){returnn Matrix;}, set_title : function(newT){title= newT} }
+
+    alert(ghost.get_title()); // Ghost in the shell
+    alert(matrix.get_title()); // Matrix
+    
+    ghost.set_title('공각기동대');
+    
+    alert(ghost.get_title()); // 공각기동대
+    alert(matrix.get_title()); // Matrix
+</code></pre></div></div>
+
+<p><img src="https://github.com/CheeseYoung/Cheeseyoung.github.io/assets/132384527/60c59439-2123-40db-9d4d-e50a7ad677bc" alt="image"></p>
+<blockquote>
+  <p>뭔데…… 뭔말인데…….. ? 🤢 (1/30 16:00)
+이해완 (1/30 16:40)
+함수가 함수 밖의 i값을 못 받아와서 arr=[function(){return i;}, function(){return i;}, …] 이렇게 든 상태. 그래서 for문이 끝난 후 i=5인 상태니까 arr=[5,5,5,5,5]
+근데.. 다시 의문 .. 왜? function(){return i;}();를 하면 바로 실행되니까 i값이 들어가는데 왜 이렇게 하라고 하는걸까 (1/30 17:00)</p>
+  <div class="language-plaintext highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code>   for(var i = 0; i &lt; 5; i++){
+    arr[i] = function(id) {
+        return function(){
+            return id;
+        }
+    }(i);
+</code></pre></div>  </div>
+  <p>이해가 되지 않는군,, 콘솔에 무진장 찍어보는중
+이해완(1/30 17:45)
+클로저를 쓰는 이유가 일단 값을 private하게 쓰는게 목표 우선 위의 예제를 실행하면
+<code class="language-plaintext highlighter-rouge">arr = [function(){return id;}, function(){return id;}, function(){return id;}, function(){return id;}, function(){return id;}]</code> 이렇게 담겨있다.
+생김새는 저렇지만, 각각의 원소들을 실행(<code class="language-plaintext highlighter-rouge">function(){return id;}()</code>)하고 나면 0,1,2,3,4가 들어있다.
+겉보기엔 다 똑같이 생겼지만, 실제 들어있는 값은 다르다,,</p>
+</blockquote>
+
+<h2 id="arguments">arguments</h2>
+<p>: 함수를 호출할 때 입력한 인자가 담겨있는 숨겨진 유사 배열</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function sum(){
+    var i, _sum = 0;    
+    for(i = 0; i &lt; arguments.length; i++){
+        document.write(i+' : '+arguments[i]+'&lt;br /&gt;');
+        _sum += arguments[i];
+    }   
+    return _sum;
+}
+document.write('result : ' + sum(1,2,3,4));
+</code></pre></div></div>
+<blockquote>
+  <p>여기서 함수 sum()은 매개변수가 없는데, 마지막 줄에 보면 sum(1,2,3,4)로 값을 넘겨준다.
+입력한 인자를 담아놓는 arguments 덕분에!</p>
+  <ul>
+    <li>함수에 length를 찍으면 함수에 정의된 인자의 수를 반환한다.</li>
+    <li>실제로 넘어온 인자의 수를 알고 싶을 때는 arguments.length를 해야한다.</li>
+  </ul>
+</blockquote>
+
+<h2 id="객체지향">객체지향</h2>
+<p>: 자바스크립트의 객체지향은 사뭇 다르다..</p>
+<ul>
+  <li>로직을 상태(state)와 행위(behave)로 이루어진 객체로 만드는 것</li>
+  <li>Object : 객체 /  변수와 메소드를 그룹핑한 것</li>
+  <li>객체 내의 변수를 프로퍼티(property), 함수를 메소드(method)
+    <div class="language-plaintext highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code>var person = {}
+person.name = 'egoing';
+person.introduce = function(){
+return 'My name is '+ this.name;
+}
+</code></pre></div>    </div>
+    <p>위의 코드를 아래와 같이 쓸 수 있다.</p>
+    <div class="language-plaintext highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code>var person = {
+'name' : 'jo',
+'introduce' : function(){
+  return 'My name is '+this.name;
+}
+}
+</code></pre></div>    </div>
+    <blockquote>
+      <p>key : value, key:value .. 해주면 된다.</p>
+    </blockquote>
+  </li>
+</ul>
+
+<h2 id="생성자constructor">생성자(Constructor)</h2>
+<ul>
+  <li>객체를 만드는 역할을 하는 함수</li>
+  <li>일반 함수와 구분하기 위해 첫글자를 대문자로 표시</li>
+  <li>함수를 호출할 때 new를 붙이면 새로운 객체를 만든 후에 이를 리턴</li>
+  <li>위의 코드에서 여러 사람을 만들고 싶다면 Person 생성자(함수)를 만들어준다.
+    <div class="language-plaintext highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code>function Person(name){ //매개변수로 name값 받기
+  this.name = name;
+  this.introduce = function(){
+      return 'My name is '+this.name;
+  }
+}
+var p1 = new Person('Jo');
+var p2 = new Person('Kim');
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="전역객체global-object">전역객체(Global object)</h2>
+<ul>
+  <li>window</li>
+  <li>모든 객체는 전역객체의 프로퍼티</li>
+  <li>객체를 호출할 때 (window.)을 생략한 거라고 생각하면 된다.</li>
+</ul>
+
+<h2 id="this">this</h2>
+<p>: 함수 내에서 함수 호출 맥락(context)를 의미</p>
+<ul>
+  <li>함수를 어떻게 호출하느냐에 따라서 this가 가리키는 대상이 달라짐</li>
+  <li>함수와 객체를 연결시켜주는 실질적인 연결점의 역할</li>
+</ul>
+
+
+
+    </div>
+
+</article>
+<div class="post-nav">
+<a class="previous" href="/jekyll-theme-yat/study/2024/01/29/study06.html" title="[정보처리기사] 오답정리 3과목">[정보처리기사] 오답정리 3과목</a><a class="next" href="/jekyll-theme-yat/cs/2024/01/31/as01.html" title="[개발상식] 1. git과 github">[개발상식] 1. git과 github</a>
+</div>
+<div class="post-related">
+      <div>Related Articles</div>
+      <ul>
+        <li class="">
+          <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/13/as61.html" title="[운영체제] 12. 스케줄러의 종류">
+            [운영체제] 12. 스케줄러의 종류<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/jekyll-theme-yat/html/2023/07/25/JS01.html" title="JavaScript01_자바스크립트 기초">
+            JavaScript01_자바스크립트 기초<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/18/as76.html" title="[데이터베이스] 4. 데이터 무결성(Data Integrity)">
+            [데이터베이스] 4. 데이터 무결성(Data Integrity)<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/04/as29.html" title="[자료구조] 13. 트라이(Trie)">
+            [자료구조] 13. 트라이(Trie)<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+        </li>
+</ul>
+    </div>
+<div class="post-comments"></div></section>
+</div>
+
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --><style type="text/css" media="screen">
+.post-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+</style>
+
+<div class="post-menu">
+  <div class="post-menu-title">TOC</div>
+  <div class="post-menu-content"></div>
+</div>
+
+<script>
+  function generateContent() {
+    var menu = document.querySelector(".post-menu");
+    var menuContent =  menu.querySelector(".post-menu-content");
+    var headings = document.querySelector(".post-content").querySelectorAll("h2, h3, h4, h5, h6");
+
+    // Hide menu when no headings
+    if (headings.length === 0) {
+      return menu.style.display = "none";
+    }
+
+    // Generate post menu
+    var menuHTML = '';
+    for (var i = 0; i < headings.length; i++) {
+      var h = headings[i];
+      menuHTML += (
+        '<li class="h-' + h.tagName.toLowerCase() + '">'
+        + '<a href="#h-' + h.getAttribute('id') + '">' + h.textContent + '</a></li>');
+    }
+
+    menuContent.innerHTML = '<ul>' + menuHTML + '</ul>';
+
+    // The header element
+    var header = document.querySelector('header.site-header');
+
+    function doMenuCollapse(index, over_items) {
+      var items = menuContent.firstChild.children;
+
+      if (over_items == undefined) {
+        over_items = 20;
+      }
+
+      if (items.length < over_items) {
+        return;
+      }
+
+      var activeItem = items[index];
+      var beginItem = activeItem
+      var endItem = activeItem
+      var beginIndex = index;
+      var endIndex = index + 1;
+      while (beginIndex >= 0
+        && !items[beginIndex].classList.contains('h-h2')) {
+        beginIndex -= 1;
+      }
+      while (endIndex < items.length
+        && !items[endIndex].classList.contains('h-h2')) {
+        endIndex += 1;
+      }
+      for (var i = 0; i < beginIndex; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+      for (var i = beginIndex + 1; i < endIndex; i++) {
+        item = items[i]
+        // if (!item.classList.contains('h-h2')) {
+          item.style.display = '';
+        // }
+      }
+      for (var i = endIndex; i < items.length; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+    }
+
+    // Init menu collapsed
+    doMenuCollapse(-1);
+
+    // Active the menu item
+    window.addEventListener('scroll', function (event) {
+      var lastActive = menuContent.querySelector('.active');
+      var changed = true;
+      var activeIndex = -1;
+      for (var i = headings.length - 1; i >= 0; i--) {
+        var h = headings[i];
+        var headingRect = h.getBoundingClientRect();
+        var headerRect = header.getBoundingClientRect();
+        var headerTop = Math.floor(headerRect.top);
+        var headerHeight = Math.floor(headerRect.height);
+        var headerHeight = headerTop + headerHeight + 20;
+        if (headingRect.top <= headerHeight) {
+          var id = 'h-' + h.getAttribute('id');
+          var a = menuContent.querySelector('a[href="#' + id  + '"]');
+          var curActive = a.parentNode;
+          if (curActive) {
+            curActive.classList.add('active');
+            activeIndex = i;
+          }
+          if (lastActive == curActive) {
+            changed = false;
+          }
+          break;
+        }
+      }
+      if (changed) {
+        if (lastActive) {
+          lastActive.classList.remove('active');
+        }
+        doMenuCollapse(activeIndex);
+      }
+      event.preventDefault();
+    });
+  }
+  generateContent();
+</script>
+</section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jekyll-theme-yat/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>Unpublished Work <span class="copyleft">©</span> 2017-2024 {YoungEun Jo}</div>
+      <div>Powered by <a title="Jekyll is a simple, blog-aware, static site
+      generator." href="https://jekyllrb.com/">Jekyll</a> &amp; <a title="Yat, yet
+      another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.</div>
+      <div class="footer-col rss-subscribe">Subscribe <a href="/jekyll-theme-yat/feed.xml">via RSS</a>
+</div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>
