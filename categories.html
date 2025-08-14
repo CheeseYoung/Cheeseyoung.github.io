@@ -1,0 +1,3360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Categories | 매일 기록하는 코딩 공부 일지</title>
+<meta name="generator" content="Jekyll v4.4.1">
+<meta property="og:title" content="Categories">
+<meta name="author" content="YoungEun Jo">
+<meta property="og:locale" content="en_US">
+<meta name="description" content="매일 기록하고자 하지만 힘과 시간이 남을 경우만 가능한 공부 일기">
+<meta property="og:description" content="매일 기록하고자 하지만 힘과 시간이 남을 경우만 가능한 공부 일기">
+<link rel="canonical" href="https://cheeseyoung.github.io//jekyll-theme-yat/categories.html">
+<meta property="og:url" content="https://cheeseyoung.github.io//jekyll-theme-yat/categories.html">
+<meta property="og:site_name" content="매일 기록하는 코딩 공부 일지">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="Categories">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","author":{"@type":"Person","name":"YoungEun Jo"},"description":"매일 기록하고자 하지만 힘과 시간이 남을 경우만 가능한 공부 일기","headline":"Categories","url":"https://cheeseyoung.github.io//jekyll-theme-yat/categories.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="icon" href="%F0%9F%90%B1">
+  <link rel="canonical" href="https://cheeseyoung.github.io/">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-noto-sans@0.0.72/index.min.css">
+  <link rel="stylesheet" href="/jekyll-theme-yat/assets/css/main.css">
+  <script src="/jekyll-theme-yat/assets/js/main.js"></script><link type="application/atom+xml" rel="alternate" href="https://cheeseyoung.github.io//jekyll-theme-yat/feed.xml" title="매일 기록하는 코딩 공부 일지">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/languages/go.min.js" async></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #ff4e00;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: uppercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+<script src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe-lightbox.umd.min.js" async></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe.umd.min.js" async></script>
+<link href="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/photoswipe.min.css" rel="stylesheet">
+<style>
+  .pswp .pswp__container .pswp__img {
+    background-color: white;
+  }
+</style>
+
+<script>
+  function initPhotoSwipe() {
+    let customOptions = {};
+
+    try {
+      const data = ``.replaceAll("=>", ":");
+      customOptions = JSON.parse(data);
+    } catch (e) {
+      console.info("Invalid custom photo previewer options! " + e.message);
+    }
+
+    // Define object and gallery options
+    const options = Object.assign(
+      {
+        gallery: "section.main",
+        children: "a.photo-swipe",
+        photo_scale: 2,
+        // dynamic import is not supported in UMD version
+        pswpModule: PhotoSwipe,
+      },
+      customOptions
+    );
+
+    const galleryEl = document.querySelector(options.gallery);
+    if (!galleryEl) {
+      return;
+    }
+
+    const imgEls = [];
+    const els = galleryEl.querySelectorAll("img:not(.emoji)");
+    els.forEach((el) => {
+      if (el.src.trim() == "") {
+        return;
+      }
+      if (!imgEls.includes(el)) {
+        imgEls.push(el);
+      }
+    });
+
+    if (imgEls.length === 0) {
+      return;
+    }
+
+    imgEls.forEach((imgEl) => {
+      imgEl.outerHTML = `
+      <a class="photo-swipe"
+        href="${imgEl.src}"
+        data-pswp-width="${
+          Math.max(imgEl.naturalWidth, imgEl.width) * options.photo_scale
+        }"
+        data-pswp-height="${
+          Math.max(imgEl.naturalHeight, imgEl.height) * options.photo_scale
+        }"
+        data-pswp-caption="${imgEl.getAttribute("caption") || imgEl.alt}"
+        target="_blank">
+        ${imgEl.outerHTML}
+      </a>`;
+    });
+
+    // Initialize PhotoSwipe 5
+    var lightbox = new PhotoSwipeLightbox(options);
+
+    lightbox.init();
+  }
+
+  window.addEventListener("load", initPhotoSwipe);
+</script>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header " role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/jekyll-theme-yat/">
+  <img class="site-favicon" title="매일 기록하는 코딩 공부 일지" src="%F0%9F%90%B1" onerror="this.style.display='none'">
+  매일 기록하는 코딩 공부 일지
+</a>
+</span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/jekyll-theme-yat/about.html">ABOUT</a><a class="page-link" href="/jekyll-theme-yat/archives.html">ARCHIVES</a><a class="page-link" href="/jekyll-theme-yat/categories.html">CATEGORIES</a><a class="page-link" href="/jekyll-theme-yat/">HOME</a><a class="page-link" href="/jekyll-theme-yat/tags.html">TAGS</a>
+
+
+
+
+
+
+
+
+
+<span class="page-link">
+
+
+
+<div id="google_translate_element" style="display: none;">
+</div>
+
+<span class="ct-language">
+  <ul class="list-unstyled ct-language-dropdown">
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="en">
+          
+          <img src="https://cdn.countryflags.com/thumbs/united-states-of-america/flag-400.png" title="English">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="fr">
+          
+          <img src="https://cdn.countryflags.com/thumbs/france/flag-400.png" title="French">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="zh-CN">
+          
+          <img src="https://cdn.countryflags.com/thumbs/china/flag-400.png" title="Chinese(Simple)">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ja">
+          
+          <img src="https://cdn.countryflags.com/thumbs/japan/flag-400.png" title="Japanese">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ko">
+          
+          <img src="https://cdn.countryflags.com/thumbs/south-korea/flag-400.png" title="Korean">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ru">
+          
+          <img src="https://cdn.countryflags.com/thumbs/russia/flag-400.png" title="Russian">
+          
+        </a>
+      </li>
+    
+  </ul>
+</span>
+
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({
+    pageLanguage: 'en',
+    autoDisplay: false,
+    layout: google.translate.TranslateElement.InlineLayout.VERTICAL
+  }, 'google_translate_element');
+
+  // Links to cross-origin destinations are unsafe
+  var gll = document.getElementsByClassName('goog-logo-link')[0];
+  if (gll) {
+    gll.setAttribute('rel', 'noopener');
+  }
+
+  function restoreLang() {
+    var iframe = document.getElementsByClassName('goog-te-banner-frame')[0];
+    if (!iframe) return;
+
+    var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+    var restore_el = innerDoc.getElementsByTagName("button");
+
+    for (var i = 0; i < restore_el.length; i++) {
+      if (restore_el[i].id.indexOf("restore") >= 0) {
+        restore_el[i].click();
+        var close_el = innerDoc.getElementsByClassName("goog-close-link");
+        close_el[0].click();
+        return;
+      }
+    }
+  }
+
+  function triggerHtmlEvent(element, eventName) {
+    var event;
+    if (document.createEvent) {
+      event = document.createEvent('HTMLEvents');
+      event.initEvent(eventName, true, true);
+      element.dispatchEvent(event);
+    } else {
+      event = document.createEventObject();
+      event.eventType = eventName;
+      element.fireEvent('on' + event.eventType, event);
+    }
+  }
+
+  var googleCombo = document.querySelector("select.goog-te-combo");
+  var langSelect = document.querySelector('.ct-language');
+  langSelect.addEventListener('click', function(event) {
+    if (!event.target) {
+      return;
+    }
+
+    var selected = document.querySelector('.ct-language .ct-language-selected');
+    if (selected) {
+      selected.classList.remove('ct-language-selected');
+    }
+
+    var target = event.target;
+    while (target && target !== langSelect ) {
+      if (target.matches('.lang-select')) {
+        break;
+      }
+      target = target.parentElement;
+    }
+
+    if (target && target.matches('.lang-select')) {
+      var lang = target.getAttribute('data-lang');
+      if (googleCombo.value == lang) {
+        restoreLang();
+      } else {
+        target.parentElement.classList.add('ct-language-selected');
+        googleCombo.value = lang;
+        triggerHtmlEvent(googleCombo, 'change');
+      }
+    }
+
+    event.preventDefault();
+  });
+}
+</script>
+
+<script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>
+</span>
+</div>
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div class="theme-toggle">
+  <input type="checkbox" id="theme-switch">
+  <label for="theme-switch">
+    <div class="toggle"></div>
+    <div class="names">
+      <p class="light">Light</p>
+      <p class="dark">Dark</p>
+    </div>
+  </label>
+</div>
+
+
+
+
+<script>
+  (function() {
+    var sw = document.getElementById('theme-switch');
+    var html = document.getElementsByTagName('html')[0];
+    var nightModeOption = ('auto' || 'auto').toLowerCase();
+    var storage = nightModeOption === 'manual'
+        ? localStorage
+        : sessionStorage;
+    var themeData = loadThemeData();
+
+    function saveThemeData(data) {
+      storage.setItem('theme', JSON.stringify(data));
+    }
+
+    function loadThemeData() {
+      var data = storage.getItem('theme');
+      try {
+        data = JSON.parse(data ? data : '');
+      } catch(e) {
+        data = { nightShift: undefined, autoToggleAt: 0 };
+        saveThemeData(data);
+      }
+      return data;
+    }
+
+    function handleThemeToggle(nightShift) {
+      themeData.nightShift = nightShift;
+      saveThemeData(themeData);
+      html.dataset.theme = nightShift ? 'dark' : 'light';
+      setTimeout(function() {
+        sw.checked = nightShift ? true : false;
+      }, 50);
+    }
+
+    function autoThemeToggle() {
+      // Next time point of theme toggle
+      var now = new Date();
+      var toggleAt = new Date();
+      var hours = now.getHours();
+      var nightShift = hours >= 19 || hours <=7;
+
+      if (nightShift) {
+        if (hours > 7) {
+          toggleAt.setDate(toggleAt.getDate() + 1);
+        }
+        toggleAt.setHours(7);
+      } else {
+        toggleAt.setHours(19);
+      }
+
+      toggleAt.setMinutes(0);
+      toggleAt.setSeconds(0);
+      toggleAt.setMilliseconds(0)
+
+      var delay = toggleAt.getTime() - now.getTime();
+
+      // auto toggle theme mode
+      setTimeout(function() {
+        handleThemeToggle(!nightShift);
+      }, delay);
+
+      return {
+        nightShift: nightShift,
+        toggleAt: toggleAt.getTime()
+      };
+    }
+
+    // Listen the theme toggle event
+    sw.addEventListener('change', function(event) {
+      handleThemeToggle(event.target.checked);
+    });
+
+    if (nightModeOption == 'auto') {
+      var data = autoThemeToggle();
+
+      // Toggle theme by local setting
+      if (data.toggleAt > themeData.autoToggleAt) {
+        themeData.autoToggleAt = data.toggleAt;
+        handleThemeToggle(data.nightShift);
+      } else {
+        handleThemeToggle(themeData.nightShift);
+      }
+    } else if (nightModeOption == 'manual') {
+      handleThemeToggle(themeData.nightShift);
+    } else {
+      var nightShift = themeData.nightShift;
+      if (nightShift === undefined) {
+        nightShift = nightModeOption === 'on';
+      }
+      handleThemeToggle(nightShift);
+    }
+  })();
+</script>
+<div id="click-to-top" class="click-to-top">
+  <i class="fa fa-arrow-up"></i>
+</div>
+<script>
+  (function () {
+    const clickToTop = document.getElementById('click-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 100) {
+        clickToTop.classList.add('show')
+      }else {
+        clickToTop.classList.remove('show')
+      }
+    });
+    clickToTop.addEventListener('click', () => {
+      window.smoothScrollTo(0);
+    });
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <div class="page-segments">
+  <ul class="page-segments-list">
+    
+    <h2 id="CS" class="segment-name">CS</h2>
+      
+      
+        <li class="">
+<span class="post-meta">Mar 21, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/21/as90.html">
+    [데이터베이스] 18. SQL의 종류 (DDL, DML, DCL, TCL)<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 21, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/21/as89.html">
+    [데이터베이스] 17. 장애와 회복기법<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 20, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/20/as88.html">
+    [데이터베이스] 16. 클러스터링 vs 리플리케이션<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 20, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/20/as87.html">
+    [데이터베이스] 15. DB Lock<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 20, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/20/as86.html">
+    [데이터베이스] 14. 레디스(Redis)<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 19, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/19/as85.html">
+    [데이터베이스] 13. DBMS / RDBMS / SQL / NoSQL<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 19, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/19/as84.html">
+    [데이터베이스] 12. 병행제어(Concurrency Control)<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 19, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/19/as83.html">
+    [데이터베이스] 11. 이상현상(Anomaly)<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 19, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/19/as82.html">
+    [데이터베이스] 10. 트랜잭션(Transaction)<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 19, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/19/as81.html">
+    [데이터베이스] 9. 정규화(Normalization)<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 18, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/18/as80.html">
+    [데이터베이스] 8. 인덱스(Index)<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 18, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/18/as79.html">
+    [데이터베이스] 7. 키(Key)<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 18, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/18/as78.html">
+    [데이터베이스] 6. Commit과 Rollback<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 18, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/18/as77.html">
+    [데이터베이스] 5. 제약조건 PK, FK, UK(Primary Key, Foreign Key, Unique Key)<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 18, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/18/as76.html">
+    [데이터베이스] 4. 데이터 무결성(Data Integrity)<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 18, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/18/as75.html">
+    [데이터베이스] 3. SQL 기본 쿼리문 정리<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 15, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/15/as74.html">
+    [데이터베이스] 2. 데이터베이스 기본 용어<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 15, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/15/as73.html">
+    [데이터베이스] 1. 데이터베이스란?<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 14, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/14/as72.html">
+    [운영체제] 23. 파일 시스템(File System)<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 14, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/14/as71.html">
+    [운영체제] 22. IPC(Inter Process Communication)<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 14, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/14/as70.html">
+    [운영체제] 21. 캐시(Cache)<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 14, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/14/as69.html">
+    [운영체제] 20. 페이지 교체 알고리즘<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 14, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/14/as68.html">
+    [운영체제] 19. 메모리 관리 장치(Memory Management Unit)<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 14, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/14/as67.html">
+    [운영체제] 18. 가상 메모리<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 14, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/14/as66.html">
+    [운영체제] 17. 단편화(Fragmentation)<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 14, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/14/as65.html">
+    [운영체제] 16. 페이징과 세그먼테이션(Paging &amp; Segmentation)<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 13, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/13/as64.html">
+    [운영체제] 15. 스핀락, 세마포어, 뮤텍스<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 13, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/13/as63.html">
+    [운영체제] 14. 경쟁 상태(Race Condition)<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 13, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/13/as62.html">
+    [운영체제] 13. 스케줄링 알고리즘<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 13, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/13/as61.html">
+    [운영체제] 12. 스케줄러의 종류<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 13, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/13/as60.html">
+    [운영체제] 11. CPU 스케줄링(CPU Scheduling)<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 13, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/13/as59.html">
+    [운영체제] 10. 교착 상태(Deadlock)<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 13, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/13/as58.html">
+    [운영체제] 9. 시스템 콜(System Call)<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 13, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/13/as57.html">
+    [운영체제] 8. 인터럽트(Interrupt)<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 12, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/12/as56.html">
+    [운영체제] 7. 프로세스 제어 블록과 문맥교환<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 12, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/12/as55.html">
+    [운영체제] 6. 동기화 문제(synchronization problem)<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 12, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/12/as54.html">
+    [운영체제] 5. 멀티프로세스와 멀티스레드(Multi Process &amp; Multi Thread)<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 12, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/12/as53.html">
+    [운영체제] 4. 프로세스와 스레드(Process &amp; Thread)<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 12, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/12/as52.html">
+    [운영체제] 3. 바이트 오더(Byte Order)<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 12, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/12/as51.html">
+    [운영체제] 2. 컴퓨터 시스템의 구조<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 12, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/12/as50.html">
+    [운영체제] 1. 운영체제란?<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 11, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/11/as49.html">
+    [네트워크] 19. 공인 IP와 사설 IP<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 11, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/11/as48.html">
+    [네트워크] 18. Stateful vs Stateless<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 11, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/11/as47.html">
+    [네트워크] 17. HTTP 상태코드(HTTP Status Code)<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 11, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/11/as46.html">
+    [네트워크] 16. 쿠키와 세션(Cookie &amp; Session)<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 11, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/11/as45.html">
+    [네트워크] 15. 블로킹 vs 논블로킹(Blocking vs Non-blocking) <span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 11, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/11/as44.html">
+    [네트워크] 14. 동기 vs 비동기(Synchronous vs Asynchronous)<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 08, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/08/as43.html">
+    [네트워크] 13. 검색창에 Youtube을 치면 일어나는 과정<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 08, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/08/as42.html">
+    [네트워크] 12. 웹 통신의 큰 흐름<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 07, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/07/as41.html">
+    [네트워크] 11. DNS(Domain Name System)<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 07, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/07/as40.html">
+    [네트워크] 10. GET, POST 방식의 차이점<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 06, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/06/as39.html">
+    [네트워크] 9. RESTful의미와 설계 규칙<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 06, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/06/as38.html">
+    [네트워크] 8. 공개키 암호 &amp; 대칭키 암호<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 06, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/06/as37.html">
+    [네트워크] 7. HTTP와 HTTPS<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 06, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/06/as36.html">
+    [네트워크] 6. 로드 밸런싱(Load Balancing)<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 05, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/05/as35.html">
+    [네트워크] 5. TCP/IP 흐름제어 &amp; 혼잡제어<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 05, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/05/as34.html">
+    [네트워크] 4. TCP 3-way-handshake &amp; 4-way-handshake<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 05, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/05/as33.html">
+    [네트워크] 3. TCP vs UDP<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 05, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/05/as32.html">
+    [네트워크] 2. OSI 7 계층<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 05, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/05/as31.html">
+    [네트워크] 1. 네트워크란?<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 04, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/04/as30.html">
+    [자료구조] 14. 트리 맵(Tree Map)<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 04, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/04/as29.html">
+    [자료구조] 13. 트라이(Trie)<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 04, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/04/as28.html">
+    [자료구조] 12. 레드블랙트리(Red-black Tree)<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 04, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/04/as27.html">
+    [자료구조] 11. AVL 트리(AVL Tree)<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 04, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/04/as26.html">
+    [자료구조] 10. 이진 탐색 트리(Binary Search Tree)<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Feb 29, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/02/29/as25.html">
+    [자료구조] 9. List, Map, Set<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Feb 28, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/02/28/as24.html">
+    [자료구조] 8. 해시(Hash)<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Feb 28, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/02/28/as23.html">
+    [자료구조] 7. B Tree와 B+ Tree<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Feb 28, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/02/28/as22.html">
+    [자료구조] 6. 힙(Heap)<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Feb 28, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/02/28/as21.html">
+    [자료구조] 5. 트리(Tree)<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Feb 27, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/02/27/as20.html">
+    [자료구조] 4. 우선순위 큐(PriorityQueue)<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Feb 27, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/02/27/as19.html">
+    [자료구조] 3. 스택과 큐(Stack &amp; Queue)<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Feb 27, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/02/27/as18.html">
+    [자료구조] 2. 배열, 동적배열, 연결리스트<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Feb 27, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/02/27/as17.html">
+    [자료구조] 1. 자료구조란?<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Feb 26, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/02/26/as16.html">
+    [개발상식] 16. Ajax &amp; axios &amp; fetch 차이점과 장단점<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Feb 26, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/02/26/as15.html">
+    [개발상식] 15. Web Server와 WAS의 차이<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Feb 26, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/02/26/as14.html">
+    [개발상식] 14. 오버로딩과 오버라이딩(Overloading &amp; Overriding)<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Feb 26, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/02/26/as13.html">
+    [개발상식] 13. MSA(MicroService Architecture)란?<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Feb 20, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/02/20/as12.html">
+    [개발상식] 12. 도커와 쿠버네티스(Docker &amp; Kubernetes)<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Feb 20, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/02/20/as11.html">
+    [개발상식] 11. 메시지 큐란?<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Feb 15, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/02/15/as10.html">
+    [개발상식] 10. 프레임워크(Framework) vs 라이브러리(Library)<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Feb 15, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/02/15/as09.html">
+    [개발상식] 9. Call By Value와 Call By Reference<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Feb 02, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/02/02/as08.html">
+    [개발상식] 8. 메모리 구조<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Feb 02, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/02/02/as07.html">
+    [개발상식] 7. 클린코드<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Feb 01, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/02/01/as06.html">
+    [개발상식] 6. 객체지향과 절차지향<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Feb 01, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/02/01/as05.html">
+    [개발상식] 5. RESTful API<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Feb 01, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/02/01/as04.html">
+    [개발상식] 4. 테스트주도개발(TDD)<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Feb 01, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/02/01/as03.html">
+    [개발상식] 3. 함수형 프로그래밍<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Feb 01, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/02/01/as02.html">
+    [개발상식] 2. MVC 패턴<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jan 31, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/cs/2024/01/31/as01.html">
+    [개발상식] 1. git과 github<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+    <h2 id="Error" class="segment-name">Error</h2>
+      
+      
+        <li class="">
+<span class="post-meta">Oct 05, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/error/2023/10/05/error09.html">
+    UnsupportedClassVersionError<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Oct 04, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/error/2023/10/04/error08.html">
+    Project Facet에서 JPA 추가하려는데 JPA가 보이지 않을 때<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Sep 14, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/error/2023/09/14/error07.html">
+    프로젝트 import 에러<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Sep 11, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/error/2023/09/11/error06.html">
+    한글 파싱 에러_log4j_ERROR Could not parse url<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Sep 08, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/error/2023/09/08/error05.html">
+    Request processing failed; nested exception is org.springframework.jdbc.BadSqlGrammarException<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Sep 05, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/error/2023/09/05/error04.html">
+    java.lang.IllegalStateException_Current request is not of type<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Sep 05, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/error/2023/09/05/error03.html">
+    web.xml web-app 빨간줄 에러<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Sep 05, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/error/2023/09/05/error02.html">
+    Origin 서버가 대상 리소스를 위한 현재의 representation을 찾지 못했거나, 그것이 존재하는지를 밝히려 하지 않습니다.<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Sep 05, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/error/2023/09/05/error01.html">
+    log4j.xml 에러<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+    <h2 id="Html" class="segment-name">Html</h2>
+      
+      
+        <li class="">
+<span class="post-meta">Jan 30, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/html/2024/01/30/javaScript01.html">
+    자바스크립트 문법 공부<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jul 28, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/html/2023/07/28/JS02.html">
+    JavaScript02_자바스크립트 기초2<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jul 26, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/html/2023/07/26/test.html">
+    HTML_시험 복기<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jul 25, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/html/2023/07/25/JS01.html">
+    JavaScript01_자바스크립트 기초<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jul 14, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/html/2023/07/14/html05.html">
+    Html_05_css 기초<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jul 13, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/html/2023/07/13/Html04.html">
+    Html_04_html 폼태그<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jul 12, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/html/2023/07/12/html03.html">
+    Html_03_html로 테이블을 만들고 꾸미기<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">May 04, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/html/2023/05/04/htmlsite.html">
+    Html_05_사이트 만들기<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Apr 25, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/html/2023/04/25/html02.html">
+    Html_02_기본 문법과 태그<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Apr 23, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/html/2023/04/23/html01.html">
+    Html_01_기초<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+    <h2 id="JAVA" class="segment-name">JAVA</h2>
+      
+      
+        <li class="">
+<span class="post-meta">Jun 21, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/java/2023/06/21/JAVA32.html">
+    JAVA_32 오라클과 연동하기<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jun 19, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/java/2023/06/19/JAVA30.html">
+    JAVA_30 스레드를 이용하여 끝말잇기 게임 완성하기<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jun 16, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/java/2023/06/16/JAVA29.html">
+    JAVA_29 스레드 사용하기<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jun 15, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/java/2023/06/15/JAVA28_2.html">
+    JAVA_28_2 자바로 엑셀 파일 사용하기<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jun 15, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/java/2023/06/15/JAVA28.html">
+    JAVA_28_자바로 끝말잇기 게임 만들기<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jun 14, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/java/2023/06/14/JAVA27.html">
+    JAVA_27_입출력 스트림 활용 예제<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jun 13, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/java/2023/06/13/JAVA26.html">
+    JAVA_26_입출력 스트림<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jun 12, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/java/2023/06/12/JAVA25.html">
+    JAVA_25_Set컬렉션, Map 컬렉션<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jun 09, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/java/2023/06/09/Java24.html">
+    JAVA_24_ArrayList 컬렉션<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+    <h2 id="JSP" class="segment-name">JSP</h2>
+      
+      
+        <li class="">
+<span class="post-meta">Aug 24, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/jsp/2023/08/24/jsp05.html">
+    JSP_도서 관리 시스템 만들기_04<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Aug 23, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/jsp/2023/08/23/jsp03.html">
+    JSP_도서 관리 시스템 만들기_02<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Aug 22, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/jsp/2023/08/22/jsp04.html">
+    JSP_도서 관리 시스템 만들기_03<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Aug 22, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/jsp/2023/08/22/jsp02.html">
+    JSP_도서 관리 시스템 만들기_01<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jul 16, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/jsp/2023/07/16/jsp01.html">
+    JSP_01_혼자공부하기_기초<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+    <h2 id="Linux" class="segment-name">Linux</h2>
+      
+      
+        <li class="">
+<span class="post-meta">Jul 24, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/linux/2024/07/24/linux06.html">
+    [리눅스] 6. 병렬 처리와 Thread 동기화<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jul 24, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/linux/2024/07/24/linux05.html">
+    [리눅스] 5. 리눅스 IPC 메커니즘과 기본 제어<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jul 23, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/linux/2024/07/23/linux04.html">
+    [리눅스] 4. 리눅스 프로세스 동작과 제어<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jul 23, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/linux/2024/07/23/linux03.html">
+    [리눅스] 3. 리눅스 시그널 및 동작 제어<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jul 22, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/linux/2024/07/22/linux02.html">
+    [리눅스] 2. 리눅스 시스템 프로그래밍<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jul 22, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/linux/2024/07/22/linux01.html">
+    [리눅스] 1. 리눅스 실습 환경 설정<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+    <h2 id="O" class="segment-name">O</h2>
+      
+      
+        <li class="">
+<span class="post-meta">Jul 25, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/o/2024/07/25/ooad01.html">
+    [객체지향 분석과 설계] 업무분석 개요와 요구사항 정의<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+    <h2 id="Oracle" class="segment-name">Oracle</h2>
+      
+      
+        <li class="">
+<span class="post-meta">Jun 26, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/oracle/2023/06/26/Oracle17.html">
+    Oracle_17_PL/SQL 프로그래밍2<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jun 23, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/oracle/2023/06/23/Oracle16_2.html">
+    Oracle_16_2_PL/SQL 프로그래밍<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jun 23, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/oracle/2023/06/23/Oracle16.html">
+    Oracle_16_뷰(view)생성 및 사용<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jun 22, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/oracle/2023/06/22/Oracle15.html">
+    Oracle_15_조인 및 서브쿼리 연습, 뷰(view)<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jun 20, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/oracle/2023/06/20/Oracle13_2.html">
+    Oracle_13_2_시험 내용 복습하기<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jun 20, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/oracle/2023/06/20/Oracle13.html">
+    Oracle_13_테이블 조인3<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jun 19, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/oracle/2023/06/19/Oracle12.html">
+    Oracle_12_테이블 조인2<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jun 16, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/oracle/2023/06/16/Oracle11.html">
+    Oracle_11_테이블 조인<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jun 15, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/oracle/2023/06/15/Oracle10.html">
+    Oracle_10_오라클 서브 쿼리<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jun 14, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/oracle/2023/06/14/Oracle09.html">
+    Oracle_09_오라클 함수 모음집<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jun 13, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/oracle/2023/06/13/oracle08.html">
+    Oracle_08_오라클 내장 함수_숫자,수학, 함수<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jun 13, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/oracle/2023/06/13/Oracle08_2.html">
+    Oracle_08_2_오라클 내장 함수 예제<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jun 12, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/oracle/2023/06/12/Oracle07_1.html">
+    Oracle_07_2_오라클 내장 함수<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jun 12, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/oracle/2023/06/12/Oracle07.html">
+    Oracle_07_DDL,DML 예제 연습하기<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jun 09, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/oracle/2023/06/09/Oracle06.html">
+    Oracle_06_ INSERT, UPDATE문<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jun 08, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/oracle/2023/06/08/Oracle05.html">
+    Oracle_05_데이터모델링과 INSERT, UPDATE, DELETE문<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jun 07, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/oracle/2023/06/07/Oracle04.html">
+    Oracle_04_오라클 SELECT 명령어와 함수2<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jun 02, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/oracle/2023/06/02/Oracle03.html">
+    Oracle_03_오라클 기초 명령어2<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jun 01, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/oracle/2023/06/01/Oracle02.html">
+    Oracle_02_오라클 기초 명령어<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">May 23, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/oracle/2023/05/23/Oracle01.html">
+    Oracle_01_DBMS와 오라클 기초<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+    <h2 id="Project" class="segment-name">Project</h2>
+      
+      
+        <li class="">
+<span class="post-meta">Jan 22, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/project/2024/01/22/springProject03.html">
+    스프링 팀프로젝트 3. 프로젝트 발표<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jan 22, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/project/2024/01/22/springProject02.html">
+    스프링 팀프로젝트 2. 데이터 생성<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jan 22, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/project/2024/01/22/springProject01.html">
+    스프링 팀프로젝트 1. 주제 선정 및 프로젝트 설계<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jul 13, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/project/2023/07/13/javaProject04.html">
+    자바 팀프로젝트 4. 결과물 및 리뷰<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jul 12, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/project/2023/07/12/javaProject03.html">
+    STUDY_자바 팀프로젝트3. 프로그램 제작<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jun 28, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/project/2023/06/28/javaProject02.html">
+    자바 팀프로젝트 2. 프로젝트 구체화<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jun 27, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/project/2023/06/27/javaProject01.html">
+    자바 팀프로젝트 1. 프로젝트 준비<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+    <h2 id="Spring" class="segment-name">Spring</h2>
+      
+      
+        <li class="">
+<span class="post-meta">May 08, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/spring/2024/05/08/spring07.html">
+    Spring, PostgreSQL, myBatis 연동하기<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Oct 05, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/spring/2023/10/05/spring06.html">
+    Spring_오라클 프로퍼티 설정<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Sep 26, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/spring/2023/09/26/spring05.html">
+    Spring_스프링 프로젝트 구성2<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Sep 17, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/spring/2023/09/17/spring04.html">
+    Spring_스프링 프로젝트 구성<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Aug 23, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/spring/2023/08/23/spring03.html">
+    Spring_게시판 만들기 03<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Aug 19, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/spring/2023/08/19/spring02.html">
+    Spring_게시판 만들기 02<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Aug 18, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/spring/2023/08/18/spring01.html">
+    Spring_게시판 만들기 01<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+    <h2 id="Study" class="segment-name">Study</h2>
+      
+      
+        <li class="">
+<span class="post-meta">Jul 19, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/study/2024/07/19/study11.html">
+    &lt;공부&gt; 2. 차트 라이브러리<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jul 18, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/study/2024/07/18/study10.html">
+    &lt;공부&gt; 1. POI 라이브러리<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 25, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/study/2024/03/25/study09.html">
+    [정보처리기사] 실기 오답 노트<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 11, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/study/2024/03/11/study08.html">
+    [정보처리기사] 실기 대비 간단 개념 빈칸 채우기<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Feb 15, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/study/2024/02/15/study07.html">
+    [정보처리기사] 필기 1~5과목 한번에 풀기<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jan 29, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/study/2024/01/29/study06.html">
+    [정보처리기사] 오답정리 3과목<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jan 26, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/study/2024/01/26/study05.html">
+    [정보처리기사] 3과목 데이터베이스 구축<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jan 25, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/study/2024/01/25/study04.html">
+    [정보처리기사] 개념 2과목 소프트웨어 개발<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jan 25, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/study/2024/01/25/study03.html">
+    &lt;정보처리기사-오답정리&gt; 2과목<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jan 24, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/study/2024/01/24/study02.html">
+    &lt;정보처리기사-오답정리&gt; 1과목<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jan 24, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/study/2024/01/24/study01.html">
+    &lt;정보처리기사&gt; 1. 필기 공부 계획 짜기<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+    <h2 id="jQuery" class="segment-name">jQuery</h2>
+      
+      
+        <li class="">
+<span class="post-meta">Jun 13, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/jquery/2024/06/13/jQuery01.html">
+    [jQuery] 제이쿼리 기본 문법<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+    <h2 id="python" class="segment-name">python</h2>
+      
+      
+        <li class="">
+<span class="post-meta">Jan 04, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/python/2024/01/04/python.html">
+    python_기초 문법<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+  </ul>
+</div>
+
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="common-list">
+  <ul>
+    <li>
+      <a href="/jekyll-theme-yat/index.html">
+        All<span>177</span>
+      </a>
+    </li>
+
+    
+      <li>
+        <a href="/jekyll-theme-yat/categories.html#h-CS">
+          CS <span>90</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/categories.html#h-Error">
+          Error <span>9</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/categories.html#h-Html">
+          Html <span>10</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/categories.html#h-JAVA">
+          JAVA <span>9</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/categories.html#h-JSP">
+          JSP <span>5</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/categories.html#h-Linux">
+          Linux <span>6</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/categories.html#h-O">
+          O <span>1</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/categories.html#h-Oracle">
+          Oracle <span>20</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/categories.html#h-Project">
+          Project <span>7</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/categories.html#h-Spring">
+          Spring <span>7</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/categories.html#h-Study">
+          Study <span>11</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/categories.html#h-jQuery">
+          jQuery <span>1</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/categories.html#h-python">
+          python <span>1</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+
+</section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jekyll-theme-yat/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>Unpublished Work <span class="copyleft">©</span> 2017-2025 {YoungEun Jo}</div>
+      <div>Powered by <a title="Jekyll is a simple, blog-aware, static site
+      generator." href="https://jekyllrb.com/">Jekyll</a> &amp; <a title="Yat, yet
+      another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.</div>
+      <div class="footer-col rss-subscribe">Subscribe <a href="/jekyll-theme-yat/feed.xml">via RSS</a>
+</div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

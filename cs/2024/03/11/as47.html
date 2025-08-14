@@ -1,0 +1,1458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>[네트워크] 17. HTTP 상태코드(HTTP Status Code) | 매일 기록하는 코딩 공부 일지</title>
+<meta name="generator" content="Jekyll v4.4.1">
+<meta property="og:title" content="[네트워크] 17. HTTP 상태코드(HTTP Status Code)">
+<meta name="author" content="Jo">
+<meta property="og:locale" content="en_US">
+<meta name="description" content="목차 📌 HTTP 상태코드(HTTP Status Code) 🕳 Stateful vs Stateless 🕳 공인 IP와 사설 IP">
+<meta property="og:description" content="목차 📌 HTTP 상태코드(HTTP Status Code) 🕳 Stateful vs Stateless 🕳 공인 IP와 사설 IP">
+<link rel="canonical" href="https://cheeseyoung.github.io//jekyll-theme-yat/cs/2024/03/11/as47.html">
+<meta property="og:url" content="https://cheeseyoung.github.io//jekyll-theme-yat/cs/2024/03/11/as47.html">
+<meta property="og:site_name" content="매일 기록하는 코딩 공부 일지">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2024-03-11T00:00:00+00:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="[네트워크] 17. HTTP 상태코드(HTTP Status Code)">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Jo"},"dateModified":"2024-03-11T00:00:00+00:00","datePublished":"2024-03-11T00:00:00+00:00","description":"목차 📌 HTTP 상태코드(HTTP Status Code) 🕳 Stateful vs Stateless 🕳 공인 IP와 사설 IP","headline":"[네트워크] 17. HTTP 상태코드(HTTP Status Code)","mainEntityOfPage":{"@type":"WebPage","@id":"https://cheeseyoung.github.io//jekyll-theme-yat/cs/2024/03/11/as47.html"},"url":"https://cheeseyoung.github.io//jekyll-theme-yat/cs/2024/03/11/as47.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="icon" href="%F0%9F%90%B1">
+  <link rel="canonical" href="https://cheeseyoung.github.io/">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-noto-sans@0.0.72/index.min.css">
+  <link rel="stylesheet" href="/jekyll-theme-yat/assets/css/main.css">
+  <script src="/jekyll-theme-yat/assets/js/main.js"></script><link type="application/atom+xml" rel="alternate" href="https://cheeseyoung.github.io//jekyll-theme-yat/feed.xml" title="매일 기록하는 코딩 공부 일지">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/languages/go.min.js" async></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #ff4e00;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: uppercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+<script src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe-lightbox.umd.min.js" async></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe.umd.min.js" async></script>
+<link href="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/photoswipe.min.css" rel="stylesheet">
+<style>
+  .pswp .pswp__container .pswp__img {
+    background-color: white;
+  }
+</style>
+
+<script>
+  function initPhotoSwipe() {
+    let customOptions = {};
+
+    try {
+      const data = ``.replaceAll("=>", ":");
+      customOptions = JSON.parse(data);
+    } catch (e) {
+      console.info("Invalid custom photo previewer options! " + e.message);
+    }
+
+    // Define object and gallery options
+    const options = Object.assign(
+      {
+        gallery: "section.main",
+        children: "a.photo-swipe",
+        photo_scale: 2,
+        // dynamic import is not supported in UMD version
+        pswpModule: PhotoSwipe,
+      },
+      customOptions
+    );
+
+    const galleryEl = document.querySelector(options.gallery);
+    if (!galleryEl) {
+      return;
+    }
+
+    const imgEls = [];
+    const els = galleryEl.querySelectorAll("img:not(.emoji)");
+    els.forEach((el) => {
+      if (el.src.trim() == "") {
+        return;
+      }
+      if (!imgEls.includes(el)) {
+        imgEls.push(el);
+      }
+    });
+
+    if (imgEls.length === 0) {
+      return;
+    }
+
+    imgEls.forEach((imgEl) => {
+      imgEl.outerHTML = `
+      <a class="photo-swipe"
+        href="${imgEl.src}"
+        data-pswp-width="${
+          Math.max(imgEl.naturalWidth, imgEl.width) * options.photo_scale
+        }"
+        data-pswp-height="${
+          Math.max(imgEl.naturalHeight, imgEl.height) * options.photo_scale
+        }"
+        data-pswp-caption="${imgEl.getAttribute("caption") || imgEl.alt}"
+        target="_blank">
+        ${imgEl.outerHTML}
+      </a>`;
+    });
+
+    // Initialize PhotoSwipe 5
+    var lightbox = new PhotoSwipeLightbox(options);
+
+    lightbox.init();
+  }
+
+  window.addEventListener("load", initPhotoSwipe);
+</script>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header site-header-transparent" role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/jekyll-theme-yat/">
+  <img class="site-favicon" title="매일 기록하는 코딩 공부 일지" src="%F0%9F%90%B1" onerror="this.style.display='none'">
+  매일 기록하는 코딩 공부 일지
+</a>
+</span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/jekyll-theme-yat/about.html">ABOUT</a><a class="page-link" href="/jekyll-theme-yat/archives.html">ARCHIVES</a><a class="page-link" href="/jekyll-theme-yat/categories.html">CATEGORIES</a><a class="page-link" href="/jekyll-theme-yat/">HOME</a><a class="page-link" href="/jekyll-theme-yat/tags.html">TAGS</a>
+
+
+
+
+
+
+
+
+
+<span class="page-link">
+
+
+
+<div id="google_translate_element" style="display: none;">
+</div>
+
+<span class="ct-language">
+  <ul class="list-unstyled ct-language-dropdown">
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="en">
+          
+          <img src="https://cdn.countryflags.com/thumbs/united-states-of-america/flag-400.png" title="English">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="fr">
+          
+          <img src="https://cdn.countryflags.com/thumbs/france/flag-400.png" title="French">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="zh-CN">
+          
+          <img src="https://cdn.countryflags.com/thumbs/china/flag-400.png" title="Chinese(Simple)">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ja">
+          
+          <img src="https://cdn.countryflags.com/thumbs/japan/flag-400.png" title="Japanese">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ko">
+          
+          <img src="https://cdn.countryflags.com/thumbs/south-korea/flag-400.png" title="Korean">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ru">
+          
+          <img src="https://cdn.countryflags.com/thumbs/russia/flag-400.png" title="Russian">
+          
+        </a>
+      </li>
+    
+  </ul>
+</span>
+
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({
+    pageLanguage: 'en',
+    autoDisplay: false,
+    layout: google.translate.TranslateElement.InlineLayout.VERTICAL
+  }, 'google_translate_element');
+
+  // Links to cross-origin destinations are unsafe
+  var gll = document.getElementsByClassName('goog-logo-link')[0];
+  if (gll) {
+    gll.setAttribute('rel', 'noopener');
+  }
+
+  function restoreLang() {
+    var iframe = document.getElementsByClassName('goog-te-banner-frame')[0];
+    if (!iframe) return;
+
+    var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+    var restore_el = innerDoc.getElementsByTagName("button");
+
+    for (var i = 0; i < restore_el.length; i++) {
+      if (restore_el[i].id.indexOf("restore") >= 0) {
+        restore_el[i].click();
+        var close_el = innerDoc.getElementsByClassName("goog-close-link");
+        close_el[0].click();
+        return;
+      }
+    }
+  }
+
+  function triggerHtmlEvent(element, eventName) {
+    var event;
+    if (document.createEvent) {
+      event = document.createEvent('HTMLEvents');
+      event.initEvent(eventName, true, true);
+      element.dispatchEvent(event);
+    } else {
+      event = document.createEventObject();
+      event.eventType = eventName;
+      element.fireEvent('on' + event.eventType, event);
+    }
+  }
+
+  var googleCombo = document.querySelector("select.goog-te-combo");
+  var langSelect = document.querySelector('.ct-language');
+  langSelect.addEventListener('click', function(event) {
+    if (!event.target) {
+      return;
+    }
+
+    var selected = document.querySelector('.ct-language .ct-language-selected');
+    if (selected) {
+      selected.classList.remove('ct-language-selected');
+    }
+
+    var target = event.target;
+    while (target && target !== langSelect ) {
+      if (target.matches('.lang-select')) {
+        break;
+      }
+      target = target.parentElement;
+    }
+
+    if (target && target.matches('.lang-select')) {
+      var lang = target.getAttribute('data-lang');
+      if (googleCombo.value == lang) {
+        restoreLang();
+      } else {
+        target.parentElement.classList.add('ct-language-selected');
+        googleCombo.value = lang;
+        triggerHtmlEvent(googleCombo, 'change');
+      }
+    }
+
+    event.preventDefault();
+  });
+}
+</script>
+
+<script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>
+</span>
+</div>
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;documentElement.setAttribute("data-header-transparent", "");var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+    html .page-banner {
+      background: #000;
+    }
+  </style>
+<style>html .page-banner {
+      height:  36.8vh;
+      min-height: 38vh;
+    }
+    html[data-scroll-status="top"] .page-banner {
+      height: 100vh;
+    }
+  </style>
+<style>
+    html .page-banner .page-banner-img > *:first-child {
+      opacity: 0.618;
+    }
+
+    html[data-theme="dark"] .page-banner .page-banner-img > *:first-child {
+      opacity: 0.443724;
+    }
+  </style>
+<style>
+    html .page-banner .page-banner-inner > *:first-child > *:nth-child(1) {
+      font-size: 3em; font-weight: bold
+    }
+  </style>
+<style>
+    html .page-banner .page-banner-inner > *:first-child > *:nth-child(2) {
+      color: gold
+    }
+  </style>
+<section class="page-banner">
+    <div class="page-banner-img">
+<div style="background-image: url(https://github.com/CheeseYoung/Cheeseyoung.github.io/assets/132384527/491f341f-df33-436a-9d4f-1b33f067485d)"></div>
+        <img class="img-placeholder" src="https://github.com/CheeseYoung/Cheeseyoung.github.io/assets/132384527/491f341f-df33-436a-9d4f-1b33f067485d">
+</div>
+    <div class="wrapper">
+      <div class="page-banner-inner">
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">[네트워크] 17. HTTP 상태코드(HTTP Status Code)</h1>
+  <h2 class="post-subtitle">Engineer Information Processing</h2>
+
+  <div class="post-meta">
+    <time class="dt-published" datetime="2024-03-11T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Mar 11, 2024
+    </time><span class="post-author left-vsplit"><i class="fa fa-pencil"></i> Jo</span>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 9 mins</span>
+  </div>
+<div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#Study">#Study</a></div></header>
+</div>
+    </div>
+  </section><script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div class="theme-toggle">
+  <input type="checkbox" id="theme-switch">
+  <label for="theme-switch">
+    <div class="toggle"></div>
+    <div class="names">
+      <p class="light">Light</p>
+      <p class="dark">Dark</p>
+    </div>
+  </label>
+</div>
+
+
+
+
+<script>
+  (function() {
+    var sw = document.getElementById('theme-switch');
+    var html = document.getElementsByTagName('html')[0];
+    var nightModeOption = ('auto' || 'auto').toLowerCase();
+    var storage = nightModeOption === 'manual'
+        ? localStorage
+        : sessionStorage;
+    var themeData = loadThemeData();
+
+    function saveThemeData(data) {
+      storage.setItem('theme', JSON.stringify(data));
+    }
+
+    function loadThemeData() {
+      var data = storage.getItem('theme');
+      try {
+        data = JSON.parse(data ? data : '');
+      } catch(e) {
+        data = { nightShift: undefined, autoToggleAt: 0 };
+        saveThemeData(data);
+      }
+      return data;
+    }
+
+    function handleThemeToggle(nightShift) {
+      themeData.nightShift = nightShift;
+      saveThemeData(themeData);
+      html.dataset.theme = nightShift ? 'dark' : 'light';
+      setTimeout(function() {
+        sw.checked = nightShift ? true : false;
+      }, 50);
+    }
+
+    function autoThemeToggle() {
+      // Next time point of theme toggle
+      var now = new Date();
+      var toggleAt = new Date();
+      var hours = now.getHours();
+      var nightShift = hours >= 19 || hours <=7;
+
+      if (nightShift) {
+        if (hours > 7) {
+          toggleAt.setDate(toggleAt.getDate() + 1);
+        }
+        toggleAt.setHours(7);
+      } else {
+        toggleAt.setHours(19);
+      }
+
+      toggleAt.setMinutes(0);
+      toggleAt.setSeconds(0);
+      toggleAt.setMilliseconds(0)
+
+      var delay = toggleAt.getTime() - now.getTime();
+
+      // auto toggle theme mode
+      setTimeout(function() {
+        handleThemeToggle(!nightShift);
+      }, delay);
+
+      return {
+        nightShift: nightShift,
+        toggleAt: toggleAt.getTime()
+      };
+    }
+
+    // Listen the theme toggle event
+    sw.addEventListener('change', function(event) {
+      handleThemeToggle(event.target.checked);
+    });
+
+    if (nightModeOption == 'auto') {
+      var data = autoThemeToggle();
+
+      // Toggle theme by local setting
+      if (data.toggleAt > themeData.autoToggleAt) {
+        themeData.autoToggleAt = data.toggleAt;
+        handleThemeToggle(data.nightShift);
+      } else {
+        handleThemeToggle(themeData.nightShift);
+      }
+    } else if (nightModeOption == 'manual') {
+      handleThemeToggle(themeData.nightShift);
+    } else {
+      var nightShift = themeData.nightShift;
+      if (nightShift === undefined) {
+        nightShift = nightModeOption === 'on';
+      }
+      handleThemeToggle(nightShift);
+    }
+  })();
+</script>
+<div id="click-to-top" class="click-to-top">
+  <i class="fa fa-arrow-up"></i>
+</div>
+<script>
+  (function () {
+    const clickToTop = document.getElementById('click-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 100) {
+        clickToTop.classList.add('show')
+      }else {
+        clickToTop.classList.remove('show')
+      }
+    });
+    clickToTop.addEventListener('click', () => {
+      window.smoothScrollTo(0);
+    });
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <h1 id="목차">목차</h1>
+<p>📌 HTTP 상태코드(HTTP Status Code) <br>
+🕳 Stateful vs Stateless <br>
+🕳 공인 IP와 사설 IP <br>
+<br></p>
+<hr>
+
+<h2 id="http-상태코드http-status-code">HTTP 상태코드(HTTP Status Code)</h2>
+<p><img src="https://github.com/CheeseYoung/Cheeseyoung.github.io/assets/132384527/491f341f-df33-436a-9d4f-1b33f067485d" alt="image"> <br>
+상태 코드는 3자리 숫자로 만들어져 있으며, 첫번째 자리는 1에서 5까지 제공된다. <br>
+첫번째 자리가 4와 5인 경우는 정상적인 상황이 아니기 때문에 사이트 관리자가 즉시 알아야하는 정보다. <br></p>
+
+<ul>
+  <li>
+<strong>1xx(정보)</strong> : 요청을 받았으며 프로세스를 계속 진행</li>
+  <li>
+<strong>2xx(성공)</strong> : 요청을 성공적으로 받았으며 인식했고 수용</li>
+  <li>
+<strong>3xx(리다이렉션)</strong> : 요청 완료를 위해 추가 작업 조치가 필요</li>
+  <li>
+<strong>4xx(클라이언트 오류)</strong> : 요청의 문법이 잘못되었거나 요청을 처리할 수 없음</li>
+  <li>
+<strong>5xx(서버 오류)</strong> : 서버가 명백히 유효한 요청에 대한 충족을 실패</li>
+</ul>
+
+<h2 id="1xx--information-responses">1XX : Information responses</h2>
+<p>: 상태 코드가 ‘1’로 시작하는 경우는 서버가 요청을 받았으며, 서버에 연결된 클라이언트는 작업을 계속 진행하라는 의미</p>
+<ul>
+  <li>
+    <h1 id="100-continue">100 Continue</h1>
+    <ul>
+      <li>진행 중임을 의미하는 응답코드</li>
+      <li>현재까지의 진행상태에 문제가 없으며, 클라이언트가 계속해서 요청을 하거나 이미 요청을 완료한 경우에는 무시해도 되는 것을 알려준다.</li>
+    </ul>
+  </li>
+  <li>
+    <h1 id="101-switching-protocol">101 Switching Protocol</h1>
+    <ul>
+      <li>101은 클라이언트에 의해 보낸 업그레이드 요청 헤더에 대한 응답으로 보내진다.</li>
+      <li>이 응답 코드는 클라이언트가 보낸 Upgrade 요청 헤더에 대한 응답에 들어가며, 서버에서 프로토콜을 변경할 것임을 알려준다.</li>
+      <li>해당 코드는 Websocket 프로토콜 전환 시에 사용된다.</li>
+    </ul>
+  </li>
+  <li>
+    <h1 id="102-processingwebdav">102 Processing(WebDAV)</h1>
+    <ul>
+      <li>이 응답 코드는 서버가 요청을 수신하였으며 이를 처리하고 있지만, 아직 제대로 된 응답을 알려줄 수 없음을 알려준다.</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="2xx--successful-responses">2XX : Successful responses</h2>
+<ul>
+  <li>
+<strong>200 OK</strong> : 요청이 성공적👌 정보는 요청에 따른 응답으로 반환</li>
+  <li>
+<strong>201 Created</strong> : 요청이 성공적 / 그 결과로 새로운 리소스가 생성 (이 응답은 일반적으로 POST 또는 일부 PUT 요청 이후)</li>
+  <li>
+<strong>202 Accepted</strong> : 요청을 수신하였지만, 그에 응하여 행동할 수 없음
+    <ul>
+      <li>이 응답은 요청 처리에 대한 결과를 이후에 HTTP로 비동기 응답을 보내는 것에 대해서 명확하게 명시하지 않는다.</li>
+      <li>이것은 다른 프로세스에서 처리 또는 서버가 요청을 다루고 있거나 배치 프로세스를 하고 있는 경우를 위해 만들어졌다.</li>
+    </ul>
+  </li>
+  <li>
+<strong>203 Non-Authoritative Information</strong>
+    <ul>
+      <li>이 응답 코드는 돌려받은 메타 정보 세트가 오리진 서버의 것과 일치하지 않지만 로컬이나 서드 파티 복사본에서 모아졌음을 의미</li>
+      <li>이러한 조건에서는 이 응답이 아니라 200 OK 응답을 반드시 우선된다.</li>
+    </ul>
+  </li>
+  <li>
+<strong>204 No Content</strong>
+    <ul>
+      <li>요청에 대해서 보내줄 수 있는 콘텐츠가 없지만, 헤더는 의미있을 수 있다.</li>
+      <li>사용자-에이전트는 리소스가 캐시된 헤더를 새로운 것으로 업데이트 할 수 있다.</li>
+    </ul>
+  </li>
+  <li>
+<strong>205 Reset Content</strong> : 이 응답 코드는 요청을 완수한 이후에 사용자 에이전트에게 이 요청을 보낸 문서 뷰를 리셋하라고 알려준다.</li>
+  <li>
+<strong>206 Partial Content</strong>
+    <ul>
+      <li>이 응답 코드는 클라이언트에서 복수의 스트림을 분할 다운로드를 하고자 범위 헤더를 전송했기 때문에 사용한다.</li>
+      <li>클라이언트가 이어받기를 시도하면 웹서버가 이에 대한 응답코드로 ‘206’와 함께 Range 헤더에 명시된 데이터의 부분부터 전송을 시작한다.</li>
+    </ul>
+  </li>
+  <li>
+<strong>207 Multi-Status</strong>
+    <ul>
+      <li>여러 리소스가 여러 상태 코드인 상황이 적절한 경우에 해당되는 정보를 전달</li>
+      <li>해당 코드는 WebDAV(Web Distributed Authoring and Vesioning)에 사용된다.</li>
+    </ul>
+  </li>
+  <li>
+<strong>208 Already Reported</strong>
+    <ul>
+      <li>Prostat(property와 status의 합성어) 응답 속성으로 동일 컬렉션으로 바인드된 복수의 내부 멤버를 반복적으로 열거하는 것을 피하기 위해 사용</li>
+      <li>해당 코드는 WebDAV(Web Distributed Authoring and Vesioning)에 사용된다.</li>
+    </ul>
+  </li>
+  <li>
+<strong>226 IM Used (HTTP Delta encoding)</strong>
+    <ul>
+      <li>서버가 GET 요청에 대한 리소스의 의무를 다 했고, 응답이 하나 또는 그 이상의 인스턴스 조작이 현재 인스턴스에 적용이 되었음을 알려준다.</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="3xx--redirection-messages">3XX : Redirection messages</h2>
+<ul>
+  <li>
+<strong>300 Multiple Choice</strong>
+    <ul>
+      <li>요청에 대해서 하나 이상의 응답이 가능</li>
+      <li>사용자는 그중에 하나를 반드시 선택해야 한다. 응답 중 하나를 선택하는 방법에 대한 표준화 된 방법은 존재하지 않는다.</li>
+    </ul>
+  </li>
+  <li>
+<strong>301 Moved Permanently</strong> : 요청한 리소스의 URI가 변경되었음을 의미</li>
+  <li>
+<strong>302 Found</strong> : 요청한 리소스의 URI가 일시적으로 변경되었음을 의미</li>
+  <li>
+<strong>303 See Other</strong> : 클라이언트가 요청한 리소스를 다른 URI에서 GET 요청을 통해 얻어야 할 때, 서버가 클라이언트로 직접 보내는 응답</li>
+  <li>
+<strong>304 Not Modified</strong>
+    <ul>
+      <li>캐시를 목적으로 사용</li>
+      <li>이것은 클라이언트에게 응답이 수정되지 않았음을 알려주며, 클라이언트는 계속해서 응답의 캐시된 버전을 사용할 수 있다.</li>
+    </ul>
+  </li>
+  <li>
+<strong>305 Use Proxy</strong>
+    <ul>
+      <li>이전 버전의 HTTP 기술 사양에서 정의되었으며, 요청한 응답은 반드시 프록시를 통해서 접속해야 하는 것을 알려준다.</li>
+      <li>이것은 프록시의 in-band설정에 대한 보안상의 걱정으로 인하여 사라져가고 있다.</li>
+    </ul>
+  </li>
+  <li>
+<strong>306 Unused</strong> : 이 응답 코드는 더이상 사용되지 않는다. HTTP 1.1 기술사양 이전 버전에서 사용되었다.</li>
+  <li>
+<strong>307 Temporary Redirect</strong>
+    <ul>
+      <li>클라이언트가 요청한 리소스가 다른 URI에 있으며, 이전 요청과 동일한 메소드를 사용하여 요청해야 할 때, 서버가 클라이언트에 이 응답을 직접 보낸다.</li>
+      <li>이것은 302 Found HTTP 응답 코드와 동일한 의미를 가지고 있으며, 사용자 에이전트가 반드시 사용된 HTTP 메소드를 변경하지 말아야 하는 점만 다르다.</li>
+      <li>만약 첫 요청에 POST가 사용되었다면, 두번째 요청도 반드시 POST를 사용해야 한다.</li>
+    </ul>
+  </li>
+  <li>
+<strong>308 Permanent Redirect</strong>
+    <ul>
+      <li>이것은 리소스가 이제 HTTP 응답 헤더의 Location:에 명시된 영구히 다른 URI에 위치하고 있음을 의미</li>
+      <li>이것은 301 Moved Permanently HTTP 응답 코드와 동일한 의미를 가지고 있으며, 사용자 에이전트가 반드시 HTTP 메소드를 변경하지 말아야 하는 점만 다르다.</li>
+      <li>만약 첫 요청에 POST가 사용되었다면, 두번째 요청도 반드시 POST를 사용해야 합니다.</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="4xx--client-error-responses">4XX : Client error responses</h2>
+<ul>
+  <li>
+<strong>400 Bad Request</strong> : 이 응답은 잘못된 문법으로 인하여 서버가 요청하여 이해할 수 없음을 의미</li>
+  <li>
+<strong>401 Unauthorized</strong> : ‘비인증(unauthenticated)’를 의미 / 클라이언트는 요청한 응답을 받기 위해서는 반드시 스스로를 인증해야 한다.</li>
+  <li>
+<strong>403 Forbidden</strong>
+    <ul>
+      <li>클라이언트는 콘텐츠에 접근할 권리를 가지고 있지 않다는 의미</li>
+      <li>401과 다른 점은 <code class="language-plaintext highlighter-rouge">서버가 클라이언트가 누구인지 알고 있다는 점</code>
+</li>
+    </ul>
+  </li>
+  <li>
+<strong>404 Not Found</strong>
+    <ul>
+      <li>서버가 요청받은 리소스를 찾을 수 없다는 것을 의미</li>
+      <li>이것은 API에서 종점은 적절하지만 리소스 자체는 존재하지 않음을 의미할 수 있다.</li>
+      <li><em>서버들은 인증받지 않은 클라이언트로부터 리소스를 숨기기 위하여 이 응답을 403 대신에 전송할 수도 있다.</em></li>
+    </ul>
+  </li>
+  <li>
+<strong>405 Method Not Allowed</strong> : 요청한 메소드는 서버에서 알고 있지만, 제거되었고 사용할 수 없다는 것을 의미</li>
+  <li>
+<strong>406 Not Acceptable</strong> : 서버가 서버 주도 콘텐츠 협상을 수행한 후, 어떠한 콘텐츠도 찾지 않았을 때, 웹서버가 보낸다.</li>
+  <li>
+<strong>407 Proxy Authentication Required</strong> : 이것은 401과 비슷하지만 프록시에 의해 완료된 인증이 필요하다.</li>
+  <li>
+<strong>408 Request Timeout</strong>
+    <ul>
+      <li>이 응답은 요청을 한 지 시간이 오래된 연결에 일부 서버가 전송</li>
+      <li>어떤 때에는 이전에 클라이언트로부터 어떠한 요청이 없었다고 하더라도 보내지기도 한다.</li>
+      <li>이것은 서버가 사용되지 않는 연결을 끊고 싶어하는 것을 의미</li>
+      <li>Chrome, Firefox 27+, 또는 IE 9와 같은 웹서핑 속도를 올리기 위해 HTTP 사전 연결 메커니즘을 사용하는 브라우저들이 해당된다.</li>
+      <li>또한 일부 서버는 이 메시지를 보내지 않고 연결을 끊어버리기도 한다.</li>
+    </ul>
+  </li>
+  <li>
+<strong>409 Conflict</strong> : 요청이 현재 서버의 상태와 충돌될 때</li>
+  <li>
+<strong>410 Gone</strong> : 요청한 콘텐츠가 서버에서 영구적으로 삭제되었으며, 전달해 줄 수 있는 주소 역시 존재하지 않을 때</li>
+  <li>
+<strong>411 Length Required</strong> : 서버에서 필요로 하는 Content-Length 헤더 필드가 정의되지 않은 요청이 들어왔기 때문에 서버가 요청을 거절</li>
+  <li>
+<strong>412 Precondition Failed</strong> : 클라이언트의 헤더에 있는 전제조건은 서버의 전제조건에 적절하지 않다.</li>
+  <li>
+<strong>413 Payload Too Large</strong> : 요청 엔티티가 서버에서 정의한 한계보다 크다.</li>
+  <li>
+<strong>414 URI Too Long</strong> : 클라이언트가 요청한 URI는 서버에서 처리하지 않기로 한 길이보다 길다.</li>
+  <li>
+<strong>415 Unsupported Media Type</strong> : 요청한 미디어 포맷은 서버에서 지원하지 않는다.</li>
+  <li>
+<strong>416 Requested Range Not Satisfiable</strong> : 범위가 타겟 URI 데이터의 크기를 벗어났을 가능성</li>
+  <li>
+<strong>417 Expectation Failed</strong> : Expect 요청 헤더 필드로 요청한 예상이 서버에서는 적당하지 않음</li>
+  <li>
+<strong>418 I’m a teapot</strong> : 서버는 커피를 찻 주전자에 끓이는 것을 거절한다. <code class="language-plaintext highlighter-rouge">&lt;&lt;&lt; 엥?</code>
+    <ul>
+      <li><em>검색해보니 만우절 농담이었던 커피주전자제어규약에 대한 참조,, 고급 유머였다,,</em></li>
+    </ul>
+  </li>
+  <li>
+<strong>421 Misdirected Request</strong> : 서버로 유도된 요청은 응답을 생성할 수 없다.</li>
+  <li>
+<strong>422 Unprocessable Entity (WebDAV)</strong> : 요청은 잘 만들어졌지만, 문법 오류로 인하여 따를 수 없다.</li>
+  <li>
+<strong>423 Locked (WebDAV)</strong> : 리소스는 접근하는 것이 잠겨있다.</li>
+  <li>
+<strong>424 Failed Dependency (WebDAV)</strong> : 이전 요청이 실패하였기 때문에 지금의 요청도 실패</li>
+  <li>
+<strong>426 Upgrade Required</strong>
+    <ul>
+      <li>서버는 지금의 프로토콜을 사용하여 요청을 처리하는 것을 거절했지만, 클라이언트가 다른 프로토콜로 업그레이드를 하면 처리를 할지도 모른다.</li>
+      <li>서버는 Upgrade 헤더와 필요로 하는 프로토콜을 알려주기 위해 426 응답에 보낸다.</li>
+    </ul>
+  </li>
+  <li>
+<strong>428 Precondition Required</strong>
+    <ul>
+      <li>오리진 서버는 요청이 조건적이어야 한다.</li>
+      <li>클라이언트가 리소스를 GET해서, 수정하고, 그리고 PUT으로 서버에 돌려놓는 동안 서드파티가 서버의 상태를 수정하여 발생하는 충돌인 ‘업데이트 상실’을 예방하기 위한 목적</li>
+    </ul>
+  </li>
+  <li>
+<strong>429 Too Many Requests</strong> : 사용자가 지정된 시간에 너무 많은 요청을 보냈다. (“rate limiting”).</li>
+  <li>
+<strong>431 Request Header Fields Too Large</strong> : 요청한 헤더 필드가 너무 크다.</li>
+  <li>
+<strong>451 Unavailable For Legal Reasons</strong> : 사용자가 요청한 것은 정부에 의해 검열된 웹페이지와 같은 불법적인 리소스</li>
+</ul>
+
+<h2 id="5xx--server-error-responses">5XX : Server error responses</h2>
+<ul>
+  <li>
+<strong>500 Internal Server Error</strong>
+    <ul>
+      <li>웹 사이트 서버에 문제가 있음을 의미</li>
+      <li>하지만 서버는 정확한 문제에 대해 더 구체적으로 설명할 수 없다.</li>
+    </ul>
+  </li>
+  <li>
+<strong>501 Not Implemented</strong> : 서버가 요청을 이행하는 데 필요한 기능을 지원하지 않음</li>
+  <li>
+<strong>502 Bad Gateway</strong>
+    <ul>
+      <li>서버가 게이트웨이로부터 잘못된 응답을 수신했음을 의미</li>
+      <li>인터넷상의 서버가 다른 서버로부터 유효하지 않은 응답을 받은 경우 발생</li>
+    </ul>
+  </li>
+  <li>
+<strong>503 Service Unavailable</strong>
+    <ul>
+      <li>서버가 요청을 처리할 준비가 되지 않았다.</li>
+      <li>일반적인 원인은 유지보수를 위해 작동이 중단되거나 과부하가 걸린 서버</li>
+    </ul>
+  </li>
+  <li>
+<strong>504 Gateway Timeout</strong>
+    <ul>
+      <li>웹페이지를 로드하거나 브라우저에서 다른 요청을 채우려는 동안 한 서버가 액세스하고 있는 다른 서버에서 적시에 응답을 받지 못했음을 의미</li>
+      <li>이 오류 응답은 서버가 게이트웨이 역할을 하고 있으며 적시에 응답을 받을 수 없을 경우 주어진다.</li>
+      <li>이 오류는 대게 인터넷상의 서버 간의 네트워크 오류이거나 실제 서버의 문제다.</li>
+    </ul>
+  </li>
+  <li>
+<strong>505 HTTP Version Not Supported</strong> : 서버에서 지원되지 않는 HTTP 버전을 클라이언트가 요청</li>
+  <li>
+<strong>506 Variant Also Negotiates</strong> : 서버에 내부 구성 오류가 있는 경우 발생</li>
+  <li>
+<strong>507 Insufficient Storage</strong> : 선택한 가변 리소스는 투명한 서버에 내부 구성 요류가 있는 경우 발생</li>
+  <li>
+<strong>508 Loop Detected (WebDAV)</strong> : 서버가 요청을 처리하는 동안 무한 루프를 감지한 경우 발생</li>
+  <li>
+<strong>510 Not Extended</strong> : 서버가 요청을 이행하려면 요청에 대한 추가 확장이 필요</li>
+  <li>
+<strong>511 Network Authentication Required</strong> : 클라이언트가 네트워크 액세스를 얻기 위해 인증할 필요가 있음을 나타낸다.</li>
+</ul>
+
+
+
+    </div>
+
+</article>
+<div class="post-nav">
+<a class="previous" href="/jekyll-theme-yat/cs/2024/03/11/as46.html" title="[네트워크] 16. 쿠키와 세션(Cookie &amp; Session)">[네트워크] 16. 쿠키와 세션(Cookie &amp; Session)...</a><a class="next" href="/jekyll-theme-yat/cs/2024/03/11/as48.html" title="[네트워크] 18. Stateful vs Stateless">[네트워크] 18. Stateful vs Stateless</a>
+</div>
+<div class="post-related">
+      <div>Related Articles</div>
+      <ul>
+        <li class="">
+          <a class="post-link" href="/jekyll-theme-yat/oracle/2023/06/13/Oracle08_2.html" title="Oracle_08_2_오라클 내장 함수 예제">
+            Oracle_08_2_오라클 내장 함수 예제<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/jekyll-theme-yat/cs/2024/02/28/as21.html" title="[자료구조] 5. 트리(Tree)">
+            [자료구조] 5. 트리(Tree)<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/jekyll-theme-yat/cs/2024/01/31/as01.html" title="[개발상식] 1. git과 github">
+            [개발상식] 1. git과 github<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/jekyll-theme-yat/project/2024/01/22/springProject02.html" title="스프링 팀프로젝트 2. 데이터 생성">
+            스프링 팀프로젝트 2. 데이터 생성<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+        </li>
+</ul>
+    </div>
+<div class="post-comments"></div></section>
+</div>
+
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --><style type="text/css" media="screen">
+.post-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+</style>
+
+<div class="post-menu">
+  <div class="post-menu-title">TOC</div>
+  <div class="post-menu-content"></div>
+</div>
+
+<script>
+  function generateContent() {
+    var menu = document.querySelector(".post-menu");
+    var menuContent =  menu.querySelector(".post-menu-content");
+    var headings = document.querySelector(".post-content").querySelectorAll("h2, h3, h4, h5, h6");
+
+    // Hide menu when no headings
+    if (headings.length === 0) {
+      return menu.style.display = "none";
+    }
+
+    // Generate post menu
+    var menuHTML = '';
+    for (var i = 0; i < headings.length; i++) {
+      var h = headings[i];
+      menuHTML += (
+        '<li class="h-' + h.tagName.toLowerCase() + '">'
+        + '<a href="#h-' + h.getAttribute('id') + '">' + h.textContent + '</a></li>');
+    }
+
+    menuContent.innerHTML = '<ul>' + menuHTML + '</ul>';
+
+    // The header element
+    var header = document.querySelector('header.site-header');
+
+    function doMenuCollapse(index, over_items) {
+      var items = menuContent.firstChild.children;
+
+      if (over_items == undefined) {
+        over_items = 20;
+      }
+
+      if (items.length < over_items) {
+        return;
+      }
+
+      var activeItem = items[index];
+      var beginItem = activeItem
+      var endItem = activeItem
+      var beginIndex = index;
+      var endIndex = index + 1;
+      while (beginIndex >= 0
+        && !items[beginIndex].classList.contains('h-h2')) {
+        beginIndex -= 1;
+      }
+      while (endIndex < items.length
+        && !items[endIndex].classList.contains('h-h2')) {
+        endIndex += 1;
+      }
+      for (var i = 0; i < beginIndex; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+      for (var i = beginIndex + 1; i < endIndex; i++) {
+        item = items[i]
+        // if (!item.classList.contains('h-h2')) {
+          item.style.display = '';
+        // }
+      }
+      for (var i = endIndex; i < items.length; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+    }
+
+    // Init menu collapsed
+    doMenuCollapse(-1);
+
+    // Active the menu item
+    window.addEventListener('scroll', function (event) {
+      var lastActive = menuContent.querySelector('.active');
+      var changed = true;
+      var activeIndex = -1;
+      for (var i = headings.length - 1; i >= 0; i--) {
+        var h = headings[i];
+        var headingRect = h.getBoundingClientRect();
+        var headerRect = header.getBoundingClientRect();
+        var headerTop = Math.floor(headerRect.top);
+        var headerHeight = Math.floor(headerRect.height);
+        var headerHeight = headerTop + headerHeight + 20;
+        if (headingRect.top <= headerHeight) {
+          var id = 'h-' + h.getAttribute('id');
+          var a = menuContent.querySelector('a[href="#' + id  + '"]');
+          var curActive = a.parentNode;
+          if (curActive) {
+            curActive.classList.add('active');
+            activeIndex = i;
+          }
+          if (lastActive == curActive) {
+            changed = false;
+          }
+          break;
+        }
+      }
+      if (changed) {
+        if (lastActive) {
+          lastActive.classList.remove('active');
+        }
+        doMenuCollapse(activeIndex);
+      }
+      event.preventDefault();
+    });
+  }
+  generateContent();
+</script>
+</section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jekyll-theme-yat/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>Unpublished Work <span class="copyleft">©</span> 2017-2025 {YoungEun Jo}</div>
+      <div>Powered by <a title="Jekyll is a simple, blog-aware, static site
+      generator." href="https://jekyllrb.com/">Jekyll</a> &amp; <a title="Yat, yet
+      another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.</div>
+      <div class="footer-col rss-subscribe">Subscribe <a href="/jekyll-theme-yat/feed.xml">via RSS</a>
+</div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>[운영체제] 10. 교착 상태(Deadlock) | 매일 기록하는 코딩 공부 일지</title>
+<meta name="generator" content="Jekyll v4.4.1">
+<meta property="og:title" content="[운영체제] 10. 교착 상태(Deadlock)">
+<meta name="author" content="Jo">
+<meta property="og:locale" content="en_US">
+<meta name="description" content="목차 🕳 인터럽트(Interrupt) 🕳 시스템 콜(System Call) 📌 교착 상태(Deadlock)">
+<meta property="og:description" content="목차 🕳 인터럽트(Interrupt) 🕳 시스템 콜(System Call) 📌 교착 상태(Deadlock)">
+<link rel="canonical" href="https://cheeseyoung.github.io//jekyll-theme-yat/cs/2024/03/13/as59.html">
+<meta property="og:url" content="https://cheeseyoung.github.io//jekyll-theme-yat/cs/2024/03/13/as59.html">
+<meta property="og:site_name" content="매일 기록하는 코딩 공부 일지">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2024-03-13T00:00:00+00:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="[운영체제] 10. 교착 상태(Deadlock)">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Jo"},"dateModified":"2024-03-13T00:00:00+00:00","datePublished":"2024-03-13T00:00:00+00:00","description":"목차 🕳 인터럽트(Interrupt) 🕳 시스템 콜(System Call) 📌 교착 상태(Deadlock)","headline":"[운영체제] 10. 교착 상태(Deadlock)","mainEntityOfPage":{"@type":"WebPage","@id":"https://cheeseyoung.github.io//jekyll-theme-yat/cs/2024/03/13/as59.html"},"url":"https://cheeseyoung.github.io//jekyll-theme-yat/cs/2024/03/13/as59.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="icon" href="%F0%9F%90%B1">
+  <link rel="canonical" href="https://cheeseyoung.github.io/">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-noto-sans@0.0.72/index.min.css">
+  <link rel="stylesheet" href="/jekyll-theme-yat/assets/css/main.css">
+  <script src="/jekyll-theme-yat/assets/js/main.js"></script><link type="application/atom+xml" rel="alternate" href="https://cheeseyoung.github.io//jekyll-theme-yat/feed.xml" title="매일 기록하는 코딩 공부 일지">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/languages/go.min.js" async></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #ff4e00;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: uppercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+<script src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe-lightbox.umd.min.js" async></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe.umd.min.js" async></script>
+<link href="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/photoswipe.min.css" rel="stylesheet">
+<style>
+  .pswp .pswp__container .pswp__img {
+    background-color: white;
+  }
+</style>
+
+<script>
+  function initPhotoSwipe() {
+    let customOptions = {};
+
+    try {
+      const data = ``.replaceAll("=>", ":");
+      customOptions = JSON.parse(data);
+    } catch (e) {
+      console.info("Invalid custom photo previewer options! " + e.message);
+    }
+
+    // Define object and gallery options
+    const options = Object.assign(
+      {
+        gallery: "section.main",
+        children: "a.photo-swipe",
+        photo_scale: 2,
+        // dynamic import is not supported in UMD version
+        pswpModule: PhotoSwipe,
+      },
+      customOptions
+    );
+
+    const galleryEl = document.querySelector(options.gallery);
+    if (!galleryEl) {
+      return;
+    }
+
+    const imgEls = [];
+    const els = galleryEl.querySelectorAll("img:not(.emoji)");
+    els.forEach((el) => {
+      if (el.src.trim() == "") {
+        return;
+      }
+      if (!imgEls.includes(el)) {
+        imgEls.push(el);
+      }
+    });
+
+    if (imgEls.length === 0) {
+      return;
+    }
+
+    imgEls.forEach((imgEl) => {
+      imgEl.outerHTML = `
+      <a class="photo-swipe"
+        href="${imgEl.src}"
+        data-pswp-width="${
+          Math.max(imgEl.naturalWidth, imgEl.width) * options.photo_scale
+        }"
+        data-pswp-height="${
+          Math.max(imgEl.naturalHeight, imgEl.height) * options.photo_scale
+        }"
+        data-pswp-caption="${imgEl.getAttribute("caption") || imgEl.alt}"
+        target="_blank">
+        ${imgEl.outerHTML}
+      </a>`;
+    });
+
+    // Initialize PhotoSwipe 5
+    var lightbox = new PhotoSwipeLightbox(options);
+
+    lightbox.init();
+  }
+
+  window.addEventListener("load", initPhotoSwipe);
+</script>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header site-header-transparent" role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/jekyll-theme-yat/">
+  <img class="site-favicon" title="매일 기록하는 코딩 공부 일지" src="%F0%9F%90%B1" onerror="this.style.display='none'">
+  매일 기록하는 코딩 공부 일지
+</a>
+</span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/jekyll-theme-yat/about.html">ABOUT</a><a class="page-link" href="/jekyll-theme-yat/archives.html">ARCHIVES</a><a class="page-link" href="/jekyll-theme-yat/categories.html">CATEGORIES</a><a class="page-link" href="/jekyll-theme-yat/">HOME</a><a class="page-link" href="/jekyll-theme-yat/tags.html">TAGS</a>
+
+
+
+
+
+
+
+
+
+<span class="page-link">
+
+
+
+<div id="google_translate_element" style="display: none;">
+</div>
+
+<span class="ct-language">
+  <ul class="list-unstyled ct-language-dropdown">
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="en">
+          
+          <img src="https://cdn.countryflags.com/thumbs/united-states-of-america/flag-400.png" title="English">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="fr">
+          
+          <img src="https://cdn.countryflags.com/thumbs/france/flag-400.png" title="French">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="zh-CN">
+          
+          <img src="https://cdn.countryflags.com/thumbs/china/flag-400.png" title="Chinese(Simple)">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ja">
+          
+          <img src="https://cdn.countryflags.com/thumbs/japan/flag-400.png" title="Japanese">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ko">
+          
+          <img src="https://cdn.countryflags.com/thumbs/south-korea/flag-400.png" title="Korean">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ru">
+          
+          <img src="https://cdn.countryflags.com/thumbs/russia/flag-400.png" title="Russian">
+          
+        </a>
+      </li>
+    
+  </ul>
+</span>
+
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({
+    pageLanguage: 'en',
+    autoDisplay: false,
+    layout: google.translate.TranslateElement.InlineLayout.VERTICAL
+  }, 'google_translate_element');
+
+  // Links to cross-origin destinations are unsafe
+  var gll = document.getElementsByClassName('goog-logo-link')[0];
+  if (gll) {
+    gll.setAttribute('rel', 'noopener');
+  }
+
+  function restoreLang() {
+    var iframe = document.getElementsByClassName('goog-te-banner-frame')[0];
+    if (!iframe) return;
+
+    var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+    var restore_el = innerDoc.getElementsByTagName("button");
+
+    for (var i = 0; i < restore_el.length; i++) {
+      if (restore_el[i].id.indexOf("restore") >= 0) {
+        restore_el[i].click();
+        var close_el = innerDoc.getElementsByClassName("goog-close-link");
+        close_el[0].click();
+        return;
+      }
+    }
+  }
+
+  function triggerHtmlEvent(element, eventName) {
+    var event;
+    if (document.createEvent) {
+      event = document.createEvent('HTMLEvents');
+      event.initEvent(eventName, true, true);
+      element.dispatchEvent(event);
+    } else {
+      event = document.createEventObject();
+      event.eventType = eventName;
+      element.fireEvent('on' + event.eventType, event);
+    }
+  }
+
+  var googleCombo = document.querySelector("select.goog-te-combo");
+  var langSelect = document.querySelector('.ct-language');
+  langSelect.addEventListener('click', function(event) {
+    if (!event.target) {
+      return;
+    }
+
+    var selected = document.querySelector('.ct-language .ct-language-selected');
+    if (selected) {
+      selected.classList.remove('ct-language-selected');
+    }
+
+    var target = event.target;
+    while (target && target !== langSelect ) {
+      if (target.matches('.lang-select')) {
+        break;
+      }
+      target = target.parentElement;
+    }
+
+    if (target && target.matches('.lang-select')) {
+      var lang = target.getAttribute('data-lang');
+      if (googleCombo.value == lang) {
+        restoreLang();
+      } else {
+        target.parentElement.classList.add('ct-language-selected');
+        googleCombo.value = lang;
+        triggerHtmlEvent(googleCombo, 'change');
+      }
+    }
+
+    event.preventDefault();
+  });
+}
+</script>
+
+<script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>
+</span>
+</div>
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;documentElement.setAttribute("data-header-transparent", "");var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+    html .page-banner {
+      background: #000;
+    }
+  </style>
+<style>html .page-banner {
+      height:  36.8vh;
+      min-height: 38vh;
+    }
+    html[data-scroll-status="top"] .page-banner {
+      height: 100vh;
+    }
+  </style>
+<style>
+    html .page-banner .page-banner-img > *:first-child {
+      opacity: 0.618;
+    }
+
+    html[data-theme="dark"] .page-banner .page-banner-img > *:first-child {
+      opacity: 0.443724;
+    }
+  </style>
+<style>
+    html .page-banner .page-banner-inner > *:first-child > *:nth-child(1) {
+      font-size: 3em; font-weight: bold;
+    }
+  </style>
+<style>
+    html .page-banner .page-banner-inner > *:first-child > *:nth-child(2) {
+      color: gold
+    }
+  </style>
+<section class="page-banner">
+    <div class="page-banner-img">
+<div style="background-image: url(https://github.com/CheeseYoung/Cheeseyoung.github.io/assets/132384527/5301ed3d-6f59-482b-bd76-748f837946d4)"></div>
+        <img class="img-placeholder" src="https://github.com/CheeseYoung/Cheeseyoung.github.io/assets/132384527/5301ed3d-6f59-482b-bd76-748f837946d4">
+</div>
+    <div class="wrapper">
+      <div class="page-banner-inner">
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">[운영체제] 10. 교착 상태(Deadlock)</h1>
+  <h2 class="post-subtitle">Engineer Information Processing</h2>
+
+  <div class="post-meta">
+    <time class="dt-published" datetime="2024-03-13T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Mar 13, 2024
+    </time><span class="post-author left-vsplit"><i class="fa fa-pencil"></i> Jo</span>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 4 mins</span>
+  </div>
+<div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#Study">#Study</a></div></header>
+</div>
+    </div>
+  </section><script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div class="theme-toggle">
+  <input type="checkbox" id="theme-switch">
+  <label for="theme-switch">
+    <div class="toggle"></div>
+    <div class="names">
+      <p class="light">Light</p>
+      <p class="dark">Dark</p>
+    </div>
+  </label>
+</div>
+
+
+
+
+<script>
+  (function() {
+    var sw = document.getElementById('theme-switch');
+    var html = document.getElementsByTagName('html')[0];
+    var nightModeOption = ('auto' || 'auto').toLowerCase();
+    var storage = nightModeOption === 'manual'
+        ? localStorage
+        : sessionStorage;
+    var themeData = loadThemeData();
+
+    function saveThemeData(data) {
+      storage.setItem('theme', JSON.stringify(data));
+    }
+
+    function loadThemeData() {
+      var data = storage.getItem('theme');
+      try {
+        data = JSON.parse(data ? data : '');
+      } catch(e) {
+        data = { nightShift: undefined, autoToggleAt: 0 };
+        saveThemeData(data);
+      }
+      return data;
+    }
+
+    function handleThemeToggle(nightShift) {
+      themeData.nightShift = nightShift;
+      saveThemeData(themeData);
+      html.dataset.theme = nightShift ? 'dark' : 'light';
+      setTimeout(function() {
+        sw.checked = nightShift ? true : false;
+      }, 50);
+    }
+
+    function autoThemeToggle() {
+      // Next time point of theme toggle
+      var now = new Date();
+      var toggleAt = new Date();
+      var hours = now.getHours();
+      var nightShift = hours >= 19 || hours <=7;
+
+      if (nightShift) {
+        if (hours > 7) {
+          toggleAt.setDate(toggleAt.getDate() + 1);
+        }
+        toggleAt.setHours(7);
+      } else {
+        toggleAt.setHours(19);
+      }
+
+      toggleAt.setMinutes(0);
+      toggleAt.setSeconds(0);
+      toggleAt.setMilliseconds(0)
+
+      var delay = toggleAt.getTime() - now.getTime();
+
+      // auto toggle theme mode
+      setTimeout(function() {
+        handleThemeToggle(!nightShift);
+      }, delay);
+
+      return {
+        nightShift: nightShift,
+        toggleAt: toggleAt.getTime()
+      };
+    }
+
+    // Listen the theme toggle event
+    sw.addEventListener('change', function(event) {
+      handleThemeToggle(event.target.checked);
+    });
+
+    if (nightModeOption == 'auto') {
+      var data = autoThemeToggle();
+
+      // Toggle theme by local setting
+      if (data.toggleAt > themeData.autoToggleAt) {
+        themeData.autoToggleAt = data.toggleAt;
+        handleThemeToggle(data.nightShift);
+      } else {
+        handleThemeToggle(themeData.nightShift);
+      }
+    } else if (nightModeOption == 'manual') {
+      handleThemeToggle(themeData.nightShift);
+    } else {
+      var nightShift = themeData.nightShift;
+      if (nightShift === undefined) {
+        nightShift = nightModeOption === 'on';
+      }
+      handleThemeToggle(nightShift);
+    }
+  })();
+</script>
+<div id="click-to-top" class="click-to-top">
+  <i class="fa fa-arrow-up"></i>
+</div>
+<script>
+  (function () {
+    const clickToTop = document.getElementById('click-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 100) {
+        clickToTop.classList.add('show')
+      }else {
+        clickToTop.classList.remove('show')
+      }
+    });
+    clickToTop.addEventListener('click', () => {
+      window.smoothScrollTo(0);
+    });
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <h1 id="목차">목차</h1>
+<p>🕳 인터럽트(Interrupt) <br>
+🕳 시스템 콜(System Call) <br>
+📌 교착 상태(Deadlock) <br>
+<br></p>
+<hr>
+
+<h2 id="교착-상태deadlock란">교착 상태(Deadlock)란?</h2>
+<ul>
+  <li>교착상태는 프로세스가 발생가능성이 없는 이벤트를 기다리고 있는 경우 프로세스가 교착 상태에 있다고 하며</li>
+  <li>시스템 내에 교착 상태인 프로세스가 있는 경우 시스템이 교착 상태에 있다고 말한다.</li>
+  <li>무한정 대기 상태에서 빠져나올 수 없는 상태에 있는 것인데 이는 기아(Starvation) 현상과 구분해야할 필요가 있다.
+    <ul>
+      <li>
+        <h1 id="starvation-현상">Starvation 현상</h1>
+        <ul>
+          <li>starvation현상은 프로세스가 Ready 상태에 있을 때 발생한다.</li>
+          <li>프로세서를 제외한 모든 자원은 할당되어있는 상태이나 프로세서를 할당받지 못해 Ready 상태에 장기적으로 머무르는 것</li>
+        </ul>
+      </li>
+      <li>
+        <h1 id="교착상태deadlock">교착상태(Deadlock)</h1>
+        <ul>
+          <li>교착 상태는 프로세스가 추가적인 자원 할당을 요청하는 Asleep(Block)상태에서 발생한다.</li>
+          <li>자원할당을 요청했으나 할당받지 못하는 상태에 있어 Ready 상태로 갈 수 없는 상태이다.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="교착-상태-표현법">교착 상태 표현법</h2>
+<h1 id="graph-model">Graph Model</h1>
+<p><img src="https://github.com/CheeseYoung/Cheeseyoung.github.io/assets/132384527/5301ed3d-6f59-482b-bd76-748f837946d4" alt="image"></p>
+<ul>
+  <li>위는 그래프 형태로 교착 상태를 표현한 것이다.</li>
+  <li>그래프의 노드는 프로세스 노드, 자원 노드로 나뉘어이다.</li>
+  <li>자원 노드가 프로세스 노드를 가리키는 엣지는 해당 자원이 해당 프로세스에 할당이 되어있음</li>
+  <li>프로세스 노드가 자원 노드를 가리키는 엣지는 해당 프로세스가 해당 자원 할당을 요청함</li>
+  <li>현재 위 그래프를 보면 여유 자원이 없는 상태에서 서로 자원을 요청만 할 뿐 어느 한쪽도 먼저 정상 종료될 수 없는 상태로 교착 상태임을 알 수 있다.
+<br>
+    <h1 id="state-transition-model">State Transition Model</h1>
+    <p><img src="https://github.com/CheeseYoung/Cheeseyoung.github.io/assets/132384527/816fc520-58e1-4fd9-ba77-c486bc7abe4c" alt="image"></p>
+  </li>
+  <li>위 표현은 2개의 프로세스와 같은 종류의 자원이 2개 존재하고</li>
+  <li>프로세스는 한번에 자원 하나만 요청/반납 가능하다고 가정하였을 때 모든 상황을 살펴보는 모델이다.
+<img src="https://github.com/CheeseYoung/Cheeseyoung.github.io/assets/132384527/38516b12-0f1f-4a85-9f29-37dcbda2e2ac" alt="image">
+</li>
+  <li>위 표는 한 프로세스가 가질 수 있는 상황이다.</li>
+  <li>총 5개의 상황으로 N개의 자원을 가지고 자원 할당을 요청하는지 안하는지에 대한 상황이다.</li>
+  <li>총 2개의 프로세스이므로 일어날 수 있는 상황은 25개이다.</li>
+  <li>그 중 2개 이상 자원이 할당받은 경우는 없으므로 20개의 상황이 있다.</li>
+  <li>각 상황의 이름은 <code class="language-plaintext highlighter-rouge">S</code>,<code class="language-plaintext highlighter-rouge">X</code>,<code class="language-plaintext highlighter-rouge">Y</code> 형태로 X는 P1의 상황번호, Y는 P2의 상황 번호이다.</li>
+  <li>만약 S33의 경우 P1이 1개의 자원을 할당받고 1개의 자원을 요청하고 있으며, 동시에 P2가 1개의 자원을 할당받고 1개의 자원을 요청받는 교착상태인 것이다.</li>
+  <li>그리고 각 State가 이어진 간선에 1 또는 2라고 표시되어 있는 것은 프로세스의 번호이며,
+요청(Request), 할당(Allocate), 반납(Return)을 표시하고 있다.</li>
+  <li><img src="https://github.com/CheeseYoung/Cheeseyoung.github.io/assets/132384527/ff49948b-f667-4077-8b0e-7284cfb8b15a" alt="image"></li>
+  <li>위처럼 정방향 간선의 홀수번째는 요청, 정방향 간선의 짝수번째는 할당, 역방향 간선은 반납을 의미</li>
+</ul>
+
+<h2 id="교착상태-발생-필요조건">교착상태 발생 필요조건</h2>
+<ul>
+  <li>Exclusive use of resources : 한 번에 한 프로세스만</li>
+  <li>Non-preemptible resources : 비선점 자원</li>
+  <li>Hold and wait(Partial allocation) : 부분 할당으로 자원을 하나 잡고 다른 자원을 요청</li>
+  <li>Circular Wait : 프로세스1이 프로세스2가 점유하고 있는 자원을 요청하고
+프로세스2가 프로세스1이 점유하고 있는 자원을 요청하여 순환요청으로 인해 무한정대기상태가 되는 것
+    <blockquote>
+      <p>이러한 교착 상태는 해결방법이 3가지가 존재하는데 교착상태 <code class="language-plaintext highlighter-rouge">예방</code>, <code class="language-plaintext highlighter-rouge">회피</code>, <code class="language-plaintext highlighter-rouge">탐지 및 복구</code>가 있다.</p>
+    </blockquote>
+  </li>
+</ul>
+
+<h2 id="교착-상태-해결-방법">교착 상태 해결 방법</h2>
+<h1 id="교착-상태-에방">교착 상태 에방</h1>
+<ul>
+  <li>교착 상태 해결방법 중 교착 상태 예방 방법은 교착 상태 발생 필요조건 중 하나를 제거해버리는 방법이다.</li>
+  <li>4개의 조건이 모두 만족되어야 교착 상태가 발생하므로 그 중 하나를 제거하여 교착상태를 발생시키지 않도록 하는 방법이다.
+<br>
+</li>
+  <li>Exclusive use of resources
+    <ul>
+      <li>이 조건을 제거하는 것은 모든 자원을 공유 허용을 한다는 뜻이다.</li>
+      <li>하지만 이는 현실적으로 불가능하다.</li>
+    </ul>
+  </li>
+  <li>Non-preeMptible resources
+    <ul>
+      <li>이 조건을 제거하는 것은 모든 자원에 대해 선점을 허용하는 것이다.</li>
+      <li>이또한 현실적으로 불가능하다.</li>
+      <li>유사한 방법으로 프로세스가 할당받을 수 없는 자원을 요청한 경우, 기존에 가지고 있던 자원을 모두 반납하고 작업을 취소한 뒤 체크포인트부터 다시 시작하는 방법이 있다.</li>
+      <li>하지만 이 방법은 작업을 취소하고 다시 시작하는 것 자체가 심각한 자원 낭비를 발생시키고 사용할 수 없는 방법이다.</li>
+    </ul>
+  </li>
+  <li>Hold and wait
+    <ul>
+      <li>이 조건을 제거하는 것은 한 프로세스가 필요한 자원을 한 번에 모두 할당하는 것을 말한다.</li>
+      <li>이는 자원이 필요하지 않은 순간에도 시작할 때부터 미래에 필요하기 때문에 계속 가지고 있게 되는데 자원 낭비가 발생한다.</li>
+      <li>또한 다른 프로세스가 먼저 작업을 시작한 프로세스가 끝날 때까지 대기하여야 한다.</li>
+    </ul>
+  </li>
+  <li>Circular wait
+    <ul>
+      <li>이 조건을 제거하는 것은 자원 일괄 할당을 일반화한 방법이다.</li>
+      <li>자원들에게 순서를 부여하고 프로세스는 순서의 증가 방향으로만 자원을 요청가능하도록 하는 방법이다.</li>
+      <li>이 또한 자원 낭비가 발생한다.
+        <blockquote>
+          <p>결국 교착상태를 예방하는 행위는 절대 교착상태가 발생하지 않으나 심각한 자원 낭비가 발생하고 이는 비현실적이다.
+<br></p>
+          <h1 id="교착상태-회피">교착상태 회피</h1>
+        </blockquote>
+      </li>
+    </ul>
+  </li>
+  <li>교착상태 회피는 시스템의 상태를 항상 감시하며 교착 상태가 될 가능성이 있는 자원 할당 요청을 보류하며 항상 Safe State를 유지하는 것을 말한다.</li>
+  <li>Safe State는 모든 프로세스가 정상적으로 종료되는 순서(Safe Sequence)가 존재하는 상태를 말하며 교착상태가 되지 않을 수 있음을 보장한다.</li>
+  <li>Unsafe State는 교착상태 발생 가능성이 있는 상태이나 반드시 발생을 한다는 뜻은 아니다.
+<br>
+교착 상태 회피를 위해서는 4가지의 가정이 필요하다.</li>
+  <li>프로세스의 수 고정</li>
+  <li>자원의 종류와 수 고정</li>
+  <li>프로세스가 요구하는 자언 및 최대 수량을 알고있음</li>
+  <li>프로세스는 자원을 사용 후 반드시 반납함<br>
+<br>
+    <h1 id="교착상태-탐지">교착상태 탐지</h1>
+  </li>
+  <li>교착상태 탐지 &amp; 복구는 교착상태 방지를 위한 사전 작업을 하지않아 교착상태가 발생할 수 있다.</li>
+  <li>단, 주기적으로 시스템이 교착상태가 발생했는지 확인을 한다.</li>
+  <li>교착상태 탐지를 위해 RAG(Resource Allocation Graph)를 사용한다.
+<img src="https://github.com/CheeseYoung/Cheeseyoung.github.io/assets/132384527/c1574f74-40fc-4667-9a04-4f0932c04b35" alt="image">
+</li>
+  <li>위 단계처럼 엣지가 하나도 남지 않고 지울 수 있다면 시스템에 교차 상태에 빠진 프로세스가 없다는 것이다.</li>
+  <li>만약 일부 엣지가 남았다면 시스템에 교착 상태에 빠진 프로세스가 존재함을 알 수 있다.</li>
+</ul>
+
+
+
+    </div>
+
+</article>
+<div class="post-nav">
+<a class="previous" href="/jekyll-theme-yat/cs/2024/03/13/as58.html" title="[운영체제] 9. 시스템 콜(System Call)">[운영체제] 9. 시스템 콜(System Call)</a><a class="next" href="/jekyll-theme-yat/cs/2024/03/13/as60.html" title="[운영체제] 11. CPU 스케줄링(CPU Scheduling)">[운영체제] 11. CPU 스케줄링(CPU Scheduling)</a>
+</div>
+<div class="post-related">
+      <div>Related Articles</div>
+      <ul>
+        <li class="">
+          <a class="post-link" href="/jekyll-theme-yat/cs/2024/02/02/as08.html" title="[개발상식] 8. 메모리 구조">
+            [개발상식] 8. 메모리 구조<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/jekyll-theme-yat/project/2023/06/27/javaProject01.html" title="자바 팀프로젝트 1. 프로젝트 준비">
+            자바 팀프로젝트 1. 프로젝트 준비<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/12/as50.html" title="[운영체제] 1. 운영체제란?">
+            [운영체제] 1. 운영체제란?<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/jekyll-theme-yat/cs/2024/02/28/as24.html" title="[자료구조] 8. 해시(Hash)">
+            [자료구조] 8. 해시(Hash)<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+        </li>
+</ul>
+    </div>
+<div class="post-comments"></div></section>
+</div>
+
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --><style type="text/css" media="screen">
+.post-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+</style>
+
+<div class="post-menu">
+  <div class="post-menu-title">TOC</div>
+  <div class="post-menu-content"></div>
+</div>
+
+<script>
+  function generateContent() {
+    var menu = document.querySelector(".post-menu");
+    var menuContent =  menu.querySelector(".post-menu-content");
+    var headings = document.querySelector(".post-content").querySelectorAll("h2, h3, h4, h5, h6");
+
+    // Hide menu when no headings
+    if (headings.length === 0) {
+      return menu.style.display = "none";
+    }
+
+    // Generate post menu
+    var menuHTML = '';
+    for (var i = 0; i < headings.length; i++) {
+      var h = headings[i];
+      menuHTML += (
+        '<li class="h-' + h.tagName.toLowerCase() + '">'
+        + '<a href="#h-' + h.getAttribute('id') + '">' + h.textContent + '</a></li>');
+    }
+
+    menuContent.innerHTML = '<ul>' + menuHTML + '</ul>';
+
+    // The header element
+    var header = document.querySelector('header.site-header');
+
+    function doMenuCollapse(index, over_items) {
+      var items = menuContent.firstChild.children;
+
+      if (over_items == undefined) {
+        over_items = 20;
+      }
+
+      if (items.length < over_items) {
+        return;
+      }
+
+      var activeItem = items[index];
+      var beginItem = activeItem
+      var endItem = activeItem
+      var beginIndex = index;
+      var endIndex = index + 1;
+      while (beginIndex >= 0
+        && !items[beginIndex].classList.contains('h-h2')) {
+        beginIndex -= 1;
+      }
+      while (endIndex < items.length
+        && !items[endIndex].classList.contains('h-h2')) {
+        endIndex += 1;
+      }
+      for (var i = 0; i < beginIndex; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+      for (var i = beginIndex + 1; i < endIndex; i++) {
+        item = items[i]
+        // if (!item.classList.contains('h-h2')) {
+          item.style.display = '';
+        // }
+      }
+      for (var i = endIndex; i < items.length; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+    }
+
+    // Init menu collapsed
+    doMenuCollapse(-1);
+
+    // Active the menu item
+    window.addEventListener('scroll', function (event) {
+      var lastActive = menuContent.querySelector('.active');
+      var changed = true;
+      var activeIndex = -1;
+      for (var i = headings.length - 1; i >= 0; i--) {
+        var h = headings[i];
+        var headingRect = h.getBoundingClientRect();
+        var headerRect = header.getBoundingClientRect();
+        var headerTop = Math.floor(headerRect.top);
+        var headerHeight = Math.floor(headerRect.height);
+        var headerHeight = headerTop + headerHeight + 20;
+        if (headingRect.top <= headerHeight) {
+          var id = 'h-' + h.getAttribute('id');
+          var a = menuContent.querySelector('a[href="#' + id  + '"]');
+          var curActive = a.parentNode;
+          if (curActive) {
+            curActive.classList.add('active');
+            activeIndex = i;
+          }
+          if (lastActive == curActive) {
+            changed = false;
+          }
+          break;
+        }
+      }
+      if (changed) {
+        if (lastActive) {
+          lastActive.classList.remove('active');
+        }
+        doMenuCollapse(activeIndex);
+      }
+      event.preventDefault();
+    });
+  }
+  generateContent();
+</script>
+</section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jekyll-theme-yat/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>Unpublished Work <span class="copyleft">©</span> 2017-2025 {YoungEun Jo}</div>
+      <div>Powered by <a title="Jekyll is a simple, blog-aware, static site
+      generator." href="https://jekyllrb.com/">Jekyll</a> &amp; <a title="Yat, yet
+      another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.</div>
+      <div class="footer-col rss-subscribe">Subscribe <a href="/jekyll-theme-yat/feed.xml">via RSS</a>
+</div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

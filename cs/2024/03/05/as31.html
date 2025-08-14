@@ -1,0 +1,1332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>[네트워크] 1. 네트워크란? | 매일 기록하는 코딩 공부 일지</title>
+<meta name="generator" content="Jekyll v4.4.1">
+<meta property="og:title" content="[네트워크] 1. 네트워크란?">
+<meta name="author" content="Jo">
+<meta property="og:locale" content="en_US">
+<meta name="description" content="목차 📌 네트워크란? 🕳 OSI 7 계층 (Open System Interconnection 7 Layer) 🕳 TCP vs UDP(Transmission Control Protocol vs User Datagram Protocol) 🕳 TCP 3-way-handshake &amp; 4-way-handshake 🕳 TCP/IP 흐름제어 &amp; 혼잡제어(Flow control &amp; Congestion control)">
+<meta property="og:description" content="목차 📌 네트워크란? 🕳 OSI 7 계층 (Open System Interconnection 7 Layer) 🕳 TCP vs UDP(Transmission Control Protocol vs User Datagram Protocol) 🕳 TCP 3-way-handshake &amp; 4-way-handshake 🕳 TCP/IP 흐름제어 &amp; 혼잡제어(Flow control &amp; Congestion control)">
+<link rel="canonical" href="https://cheeseyoung.github.io//jekyll-theme-yat/cs/2024/03/05/as31.html">
+<meta property="og:url" content="https://cheeseyoung.github.io//jekyll-theme-yat/cs/2024/03/05/as31.html">
+<meta property="og:site_name" content="매일 기록하는 코딩 공부 일지">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2024-03-05T00:00:00+00:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="[네트워크] 1. 네트워크란?">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Jo"},"dateModified":"2024-03-05T00:00:00+00:00","datePublished":"2024-03-05T00:00:00+00:00","description":"목차 📌 네트워크란? 🕳 OSI 7 계층 (Open System Interconnection 7 Layer) 🕳 TCP vs UDP(Transmission Control Protocol vs User Datagram Protocol) 🕳 TCP 3-way-handshake &amp; 4-way-handshake 🕳 TCP/IP 흐름제어 &amp; 혼잡제어(Flow control &amp; Congestion control)","headline":"[네트워크] 1. 네트워크란?","mainEntityOfPage":{"@type":"WebPage","@id":"https://cheeseyoung.github.io//jekyll-theme-yat/cs/2024/03/05/as31.html"},"url":"https://cheeseyoung.github.io//jekyll-theme-yat/cs/2024/03/05/as31.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="icon" href="%F0%9F%90%B1">
+  <link rel="canonical" href="https://cheeseyoung.github.io/">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-noto-sans@0.0.72/index.min.css">
+  <link rel="stylesheet" href="/jekyll-theme-yat/assets/css/main.css">
+  <script src="/jekyll-theme-yat/assets/js/main.js"></script><link type="application/atom+xml" rel="alternate" href="https://cheeseyoung.github.io//jekyll-theme-yat/feed.xml" title="매일 기록하는 코딩 공부 일지">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/languages/go.min.js" async></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #ff4e00;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: uppercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+<script src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe-lightbox.umd.min.js" async></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe.umd.min.js" async></script>
+<link href="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/photoswipe.min.css" rel="stylesheet">
+<style>
+  .pswp .pswp__container .pswp__img {
+    background-color: white;
+  }
+</style>
+
+<script>
+  function initPhotoSwipe() {
+    let customOptions = {};
+
+    try {
+      const data = ``.replaceAll("=>", ":");
+      customOptions = JSON.parse(data);
+    } catch (e) {
+      console.info("Invalid custom photo previewer options! " + e.message);
+    }
+
+    // Define object and gallery options
+    const options = Object.assign(
+      {
+        gallery: "section.main",
+        children: "a.photo-swipe",
+        photo_scale: 2,
+        // dynamic import is not supported in UMD version
+        pswpModule: PhotoSwipe,
+      },
+      customOptions
+    );
+
+    const galleryEl = document.querySelector(options.gallery);
+    if (!galleryEl) {
+      return;
+    }
+
+    const imgEls = [];
+    const els = galleryEl.querySelectorAll("img:not(.emoji)");
+    els.forEach((el) => {
+      if (el.src.trim() == "") {
+        return;
+      }
+      if (!imgEls.includes(el)) {
+        imgEls.push(el);
+      }
+    });
+
+    if (imgEls.length === 0) {
+      return;
+    }
+
+    imgEls.forEach((imgEl) => {
+      imgEl.outerHTML = `
+      <a class="photo-swipe"
+        href="${imgEl.src}"
+        data-pswp-width="${
+          Math.max(imgEl.naturalWidth, imgEl.width) * options.photo_scale
+        }"
+        data-pswp-height="${
+          Math.max(imgEl.naturalHeight, imgEl.height) * options.photo_scale
+        }"
+        data-pswp-caption="${imgEl.getAttribute("caption") || imgEl.alt}"
+        target="_blank">
+        ${imgEl.outerHTML}
+      </a>`;
+    });
+
+    // Initialize PhotoSwipe 5
+    var lightbox = new PhotoSwipeLightbox(options);
+
+    lightbox.init();
+  }
+
+  window.addEventListener("load", initPhotoSwipe);
+</script>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header site-header-transparent" role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/jekyll-theme-yat/">
+  <img class="site-favicon" title="매일 기록하는 코딩 공부 일지" src="%F0%9F%90%B1" onerror="this.style.display='none'">
+  매일 기록하는 코딩 공부 일지
+</a>
+</span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/jekyll-theme-yat/about.html">ABOUT</a><a class="page-link" href="/jekyll-theme-yat/archives.html">ARCHIVES</a><a class="page-link" href="/jekyll-theme-yat/categories.html">CATEGORIES</a><a class="page-link" href="/jekyll-theme-yat/">HOME</a><a class="page-link" href="/jekyll-theme-yat/tags.html">TAGS</a>
+
+
+
+
+
+
+
+
+
+<span class="page-link">
+
+
+
+<div id="google_translate_element" style="display: none;">
+</div>
+
+<span class="ct-language">
+  <ul class="list-unstyled ct-language-dropdown">
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="en">
+          
+          <img src="https://cdn.countryflags.com/thumbs/united-states-of-america/flag-400.png" title="English">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="fr">
+          
+          <img src="https://cdn.countryflags.com/thumbs/france/flag-400.png" title="French">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="zh-CN">
+          
+          <img src="https://cdn.countryflags.com/thumbs/china/flag-400.png" title="Chinese(Simple)">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ja">
+          
+          <img src="https://cdn.countryflags.com/thumbs/japan/flag-400.png" title="Japanese">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ko">
+          
+          <img src="https://cdn.countryflags.com/thumbs/south-korea/flag-400.png" title="Korean">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ru">
+          
+          <img src="https://cdn.countryflags.com/thumbs/russia/flag-400.png" title="Russian">
+          
+        </a>
+      </li>
+    
+  </ul>
+</span>
+
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({
+    pageLanguage: 'en',
+    autoDisplay: false,
+    layout: google.translate.TranslateElement.InlineLayout.VERTICAL
+  }, 'google_translate_element');
+
+  // Links to cross-origin destinations are unsafe
+  var gll = document.getElementsByClassName('goog-logo-link')[0];
+  if (gll) {
+    gll.setAttribute('rel', 'noopener');
+  }
+
+  function restoreLang() {
+    var iframe = document.getElementsByClassName('goog-te-banner-frame')[0];
+    if (!iframe) return;
+
+    var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+    var restore_el = innerDoc.getElementsByTagName("button");
+
+    for (var i = 0; i < restore_el.length; i++) {
+      if (restore_el[i].id.indexOf("restore") >= 0) {
+        restore_el[i].click();
+        var close_el = innerDoc.getElementsByClassName("goog-close-link");
+        close_el[0].click();
+        return;
+      }
+    }
+  }
+
+  function triggerHtmlEvent(element, eventName) {
+    var event;
+    if (document.createEvent) {
+      event = document.createEvent('HTMLEvents');
+      event.initEvent(eventName, true, true);
+      element.dispatchEvent(event);
+    } else {
+      event = document.createEventObject();
+      event.eventType = eventName;
+      element.fireEvent('on' + event.eventType, event);
+    }
+  }
+
+  var googleCombo = document.querySelector("select.goog-te-combo");
+  var langSelect = document.querySelector('.ct-language');
+  langSelect.addEventListener('click', function(event) {
+    if (!event.target) {
+      return;
+    }
+
+    var selected = document.querySelector('.ct-language .ct-language-selected');
+    if (selected) {
+      selected.classList.remove('ct-language-selected');
+    }
+
+    var target = event.target;
+    while (target && target !== langSelect ) {
+      if (target.matches('.lang-select')) {
+        break;
+      }
+      target = target.parentElement;
+    }
+
+    if (target && target.matches('.lang-select')) {
+      var lang = target.getAttribute('data-lang');
+      if (googleCombo.value == lang) {
+        restoreLang();
+      } else {
+        target.parentElement.classList.add('ct-language-selected');
+        googleCombo.value = lang;
+        triggerHtmlEvent(googleCombo, 'change');
+      }
+    }
+
+    event.preventDefault();
+  });
+}
+</script>
+
+<script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>
+</span>
+</div>
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;documentElement.setAttribute("data-header-transparent", "");var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+    html .page-banner {
+      background: #000;
+    }
+  </style>
+<style>html .page-banner {
+      height:  36.8vh;
+      min-height: 38vh;
+    }
+    html[data-scroll-status="top"] .page-banner {
+      height: 100vh;
+    }
+  </style>
+<style>
+    html .page-banner .page-banner-img > *:first-child {
+      opacity: 0.618;
+    }
+
+    html[data-theme="dark"] .page-banner .page-banner-img > *:first-child {
+      opacity: 0.443724;
+    }
+  </style>
+<style>
+    html .page-banner .page-banner-inner > *:first-child > *:nth-child(1) {
+      font-size: 3em; font-weight: bold;
+    }
+  </style>
+<style>
+    html .page-banner .page-banner-inner > *:first-child > *:nth-child(2) {
+      color: gold
+    }
+  </style>
+<section class="page-banner">
+    <div class="page-banner-img">
+<div style="background-image: url(https://github.com/CheeseYoung/Cheeseyoung.github.io/assets/132384527/2a809881-ea0c-41df-bfb1-91e1acc0c0e1)"></div>
+        <img class="img-placeholder" src="https://github.com/CheeseYoung/Cheeseyoung.github.io/assets/132384527/2a809881-ea0c-41df-bfb1-91e1acc0c0e1">
+</div>
+    <div class="wrapper">
+      <div class="page-banner-inner">
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">[네트워크] 1. 네트워크란?</h1>
+  <h2 class="post-subtitle">Engineer Information Processing</h2>
+
+  <div class="post-meta">
+    <time class="dt-published" datetime="2024-03-05T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Mar 05, 2024
+    </time><span class="post-author left-vsplit"><i class="fa fa-pencil"></i> Jo</span>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 6 mins</span>
+  </div>
+<div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#Study">#Study</a></div></header>
+</div>
+    </div>
+  </section><script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div class="theme-toggle">
+  <input type="checkbox" id="theme-switch">
+  <label for="theme-switch">
+    <div class="toggle"></div>
+    <div class="names">
+      <p class="light">Light</p>
+      <p class="dark">Dark</p>
+    </div>
+  </label>
+</div>
+
+
+
+
+<script>
+  (function() {
+    var sw = document.getElementById('theme-switch');
+    var html = document.getElementsByTagName('html')[0];
+    var nightModeOption = ('auto' || 'auto').toLowerCase();
+    var storage = nightModeOption === 'manual'
+        ? localStorage
+        : sessionStorage;
+    var themeData = loadThemeData();
+
+    function saveThemeData(data) {
+      storage.setItem('theme', JSON.stringify(data));
+    }
+
+    function loadThemeData() {
+      var data = storage.getItem('theme');
+      try {
+        data = JSON.parse(data ? data : '');
+      } catch(e) {
+        data = { nightShift: undefined, autoToggleAt: 0 };
+        saveThemeData(data);
+      }
+      return data;
+    }
+
+    function handleThemeToggle(nightShift) {
+      themeData.nightShift = nightShift;
+      saveThemeData(themeData);
+      html.dataset.theme = nightShift ? 'dark' : 'light';
+      setTimeout(function() {
+        sw.checked = nightShift ? true : false;
+      }, 50);
+    }
+
+    function autoThemeToggle() {
+      // Next time point of theme toggle
+      var now = new Date();
+      var toggleAt = new Date();
+      var hours = now.getHours();
+      var nightShift = hours >= 19 || hours <=7;
+
+      if (nightShift) {
+        if (hours > 7) {
+          toggleAt.setDate(toggleAt.getDate() + 1);
+        }
+        toggleAt.setHours(7);
+      } else {
+        toggleAt.setHours(19);
+      }
+
+      toggleAt.setMinutes(0);
+      toggleAt.setSeconds(0);
+      toggleAt.setMilliseconds(0)
+
+      var delay = toggleAt.getTime() - now.getTime();
+
+      // auto toggle theme mode
+      setTimeout(function() {
+        handleThemeToggle(!nightShift);
+      }, delay);
+
+      return {
+        nightShift: nightShift,
+        toggleAt: toggleAt.getTime()
+      };
+    }
+
+    // Listen the theme toggle event
+    sw.addEventListener('change', function(event) {
+      handleThemeToggle(event.target.checked);
+    });
+
+    if (nightModeOption == 'auto') {
+      var data = autoThemeToggle();
+
+      // Toggle theme by local setting
+      if (data.toggleAt > themeData.autoToggleAt) {
+        themeData.autoToggleAt = data.toggleAt;
+        handleThemeToggle(data.nightShift);
+      } else {
+        handleThemeToggle(themeData.nightShift);
+      }
+    } else if (nightModeOption == 'manual') {
+      handleThemeToggle(themeData.nightShift);
+    } else {
+      var nightShift = themeData.nightShift;
+      if (nightShift === undefined) {
+        nightShift = nightModeOption === 'on';
+      }
+      handleThemeToggle(nightShift);
+    }
+  })();
+</script>
+<div id="click-to-top" class="click-to-top">
+  <i class="fa fa-arrow-up"></i>
+</div>
+<script>
+  (function () {
+    const clickToTop = document.getElementById('click-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 100) {
+        clickToTop.classList.add('show')
+      }else {
+        clickToTop.classList.remove('show')
+      }
+    });
+    clickToTop.addEventListener('click', () => {
+      window.smoothScrollTo(0);
+    });
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <h1 id="목차">목차</h1>
+<p>📌 네트워크란? <br>
+🕳 OSI 7 계층 (Open System Interconnection 7 Layer) <br>
+🕳 TCP vs UDP(Transmission Control Protocol vs User Datagram Protocol) <br>
+🕳 TCP 3-way-handshake &amp; 4-way-handshake <br>
+🕳 TCP/IP 흐름제어 &amp; 혼잡제어(Flow control &amp; Congestion control) <br>
+<br></p>
+<hr>
+
+<h2 id="네트워크network란">네트워크(Network)란?</h2>
+<ul>
+  <li>그물을 뜻하는 Net과 work의 합성어로, 그물처럼 서로 긴밀하게 연결되어있는 것을 뜻한다.</li>
+  <li>보통 IT에서 사용되는 정의로 보자면, 두 대 이상의 컴퓨터를 연결하고 서로 통신할 수 있는 것</li>
+  <li>최근에는 인터넷에 연결되는 다양한 기기들이 서로 연결되어 정보를 주고받는 것 또한 포함</li>
+  <li>IEEE(Institute of Electrical and Electronics Engineers, 국제 전기 전자 공학회)는
+몇 개의 독립적인 장치가 적절한 영역 내에서 적당히 빠른 속도의 물리적 통신 채널을 통하여 서로가 직접 통신할 수 있도록 지원해 주는 데이터 통신 체계라고 정의</li>
+  <li>연결하는 선이나 장치 같은 물리적인 측면부터 데이터를 주고받는 데에 필요한 메시지나 규약과 같은 물리적이지 않은 측면까지 모두 포함한, 통신 과정 전체를 아우르는 개념</li>
+</ul>
+
+<h2 id="lan과-wan">LAN과 WAN</h2>
+<ul>
+  <li>LAN
+    <ul>
+      <li>Local Area Network의 줄임말로 <b>근거리 영역 네트워크</b>를 뜻한다.</li>
+      <li>지리적으로 가까운 기기들이 서로 연결된 소규모의 네트워크</li>
+      <li>예를들면, 공유기를 중심으로 컴퓨터나 노트북, 다른 기기들을 연결해서 사용하는 것</li>
+      <li>비교적 간단하게 구현할 수 있으며, 데이터를 주고받는데에 오류가 적고 속도가 빠르다.</li>
+    </ul>
+  </li>
+  <li>WAN
+    <ul>
+      <li>Wide Atrea Network의 줄임말로, 지역이나 국가와 같이 넓은 영역을 연결하는 <b>광역네트워크</b>를 뜻한다.</li>
+      <li>주로 여러 곳에 흩어진 소규모 네트워크, 즉 LAN을 연결한 것을 WAN이라고 부르기도 한다.</li>
+      <li>WAN은 물리적으로 범위가 넓어서 개인이 구현하기는 어렵다.</li>
+      <li>KT,SK브로드밴드,U+와 같은 인터넷 서비스 제공자들이 전국에 회선을 설치하고, 우리는 그것을 이용하고 있는 것</li>
+      <li>WAN은 LAN과 달리 구조도 복잡하기 때문에 여러 물리적 상황과 환경에 영향을 많이 받을 수 있다.</li>
+      <li>그래서 LAN에 비해 속도도 느리고, 오류가 발생할 확률도 높다는 특징이 있다.</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="라우터router">라우터(Router)</h2>
+<ul>
+  <li>길을 뜻하는 루트(Route)에서 따온 용어</li>
+  <li>데이터가 목적지에 원활하게 도착할 수 있도록 적절한 통신 경로를 안내하는 장치다.</li>
+  <li>라우터는 라우팅 테이블이라는 공간에 미리 다양한 경로의 정보를 저장하고 있다.
+    <ul>
+      <li>라우팅 테이블이란 최종 목적지의 IP 주소와 목적지에 도달하기 위해 경유해야할 인근 라우터의 정보가 담긴 테이블이다.</li>
+      <li>라우터가 하는 가장 중요한 일이 라우팅 테이블을 구성하는 것이다.(그래야 최적의 경로를 안내할 수 있기 때문에)</li>
+    </ul>
+  </li>
+  <li>경로를 저장하는 방법은 크게 두 가지
+    <ul>
+      <li>관리자가 직접 라우팅 테이블의 내용을 추가하는 방법</li>
+      <li>인근 라우터와 정보를 교환해 자동으로 경로 정보를 갱신하는 방법</li>
+    </ul>
+  </li>
+  <li>만약 라우터가 잘못된 정보를 가지고 있다면?
+    <ul>
+      <li>데이터가 길을 잃거나 무한 루프가 발생할 경우를 대비해 데이터마다 TTL(Time To Live)이라는 유효기간을 정해둔다.</li>
+      <li>TTL이란 데이터의 유효 기간을 나타내는 것으로, 데이터가 무한히 네트워크를 방지하는 역할을 한다.</li>
+      <li>데이터의 헤더에 포함되는 정보로, 0부터 255까지의 숫자로 표기되어있어, 하나의 라우터를 거칠 때마다 일정량이 줄어든다.</li>
+      <li>데이터가 목적지에 도착하지 않았떠라도 이 TTL이 0이 되면 데이터가 폐기된다.</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="허브와-스위치">허브와 스위치</h2>
+<ul>
+  <li>많은 컴퓨터들이 통신을 위해서 모든 컴퓨터를 서로 연결하게 된다면 너무 복잡해진다.</li>
+  <li>그래서 복잡하게 연결하는 것이 아닌 중앙에 하나의 연결 장비를 두고,</li>
+  <li>그 장비에 컴퓨터를 연결해 서로 데이터를 주고받는 방식으로 변했다.</li>
+  <li>즉, 각 컴퓨터는 하나의 케이블을 통해 네트워크 안에 있는 모든 다른 기기와 통신할 수 있게 되는 것이다.</li>
+  <li><b>허브와 스위치는 같은 네트워크상에서 서로 다른 기기로 데이터를 전송하기 위해 사용하는 장비</b></li>
+  <li>허브(hub)
+    <ul>
+      <li>데이터를 자신에게 연결된 모든 기기에게 전달하는 장비</li>
+      <li>한 포트에서 전기 신호가 들어오면 이를 허브에 연결된 전체 포트로 연결하는, 네트워크 전체를 목적지로 데이터를 전송하는 <b>브로드캐스트 통신 방식</b>
+</li>
+      <li>허브의 통신방식은 데이터를 전송할 때 어느 기기로 보내야하는지 판단하지 않아도 되기 때문에 부담은 덜하다.</li>
+      <li>하지만 한 번에 하나의 장비만 데이터를 보낼 수 있으므로 전체 네트워크 성능이 저하되는 문제가 있다.</li>
+      <li>또한 동시에 여러 기기에서 데이터를 전송하면 충돌이 발생할 수 있다는 문제도 있다.</li>
+    </ul>
+  </li>
+  <li>스위치(switch)
+    <ul>
+      <li>데이터가 들어왔을 때 해당 데이터를 요청한 기기가 누구인지 파악하고 정확한 목적지로 전달하는 장비</li>
+      <li>출발지와 목적지가 각각 하나씩만 있는 <b>유니캐스트 방식</b>
+</li>
+      <li>허브의 문제를 해결하기 위해 등장</li>
+      <li>스위치는 자신에게 연결된 기기의 정보를 따로 저장하고 있기 때문에 데이터의 목적지를 정확하게 찾을 수 있다.</li>
+      <li>그래서 여러 기기가 동시에 데이터를 주고받더라도 충돌하는 일이 없다.</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="프로토콜">프로토콜</h2>
+<ul>
+  <li>
+<b>약속된 데이터의 형식</b>을 프로토콜이라고 한다.</li>
+  <li>주고받는 데이터의 형식이 다를 경우, 같은 내용이라고 해도 통신이 어렵다.</li>
+  <li>네트워크 안에서 원활하게 통신을 하려면 각 상황에 맞는 프로토콜을 사용해야만 한다.</li>
+  <li>우리가 인터넷에 접속하여 사용하는 URL을 보면 http로 시작하는 것을 알 수 있는데, 이 <b>HTTP가 웹 통신에서 사용하는 대표적인 프로토콜</b>
+</li>
+  <li>그 외에도 파일 송수신을 위한 프로토콜 FTP 등이 있다.</li>
+  <li>프로토콜은 네트워크의 흐름을 파악하는데에 있어 핵심적인 역할을 하므로 각 프로토콜의 역할과 기능을 인지하는 것은 매우 중요하다.</li>
+</ul>
+
+<h2 id="url">URL</h2>
+<ul>
+  <li>Uniform Resource Locator의 약자</li>
+  <li>웹을 사용하는 사람들이 원하는 자원을 정확히 찾아갈 수 있도록, 구별할 수 있는 고유의 주소</li>
+  <li>URL에는 작성 규칙이 있다.
+    <ul>
+      <li>맨 앞 부분에는 해당 자원을 얻기위한 통신 규약, 프로토콜이 온다.
+        <ul>
+          <li>http와 https는 웹 통신 규약이고, 메일은 mailto, 파일은 ftp</li>
+        </ul>
+      </li>
+      <li>http 뒤에는 호스트 주소가 나오게 되는데, 호스트주소(hostname)은 우리가 접근할 서버 컴퓨터의 주소를 뜻한다.
+        <ul>
+          <li>원래는 호스트주소에 IP주소가 들어가는게 맞으나, IP 주소를 다 기억하기어렵기에 문자 형태의 도메인(domain)을 사용한다.</li>
+        </ul>
+      </li>
+      <li>그 뒤에는 포트 번호가 오는데, 포트(port)는 웹 서버 안에서 특정 자원에 접근하기 위한 관문이다.</li>
+      <li>마지막으로 해당 자원의 구체적인 위치가 들어가는 경로(path)와 파라미터(parameter)가 나온다.</li>
+    </ul>
+  </li>
+  <li>IP 주소를 몰라도 웹사이트에 접근할 수 있도록 하기 위해 도메인이 생겼다.
+    <ul>
+      <li>많이 쓰는 www.naver.com, www.google.com 등이 대표적인 도메인</li>
+    </ul>
+  </li>
+  <li>DNS(Domain Name System)
+    <ul>
+      <li>도메인과 IP 주소를 서로 변환해주는 역할을 하는 시스템</li>
+      <li>이러한 변환 시스템을 운영하는 서버를 DNS 서버 혹은 네임 서버라고 한다.</li>
+      <li>이 DNS 덕에 도메인을 이용하더라도 IP주소로 자동 변경되기 때문에, 네트워크 통신에 있어 DNS는 매우 중요한 역할</li>
+    </ul>
+  </li>
+</ul>
+
+<p><a href="https://www.whatap.io/ko/blog/160/index.html">참고</a></p>
+
+<h2 id="내용-추가-56">내용 추가 (5/6~)</h2>
+<p><img src="https://github.com/CheeseYoung/Cheeseyoung.github.io/assets/132384527/ebed20d1-4e2b-453b-9aff-7ffdc3de5d5a" alt="KakaoTalk_20240506_230000502"></p>
+<h3>&lt;네트워크 통신="" 과정=""&gt;네트워크&gt;</h3>
+<ul>
+  <li>클라이언트와 서버가 통신을 하면, 서버단과 클라이언트단 각각에서 네트워크 7계층을 거쳐서 통신을 하게 된다.</li>
+  <li>서버에서 클라이언트로 데이터를 내보낼 때, 한 번에 다 보낼 수 없기에 쪼개서 보내야한다.</li>
+  <li>4계층에서 세그먼트로 쪼개고, 이렇게 쪼갠 세그먼트를 헤더를 달고 포장해서 패킷으로 만든다.</li>
+  <li>이 패킷을 프레임에 넣어서, 클라이언트 쪽으로 가져간다.</li>
+  <li>포장했던대로, 다시 까주는 작업을 하게 된다.</li>
+  <li>이렇게 쪼개서 하나씩 받은 조각들은 끝까지 한 번에 다 보내고 받는게 아니다.</li>
+  <li>몇 개 보내고 나면, 서버는 더이상 보내지않고 <code class="language-plaintext highlighter-rouge">Wait</code> 상태로 응답을 기다린다.</li>
+  <li>클라이언트는 몇 번까지 받았다는 <code class="language-plaintext highlighter-rouge">ACK</code>를 보낸다.
+    <ul>
+      <li>예를 들면 ACK#3 : 2번까지 받음(3번 받을 차례)</li>
+    </ul>
+  </li>
+  <li>덧붙여서, 더 받을 수 있는 상태인지, 얼마나 공간이 남았는지 등을 같이 알려준다.</li>
+  <li>그래서 이 크기가 전송가능하다는걸 알게되면 다시 남은 파일을 전송하는 걸 반복한다.</li>
+</ul>
+
+<h3 id="포트-포워딩">포트 포워딩</h3>
+<ul>
+  <li>포트(Port)를 전달(Forwarding)해주는 것</li>
+  <li>특정한 포트로 들어오는 데이터 패킷을 다른 포트로 바꿔서 다시 전송해주는 작업</li>
+  <li>인터넷 연결 속도를 개선하고, 원격으로 기기에 액세스하도록 도와줄 수 있다.</li>
+</ul>
+
+
+
+    </div>
+
+</article>
+<div class="post-nav">
+<a class="previous" href="/jekyll-theme-yat/cs/2024/03/04/as30.html" title="[자료구조] 14. 트리 맵(Tree Map)">[자료구조] 14. 트리 맵(Tree Map)</a><a class="next" href="/jekyll-theme-yat/cs/2024/03/05/as32.html" title="[네트워크] 2. OSI 7 계층">[네트워크] 2. OSI 7 계층</a>
+</div>
+<div class="post-related">
+      <div>Related Articles</div>
+      <ul>
+        <li class="">
+          <a class="post-link" href="/jekyll-theme-yat/error/2023/09/05/error02.html" title="Origin 서버가 대상 리소스를 위한 현재의 representation을 찾지 못했거나, 그것이 존재하는지를 밝히려 하지 않습니다.">
+            Origin 서버가 대상 리소스를 위한 현재의 representation을 찾지 못했거나, 그것이 존재하는지를 밝히려...<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/jekyll-theme-yat/java/2023/06/09/Java24.html" title="JAVA_24_ArrayList 컬렉션">
+            JAVA_24_ArrayList 컬렉션<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/jekyll-theme-yat/error/2023/09/05/error04.html" title="java.lang.IllegalStateException_Current request is not of type">
+            java.lang.IllegalStateException_Current request is not of type<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/jekyll-theme-yat/cs/2024/02/26/as16.html" title="[개발상식] 16. Ajax &amp; axios &amp; fetch 차이점과 장단점">
+            [개발상식] 16. Ajax &amp; axios &amp; fetch 차이점과 장단점<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+        </li>
+</ul>
+    </div>
+<div class="post-comments"></div></section>
+</div>
+
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --><style type="text/css" media="screen">
+.post-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+</style>
+
+<div class="post-menu">
+  <div class="post-menu-title">TOC</div>
+  <div class="post-menu-content"></div>
+</div>
+
+<script>
+  function generateContent() {
+    var menu = document.querySelector(".post-menu");
+    var menuContent =  menu.querySelector(".post-menu-content");
+    var headings = document.querySelector(".post-content").querySelectorAll("h2, h3, h4, h5, h6");
+
+    // Hide menu when no headings
+    if (headings.length === 0) {
+      return menu.style.display = "none";
+    }
+
+    // Generate post menu
+    var menuHTML = '';
+    for (var i = 0; i < headings.length; i++) {
+      var h = headings[i];
+      menuHTML += (
+        '<li class="h-' + h.tagName.toLowerCase() + '">'
+        + '<a href="#h-' + h.getAttribute('id') + '">' + h.textContent + '</a></li>');
+    }
+
+    menuContent.innerHTML = '<ul>' + menuHTML + '</ul>';
+
+    // The header element
+    var header = document.querySelector('header.site-header');
+
+    function doMenuCollapse(index, over_items) {
+      var items = menuContent.firstChild.children;
+
+      if (over_items == undefined) {
+        over_items = 20;
+      }
+
+      if (items.length < over_items) {
+        return;
+      }
+
+      var activeItem = items[index];
+      var beginItem = activeItem
+      var endItem = activeItem
+      var beginIndex = index;
+      var endIndex = index + 1;
+      while (beginIndex >= 0
+        && !items[beginIndex].classList.contains('h-h2')) {
+        beginIndex -= 1;
+      }
+      while (endIndex < items.length
+        && !items[endIndex].classList.contains('h-h2')) {
+        endIndex += 1;
+      }
+      for (var i = 0; i < beginIndex; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+      for (var i = beginIndex + 1; i < endIndex; i++) {
+        item = items[i]
+        // if (!item.classList.contains('h-h2')) {
+          item.style.display = '';
+        // }
+      }
+      for (var i = endIndex; i < items.length; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+    }
+
+    // Init menu collapsed
+    doMenuCollapse(-1);
+
+    // Active the menu item
+    window.addEventListener('scroll', function (event) {
+      var lastActive = menuContent.querySelector('.active');
+      var changed = true;
+      var activeIndex = -1;
+      for (var i = headings.length - 1; i >= 0; i--) {
+        var h = headings[i];
+        var headingRect = h.getBoundingClientRect();
+        var headerRect = header.getBoundingClientRect();
+        var headerTop = Math.floor(headerRect.top);
+        var headerHeight = Math.floor(headerRect.height);
+        var headerHeight = headerTop + headerHeight + 20;
+        if (headingRect.top <= headerHeight) {
+          var id = 'h-' + h.getAttribute('id');
+          var a = menuContent.querySelector('a[href="#' + id  + '"]');
+          var curActive = a.parentNode;
+          if (curActive) {
+            curActive.classList.add('active');
+            activeIndex = i;
+          }
+          if (lastActive == curActive) {
+            changed = false;
+          }
+          break;
+        }
+      }
+      if (changed) {
+        if (lastActive) {
+          lastActive.classList.remove('active');
+        }
+        doMenuCollapse(activeIndex);
+      }
+      event.preventDefault();
+    });
+  }
+  generateContent();
+</script>
+</section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jekyll-theme-yat/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>Unpublished Work <span class="copyleft">©</span> 2017-2025 {YoungEun Jo}</div>
+      <div>Powered by <a title="Jekyll is a simple, blog-aware, static site
+      generator." href="https://jekyllrb.com/">Jekyll</a> &amp; <a title="Yat, yet
+      another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.</div>
+      <div class="footer-col rss-subscribe">Subscribe <a href="/jekyll-theme-yat/feed.xml">via RSS</a>
+</div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

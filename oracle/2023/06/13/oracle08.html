@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Oracle_08_오라클 내장 함수_숫자,수학, 함수 | 매일 기록하는 코딩 공부 일지</title>
+<meta name="generator" content="Jekyll v4.4.1">
+<meta property="og:title" content="Oracle_08_오라클 내장 함수_숫자,수학, 함수">
+<meta name="author" content="Jo">
+<meta property="og:locale" content="en_US">
+<meta name="description" content="오늘의 주제 : 오라클의 다양한 내장 함수를 알아보자2 숫자 함수 ABS(숫자) 숫자의 절대값을 반환한다. 사용 예 SELECT ABS(-1004) FROM DUAL; 결과 : 1004 반환 CEIL(숫자), FLOOR(숫자), ROUND(숫자) CEIL은 올림, FLOOR는 내림, ROUND는 반올림 사용 예 SELECT CEIL(5.8), FLOOR(5.8), ROUND(5.8) FROM DUAL; 결과">
+<meta property="og:description" content="오늘의 주제 : 오라클의 다양한 내장 함수를 알아보자2 숫자 함수 ABS(숫자) 숫자의 절대값을 반환한다. 사용 예 SELECT ABS(-1004) FROM DUAL; 결과 : 1004 반환 CEIL(숫자), FLOOR(숫자), ROUND(숫자) CEIL은 올림, FLOOR는 내림, ROUND는 반올림 사용 예 SELECT CEIL(5.8), FLOOR(5.8), ROUND(5.8) FROM DUAL; 결과">
+<link rel="canonical" href="https://cheeseyoung.github.io//jekyll-theme-yat/oracle/2023/06/13/oracle08.html">
+<meta property="og:url" content="https://cheeseyoung.github.io//jekyll-theme-yat/oracle/2023/06/13/oracle08.html">
+<meta property="og:site_name" content="매일 기록하는 코딩 공부 일지">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2023-06-13T00:00:00+00:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="Oracle_08_오라클 내장 함수_숫자,수학, 함수">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Jo"},"dateModified":"2023-06-13T00:00:00+00:00","datePublished":"2023-06-13T00:00:00+00:00","description":"오늘의 주제 : 오라클의 다양한 내장 함수를 알아보자2 숫자 함수 ABS(숫자) 숫자의 절대값을 반환한다. 사용 예 SELECT ABS(-1004) FROM DUAL; 결과 : 1004 반환 CEIL(숫자), FLOOR(숫자), ROUND(숫자) CEIL은 올림, FLOOR는 내림, ROUND는 반올림 사용 예 SELECT CEIL(5.8), FLOOR(5.8), ROUND(5.8) FROM DUAL; 결과","headline":"Oracle_08_오라클 내장 함수_숫자,수학, 함수","mainEntityOfPage":{"@type":"WebPage","@id":"https://cheeseyoung.github.io//jekyll-theme-yat/oracle/2023/06/13/oracle08.html"},"url":"https://cheeseyoung.github.io//jekyll-theme-yat/oracle/2023/06/13/oracle08.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="icon" href="%F0%9F%90%B1">
+  <link rel="canonical" href="https://cheeseyoung.github.io/">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-noto-sans@0.0.72/index.min.css">
+  <link rel="stylesheet" href="/jekyll-theme-yat/assets/css/main.css">
+  <script src="/jekyll-theme-yat/assets/js/main.js"></script><link type="application/atom+xml" rel="alternate" href="https://cheeseyoung.github.io//jekyll-theme-yat/feed.xml" title="매일 기록하는 코딩 공부 일지">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/languages/go.min.js" async></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #ff4e00;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: uppercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+<script src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe-lightbox.umd.min.js" async></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe.umd.min.js" async></script>
+<link href="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/photoswipe.min.css" rel="stylesheet">
+<style>
+  .pswp .pswp__container .pswp__img {
+    background-color: white;
+  }
+</style>
+
+<script>
+  function initPhotoSwipe() {
+    let customOptions = {};
+
+    try {
+      const data = ``.replaceAll("=>", ":");
+      customOptions = JSON.parse(data);
+    } catch (e) {
+      console.info("Invalid custom photo previewer options! " + e.message);
+    }
+
+    // Define object and gallery options
+    const options = Object.assign(
+      {
+        gallery: "section.main",
+        children: "a.photo-swipe",
+        photo_scale: 2,
+        // dynamic import is not supported in UMD version
+        pswpModule: PhotoSwipe,
+      },
+      customOptions
+    );
+
+    const galleryEl = document.querySelector(options.gallery);
+    if (!galleryEl) {
+      return;
+    }
+
+    const imgEls = [];
+    const els = galleryEl.querySelectorAll("img:not(.emoji)");
+    els.forEach((el) => {
+      if (el.src.trim() == "") {
+        return;
+      }
+      if (!imgEls.includes(el)) {
+        imgEls.push(el);
+      }
+    });
+
+    if (imgEls.length === 0) {
+      return;
+    }
+
+    imgEls.forEach((imgEl) => {
+      imgEl.outerHTML = `
+      <a class="photo-swipe"
+        href="${imgEl.src}"
+        data-pswp-width="${
+          Math.max(imgEl.naturalWidth, imgEl.width) * options.photo_scale
+        }"
+        data-pswp-height="${
+          Math.max(imgEl.naturalHeight, imgEl.height) * options.photo_scale
+        }"
+        data-pswp-caption="${imgEl.getAttribute("caption") || imgEl.alt}"
+        target="_blank">
+        ${imgEl.outerHTML}
+      </a>`;
+    });
+
+    // Initialize PhotoSwipe 5
+    var lightbox = new PhotoSwipeLightbox(options);
+
+    lightbox.init();
+  }
+
+  window.addEventListener("load", initPhotoSwipe);
+</script>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header site-header-transparent" role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/jekyll-theme-yat/">
+  <img class="site-favicon" title="매일 기록하는 코딩 공부 일지" src="%F0%9F%90%B1" onerror="this.style.display='none'">
+  매일 기록하는 코딩 공부 일지
+</a>
+</span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/jekyll-theme-yat/about.html">ABOUT</a><a class="page-link" href="/jekyll-theme-yat/archives.html">ARCHIVES</a><a class="page-link" href="/jekyll-theme-yat/categories.html">CATEGORIES</a><a class="page-link" href="/jekyll-theme-yat/">HOME</a><a class="page-link" href="/jekyll-theme-yat/tags.html">TAGS</a>
+
+
+
+
+
+
+
+
+
+<span class="page-link">
+
+
+
+<div id="google_translate_element" style="display: none;">
+</div>
+
+<span class="ct-language">
+  <ul class="list-unstyled ct-language-dropdown">
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="en">
+          
+          <img src="https://cdn.countryflags.com/thumbs/united-states-of-america/flag-400.png" title="English">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="fr">
+          
+          <img src="https://cdn.countryflags.com/thumbs/france/flag-400.png" title="French">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="zh-CN">
+          
+          <img src="https://cdn.countryflags.com/thumbs/china/flag-400.png" title="Chinese(Simple)">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ja">
+          
+          <img src="https://cdn.countryflags.com/thumbs/japan/flag-400.png" title="Japanese">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ko">
+          
+          <img src="https://cdn.countryflags.com/thumbs/south-korea/flag-400.png" title="Korean">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ru">
+          
+          <img src="https://cdn.countryflags.com/thumbs/russia/flag-400.png" title="Russian">
+          
+        </a>
+      </li>
+    
+  </ul>
+</span>
+
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({
+    pageLanguage: 'en',
+    autoDisplay: false,
+    layout: google.translate.TranslateElement.InlineLayout.VERTICAL
+  }, 'google_translate_element');
+
+  // Links to cross-origin destinations are unsafe
+  var gll = document.getElementsByClassName('goog-logo-link')[0];
+  if (gll) {
+    gll.setAttribute('rel', 'noopener');
+  }
+
+  function restoreLang() {
+    var iframe = document.getElementsByClassName('goog-te-banner-frame')[0];
+    if (!iframe) return;
+
+    var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+    var restore_el = innerDoc.getElementsByTagName("button");
+
+    for (var i = 0; i < restore_el.length; i++) {
+      if (restore_el[i].id.indexOf("restore") >= 0) {
+        restore_el[i].click();
+        var close_el = innerDoc.getElementsByClassName("goog-close-link");
+        close_el[0].click();
+        return;
+      }
+    }
+  }
+
+  function triggerHtmlEvent(element, eventName) {
+    var event;
+    if (document.createEvent) {
+      event = document.createEvent('HTMLEvents');
+      event.initEvent(eventName, true, true);
+      element.dispatchEvent(event);
+    } else {
+      event = document.createEventObject();
+      event.eventType = eventName;
+      element.fireEvent('on' + event.eventType, event);
+    }
+  }
+
+  var googleCombo = document.querySelector("select.goog-te-combo");
+  var langSelect = document.querySelector('.ct-language');
+  langSelect.addEventListener('click', function(event) {
+    if (!event.target) {
+      return;
+    }
+
+    var selected = document.querySelector('.ct-language .ct-language-selected');
+    if (selected) {
+      selected.classList.remove('ct-language-selected');
+    }
+
+    var target = event.target;
+    while (target && target !== langSelect ) {
+      if (target.matches('.lang-select')) {
+        break;
+      }
+      target = target.parentElement;
+    }
+
+    if (target && target.matches('.lang-select')) {
+      var lang = target.getAttribute('data-lang');
+      if (googleCombo.value == lang) {
+        restoreLang();
+      } else {
+        target.parentElement.classList.add('ct-language-selected');
+        googleCombo.value = lang;
+        triggerHtmlEvent(googleCombo, 'change');
+      }
+    }
+
+    event.preventDefault();
+  });
+}
+</script>
+
+<script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>
+</span>
+</div>
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;documentElement.setAttribute("data-header-transparent", "");var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+    html .page-banner {
+      background: #000;
+    }
+  </style>
+<style>html .page-banner {
+      height:  36.8vh;
+      min-height: 38vh;
+    }
+    html[data-scroll-status="top"] .page-banner {
+      height: 100vh;
+    }
+  </style>
+<style>
+    html .page-banner .page-banner-img > *:first-child {
+      opacity: 0.618;
+    }
+
+    html[data-theme="dark"] .page-banner .page-banner-img > *:first-child {
+      opacity: 0.443724;
+    }
+  </style>
+<style>
+    html .page-banner .page-banner-inner > *:first-child > *:nth-child(1) {
+      font-size: 4.25em; font-weight: bold; text-decoration: underline
+    }
+  </style>
+<style>
+    html .page-banner .page-banner-inner > *:first-child > *:nth-child(2) {
+      color: gold
+    }
+  </style>
+<section class="page-banner">
+    <div class="page-banner-img">
+<video autoplay="" poster="/jekyll-theme-yat/assets/images/banners/typing.gif" playsinline>
+          <source src="./assets/images/banners/typing.gif">
+        </source></video>
+        <script>
+          (function() {
+            var video = document.querySelector('.page-banner .page-banner-img > video');
+            var videoPlay = function() {
+              video.play().catch (function() {
+                  video.muted = true;
+                  video.play();
+                });
+            }
+
+            video.onloadstart = function() {
+              video.currentTime = 8.5;
+              video.volume = 0.8;
+              video.muted = (video.volume == 0);
+              videoPlay();
+            }
+
+            video.onended = function() {
+              video.currentTime = 8.5;
+              video.volume = 0;video.play();}
+          })();
+        </script>
+</div>
+    <div class="wrapper">
+      <div class="page-banner-inner">
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">Oracle_08_오라클 내장 함수_숫자,수학, 함수</h1>
+  <h2 class="post-subtitle">Oracle internal function about NUMBER,MATH</h2>
+
+  <div class="post-meta">
+    <time class="dt-published" datetime="2023-06-13T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Jun 13, 2023
+    </time><span class="post-author left-vsplit"><i class="fa fa-pencil"></i> Jo</span>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 4 mins</span>
+  </div>
+<div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#Oracle">#Oracle</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#Database">#Database</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#SQL">#SQL</a>
+</div></header>
+</div>
+    </div>
+  </section><script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div class="theme-toggle">
+  <input type="checkbox" id="theme-switch">
+  <label for="theme-switch">
+    <div class="toggle"></div>
+    <div class="names">
+      <p class="light">Light</p>
+      <p class="dark">Dark</p>
+    </div>
+  </label>
+</div>
+
+
+
+
+<script>
+  (function() {
+    var sw = document.getElementById('theme-switch');
+    var html = document.getElementsByTagName('html')[0];
+    var nightModeOption = ('auto' || 'auto').toLowerCase();
+    var storage = nightModeOption === 'manual'
+        ? localStorage
+        : sessionStorage;
+    var themeData = loadThemeData();
+
+    function saveThemeData(data) {
+      storage.setItem('theme', JSON.stringify(data));
+    }
+
+    function loadThemeData() {
+      var data = storage.getItem('theme');
+      try {
+        data = JSON.parse(data ? data : '');
+      } catch(e) {
+        data = { nightShift: undefined, autoToggleAt: 0 };
+        saveThemeData(data);
+      }
+      return data;
+    }
+
+    function handleThemeToggle(nightShift) {
+      themeData.nightShift = nightShift;
+      saveThemeData(themeData);
+      html.dataset.theme = nightShift ? 'dark' : 'light';
+      setTimeout(function() {
+        sw.checked = nightShift ? true : false;
+      }, 50);
+    }
+
+    function autoThemeToggle() {
+      // Next time point of theme toggle
+      var now = new Date();
+      var toggleAt = new Date();
+      var hours = now.getHours();
+      var nightShift = hours >= 19 || hours <=7;
+
+      if (nightShift) {
+        if (hours > 7) {
+          toggleAt.setDate(toggleAt.getDate() + 1);
+        }
+        toggleAt.setHours(7);
+      } else {
+        toggleAt.setHours(19);
+      }
+
+      toggleAt.setMinutes(0);
+      toggleAt.setSeconds(0);
+      toggleAt.setMilliseconds(0)
+
+      var delay = toggleAt.getTime() - now.getTime();
+
+      // auto toggle theme mode
+      setTimeout(function() {
+        handleThemeToggle(!nightShift);
+      }, delay);
+
+      return {
+        nightShift: nightShift,
+        toggleAt: toggleAt.getTime()
+      };
+    }
+
+    // Listen the theme toggle event
+    sw.addEventListener('change', function(event) {
+      handleThemeToggle(event.target.checked);
+    });
+
+    if (nightModeOption == 'auto') {
+      var data = autoThemeToggle();
+
+      // Toggle theme by local setting
+      if (data.toggleAt > themeData.autoToggleAt) {
+        themeData.autoToggleAt = data.toggleAt;
+        handleThemeToggle(data.nightShift);
+      } else {
+        handleThemeToggle(themeData.nightShift);
+      }
+    } else if (nightModeOption == 'manual') {
+      handleThemeToggle(themeData.nightShift);
+    } else {
+      var nightShift = themeData.nightShift;
+      if (nightShift === undefined) {
+        nightShift = nightModeOption === 'on';
+      }
+      handleThemeToggle(nightShift);
+    }
+  })();
+</script>
+<div id="click-to-top" class="click-to-top">
+  <i class="fa fa-arrow-up"></i>
+</div>
+<script>
+  (function () {
+    const clickToTop = document.getElementById('click-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 100) {
+        clickToTop.classList.add('show')
+      }else {
+        clickToTop.classList.remove('show')
+      }
+    });
+    clickToTop.addEventListener('click', () => {
+      window.smoothScrollTo(0);
+    });
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <p>오늘의 주제 :  오라클의 다양한 내장 함수를 알아보자2 <br></p>
+<hr>
+<p><br></p>
+
+<h2 id="숫자-함수">숫자 함수</h2>
+<ol>
+  <li>
+    <dl>
+      <dt>ABS(숫자)<br>
+</dt>
+      <dd>숫자의 절대값을 반환한다.<br>
+        <ul>
+          <li>사용 예
+            <div class="language-sql highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code> <span class="k">SELECT</span> <span class="k">ABS</span><span class="p">(</span><span class="o">-</span><span class="mi">1004</span><span class="p">)</span> <span class="k">FROM</span> <span class="n">DUAL</span><span class="p">;</span>
+</code></pre></div>            </div>
+          </li>
+          <li>결과 : 1004 반환 <br><br>
+</li>
+        </ul>
+      </dd>
+    </dl>
+  </li>
+  <li>
+    <dl>
+      <dt>CEIL(숫자), FLOOR(숫자), ROUND(숫자)<br>
+</dt>
+      <dd>CEIL은 올림, FLOOR는 내림, ROUND는 반올림<br>
+        <ul>
+          <li>사용 예
+            <div class="language-sql highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="n">CEIL</span><span class="p">(</span><span class="mi">5</span><span class="p">.</span><span class="mi">8</span><span class="p">),</span> <span class="n">FLOOR</span><span class="p">(</span><span class="mi">5</span><span class="p">.</span><span class="mi">8</span><span class="p">),</span> <span class="n">ROUND</span><span class="p">(</span><span class="mi">5</span><span class="p">.</span><span class="mi">8</span><span class="p">)</span> <span class="k">FROM</span> <span class="n">DUAL</span><span class="p">;</span>
+</code></pre></div>            </div>
+          </li>
+          <li>결과 <br> <img src="https://github.com/CheeseYoung/cheeseyoung.github.io/assets/132384527/0a740f74-c31d-4f45-9032-7dab1e73e83b" alt="20230613_142854">
+<br>
+</li>
+        </ul>
+      </dd>
+    </dl>
+  </li>
+  <li>
+    <dl>
+      <dt>TRUNC(숫자,정수)<br>
+</dt>
+      <dd>숫자를 소수점을 기준으로 정수 위치까지 구하고 나머지는 버린다.<br>
+        <ul>
+          <li>사용 예
+            <div class="language-sql highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code> <span class="k">SELECT</span> <span class="n">TRUNC</span><span class="p">(</span><span class="mi">55555</span><span class="p">.</span><span class="mi">3333</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="n">TRUNC</span><span class="p">(</span><span class="mi">55555</span><span class="p">.</span><span class="mi">3333</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span> <span class="k">FROM</span> <span class="n">DUAL</span><span class="p">;</span>
+</code></pre></div>            </div>
+          </li>
+          <li>결과 <br> <img src="https://github.com/CheeseYoung/cheeseyoung.github.io/assets/132384527/038fc777-01d9-49c7-916a-26f5bf556847" alt="20230613_143909">
+<br>
+</li>
+        </ul>
+      </dd>
+    </dl>
+  </li>
+</ol>
+
+<h2 id="날짜-및-시간-함수">날짜 및 시간 함수</h2>
+<dl>
+  <dt><b>1. ADD_MONTHS(‘날짜’,개월)</b></dt>
+  <dd>‘날짜’를 기준으로 개월을 더하거나 뺀 결과를 구한다.<br>
+    <ul>
+      <li>사용 예
+        <div class="language-sql highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="n">ADD_MONTHS</span><span class="p">(</span><span class="s1">'2020-1-1'</span><span class="p">,</span><span class="mi">5</span><span class="p">),</span><span class="n">ADD_MONTHS</span><span class="p">(</span><span class="n">SYSDATE</span><span class="p">,</span><span class="o">-</span><span class="mi">5</span><span class="p">)</span> <span class="k">FROM</span> <span class="n">DUAL</span><span class="p">;</span>
+</code></pre></div>        </div>
+      </li>
+      <li>결과 <br> <img src="https://github.com/CheeseYoung/cheeseyoung.github.io/assets/132384527/d8452fce-490c-4201-ab32-cf379cd41a26" alt="20230613_144246">
+<br>
+<b>2. CURRENT_DATE, SYSDATE, CURRENT_TIMESTAMP</b>
+</li>
+    </ul>
+  </dd>
+  <dd>앞의 두 가지는 연/월/일 형식으로 현재 날짜를 구하고, 타임스탬프는 ‘연/월/일 시:분:초 지역’형식으로 구한다.
+    <ul>
+      <li>사용 예1
+        <div class="language-sql highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="n">SYSDATE</span><span class="o">+</span><span class="mi">10</span><span class="p">,</span> <span class="n">TO_DATE</span><span class="p">(</span><span class="s1">'2023-5-1'</span><span class="p">)</span><span class="o">+</span><span class="mi">10</span><span class="p">,</span> <span class="k">current_date</span> <span class="k">FROM</span> <span class="n">DUAL</span><span class="p">;</span>
+</code></pre></div>        </div>
+      </li>
+      <li>결과 <br> <img src="https://github.com/CheeseYoung/cheeseyoung.github.io/assets/132384527/bade9433-3f63-49f3-8a42-7d8b81216b0f" alt="20230613_144543">
+</li>
+      <li>사용 예2
+        <div class="language-sql highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="k">CURRENT_TIMESTAMP</span> <span class="k">FROM</span> <span class="n">DUAL</span><span class="p">;</span>
+</code></pre></div>        </div>
+      </li>
+      <li>결과 <br><img src="https://github.com/CheeseYoung/cheeseyoung.github.io/assets/132384527/f21da4c4-2010-4c64-956d-6721ad297d11" alt="20230613_145112">
+</li>
+      <li>사용 예3
+        <div class="language-sql highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="n">to_char</span><span class="p">(</span><span class="n">sysdate</span><span class="p">,</span><span class="s1">'yyyy-mm-dd hh:mi:ss'</span><span class="p">)</span> <span class="k">FROM</span> <span class="n">DUAL</span><span class="p">;</span>
+</code></pre></div>        </div>
+      </li>
+      <li>결과 <br> <img src="https://github.com/CheeseYoung/cheeseyoung.github.io/assets/132384527/db273c20-a7ee-4c5e-be72-dcd93de2ffd0" alt="20230613_145212">
+ – 이렇게 출력 형태를 지정해줄 수 있다.<br><br>
+</li>
+    </ul>
+  </dd>
+  <dt>
+<b>3. LAST_DAY(‘날짜’)</b><br>
+</dt>
+  <dd>‘날짜’가 속한 달의 마지막 날짜를 구한다.<br><br>
+<b>4. MONTHS_BETWEEN(‘날짜1’,’날짜2’)</b><br>
+</dd>
+  <dd>두 날짜 사지의 개월 수를 계산해서 소수점 단위까지 반환한다.
+    <ul>
+      <li>사용 예)
+        <div class="language-sql highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="n">MONTHS_BETWEEN</span><span class="p">(</span><span class="n">SYSDATE</span><span class="p">,</span><span class="s1">'1998-01-18'</span><span class="p">)</span> <span class="k">FROM</span> <span class="n">DUAL</span><span class="p">;</span>
+</code></pre></div>        </div>
+      </li>
+      <li>결과 <br> <img src="https://github.com/CheeseYoung/cheeseyoung.github.io/assets/132384527/1276f85a-3eb5-45bb-8efd-bd43ec5e9a5b" alt="20230613_145651">
+ – 내가 304개월이라는 것을 알 수 있다. <br>
+</li>
+    </ul>
+  </dd>
+</dl>
+
+<h2 id="순위-함수">순위 함수</h2>
+<p>: 순번을 처리하는 함수로, 결과에 순번 또는 순위(등수)를 매기는 역할</p>
+<ul>
+  <li>종류 : RANK(), NTILE(), DENSE_RANK(), ROW_NUMBER() 등</li>
+  <li>기본 형태 : <code class="language-plaintext highlighter-rouge">순위함수() OVER( ORDER BY(조건) )</code> <br>
+</li>
+</ul>
+
+<p><b>1. ROW_NUMBER() 함수 </b><br></p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="n">ROW_NUMBER</span><span class="p">()</span> <span class="n">OVER</span><span class="p">(</span><span class="k">ORDER</span> <span class="k">BY</span> <span class="n">height</span> <span class="k">DESC</span><span class="p">)</span><span class="nv">"키 큰 순위"</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span><span class="n">addr</span><span class="p">,</span><span class="n">height</span> <span class="k">FROM</span> <span class="n">playerTBL</span><span class="p">;</span>
+</code></pre></div></div>
+<blockquote>
+  <p>결과 : <br> <img src="https://github.com/CheeseYoung/cheeseyoung.github.io/assets/132384527/1f11df1b-0570-43aa-b519-b1801a2f7cf7" alt="20230613_153943"></p>
+</blockquote>
+
+<ul>
+  <li>
+    <dl>
+      <dt><b>PARTITION BY 속성</b></dt>
+      <dd>속성의 값 별로 순위를 주고 싶은 경우에는 OVER(뒤에 추가해준다.<br>
+</dd>
+    </dl>
+  </li>
+</ul>
+
+<dl>
+  <dt><b>2. RANK() 함수 </b></dt>
+  <dd>ROW_NUMBER()과 유사하지만, 얘는 등수에 좀 더 초점을 둔다.<br>
+예를 들어, 2등이 2명일 경우에, 그 다음 사람을 row_num은 3등으로, rank는 4등으로 매긴다.<br>
+</dd>
+  <dt><b>3. NTILE() 함수</b></dt>
+  <dd>위와 같은 상황에서, 그룹으로 나누고 싶은 경우에 사용한다.<br>
+예를 들어, 순위대로 2그룹으로 나누고 싶으면 NTILE(2)로 사용하면 된다.<br>
+</dd>
+</dl>
+
+<h2 id="형-변환-함수">형 변환 함수</h2>
+
+<p><b>- 숫자 -&gt; 문자열 </b> 
+|형식|설명|
+|–|—|
+|9|숫자 한 자리를 의미(빈자리를 채우지x)|
+|0|빈자리를 0으로 채움|
+|$|달러 표시를 추가해서 출력|
+|L|지역 화폐 단위 기호를 추가해서 출력|
+|.|소수점 표시|
+|,|천 단위의 구분기호 표시|</p>
+
+<h2 id="nvl-함수">NVL 함수</h2>
+<p>: NULL 값을 다른 값으로 대치하여 연산하거나, 다른 값으로 출력<br></p>
+<ul>
+  <li>사용 법 : NVL(‘값’,’지정값’) // NVL2(‘값’,’지정값1’,’지정값2’)
+    <div class="language-sql highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="n">name</span><span class="p">,</span><span class="n">NVL</span><span class="p">(</span><span class="n">phone</span><span class="p">,</span><span class="s1">'연락처없음'</span><span class="p">)</span> <span class="k">FROM</span> <span class="n">customer</span><span class="p">;</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="case문-decode-함수">CASE문, DECODE 함수</h2>
+<p>: 여러가지 가능한 값 중 하나의 조건을 선택<br></p>
+<ul>
+  <li>CASE문 <br>
+<code class="language-plaintext highlighter-rouge">CASE 변수 WHEN 값1 THEN 결과1 WHEN 값2 THEN 결과2 ... ELSE 결과n END;</code><br>
+</li>
+  <li>DECODE 함수<br>
+<code class="language-plaintext highlighter-rouge">DECODE(칼럼,조건1,결과1,조건2,결과2,조건3,결과3 ....)</code><br>
+ – 특이하게도 칼럼의 타입과 결과의 타입이 같지 않아도 알아서 출력해준다.
+<br>
+</li>
+</ul>
+
+
+
+    </div>
+
+</article>
+<div class="post-nav">
+<a class="previous" href="/jekyll-theme-yat/oracle/2023/06/13/Oracle08_2.html" title="Oracle_08_2_오라클 내장 함수 예제">Oracle_08_2_오라클 내장 함수 예제</a><a class="next" href="/jekyll-theme-yat/java/2023/06/14/JAVA27.html" title="JAVA_27_입출력 스트림 활용 예제">JAVA_27_입출력 스트림 활용 예제</a>
+</div>
+<div class="post-related">
+      <div>Related Articles</div>
+      <ul>
+        <li class="">
+          <a class="post-link" href="/jekyll-theme-yat/study/2024/01/25/study04.html" title="[정보처리기사] 개념 2과목 소프트웨어 개발">
+            [정보처리기사] 개념 2과목 소프트웨어 개발<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/jekyll-theme-yat/linux/2024/07/23/linux04.html" title="[리눅스] 4. 리눅스 프로세스 동작과 제어">
+            [리눅스] 4. 리눅스 프로세스 동작과 제어<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/jekyll-theme-yat/oracle/2023/06/23/Oracle16.html" title="Oracle_16_뷰(view)생성 및 사용">
+            Oracle_16_뷰(view)생성 및 사용<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/21/as90.html" title="[데이터베이스] 18. SQL의 종류 (DDL, DML, DCL, TCL)">
+            [데이터베이스] 18. SQL의 종류 (DDL, DML, DCL, TCL)<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+        </li>
+</ul>
+    </div>
+<div class="post-comments"></div></section>
+</div>
+
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --></section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jekyll-theme-yat/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>Unpublished Work <span class="copyleft">©</span> 2017-2025 {YoungEun Jo}</div>
+      <div>Powered by <a title="Jekyll is a simple, blog-aware, static site
+      generator." href="https://jekyllrb.com/">Jekyll</a> &amp; <a title="Yat, yet
+      another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.</div>
+      <div class="footer-col rss-subscribe">Subscribe <a href="/jekyll-theme-yat/feed.xml">via RSS</a>
+</div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

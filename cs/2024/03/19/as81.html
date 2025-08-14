@@ -1,0 +1,1720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>[데이터베이스] 9. 정규화(Normalization) | 매일 기록하는 코딩 공부 일지</title>
+<meta name="generator" content="Jekyll v4.4.1">
+<meta property="og:title" content="[데이터베이스] 9. 정규화(Normalization)">
+<meta name="author" content="Jo">
+<meta property="og:locale" content="en_US">
+<meta name="description" content="목차 🕳 키(Key) 🕳 인덱스(Index) 📌 정규화(Normalization) 🕳 트랜잭션(Transaction) 🕳 이상현상(Anomaly) 🕳 병행제어(Concurrency Control)">
+<meta property="og:description" content="목차 🕳 키(Key) 🕳 인덱스(Index) 📌 정규화(Normalization) 🕳 트랜잭션(Transaction) 🕳 이상현상(Anomaly) 🕳 병행제어(Concurrency Control)">
+<link rel="canonical" href="https://cheeseyoung.github.io//jekyll-theme-yat/cs/2024/03/19/as81.html">
+<meta property="og:url" content="https://cheeseyoung.github.io//jekyll-theme-yat/cs/2024/03/19/as81.html">
+<meta property="og:site_name" content="매일 기록하는 코딩 공부 일지">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2024-03-19T00:00:00+00:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="[데이터베이스] 9. 정규화(Normalization)">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Jo"},"dateModified":"2024-03-19T00:00:00+00:00","datePublished":"2024-03-19T00:00:00+00:00","description":"목차 🕳 키(Key) 🕳 인덱스(Index) 📌 정규화(Normalization) 🕳 트랜잭션(Transaction) 🕳 이상현상(Anomaly) 🕳 병행제어(Concurrency Control)","headline":"[데이터베이스] 9. 정규화(Normalization)","mainEntityOfPage":{"@type":"WebPage","@id":"https://cheeseyoung.github.io//jekyll-theme-yat/cs/2024/03/19/as81.html"},"url":"https://cheeseyoung.github.io//jekyll-theme-yat/cs/2024/03/19/as81.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="icon" href="%F0%9F%90%B1">
+  <link rel="canonical" href="https://cheeseyoung.github.io/">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-noto-sans@0.0.72/index.min.css">
+  <link rel="stylesheet" href="/jekyll-theme-yat/assets/css/main.css">
+  <script src="/jekyll-theme-yat/assets/js/main.js"></script><link type="application/atom+xml" rel="alternate" href="https://cheeseyoung.github.io//jekyll-theme-yat/feed.xml" title="매일 기록하는 코딩 공부 일지">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/languages/go.min.js" async></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #ff4e00;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: uppercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+<script src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe-lightbox.umd.min.js" async></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe.umd.min.js" async></script>
+<link href="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/photoswipe.min.css" rel="stylesheet">
+<style>
+  .pswp .pswp__container .pswp__img {
+    background-color: white;
+  }
+</style>
+
+<script>
+  function initPhotoSwipe() {
+    let customOptions = {};
+
+    try {
+      const data = ``.replaceAll("=>", ":");
+      customOptions = JSON.parse(data);
+    } catch (e) {
+      console.info("Invalid custom photo previewer options! " + e.message);
+    }
+
+    // Define object and gallery options
+    const options = Object.assign(
+      {
+        gallery: "section.main",
+        children: "a.photo-swipe",
+        photo_scale: 2,
+        // dynamic import is not supported in UMD version
+        pswpModule: PhotoSwipe,
+      },
+      customOptions
+    );
+
+    const galleryEl = document.querySelector(options.gallery);
+    if (!galleryEl) {
+      return;
+    }
+
+    const imgEls = [];
+    const els = galleryEl.querySelectorAll("img:not(.emoji)");
+    els.forEach((el) => {
+      if (el.src.trim() == "") {
+        return;
+      }
+      if (!imgEls.includes(el)) {
+        imgEls.push(el);
+      }
+    });
+
+    if (imgEls.length === 0) {
+      return;
+    }
+
+    imgEls.forEach((imgEl) => {
+      imgEl.outerHTML = `
+      <a class="photo-swipe"
+        href="${imgEl.src}"
+        data-pswp-width="${
+          Math.max(imgEl.naturalWidth, imgEl.width) * options.photo_scale
+        }"
+        data-pswp-height="${
+          Math.max(imgEl.naturalHeight, imgEl.height) * options.photo_scale
+        }"
+        data-pswp-caption="${imgEl.getAttribute("caption") || imgEl.alt}"
+        target="_blank">
+        ${imgEl.outerHTML}
+      </a>`;
+    });
+
+    // Initialize PhotoSwipe 5
+    var lightbox = new PhotoSwipeLightbox(options);
+
+    lightbox.init();
+  }
+
+  window.addEventListener("load", initPhotoSwipe);
+</script>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header site-header-transparent" role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/jekyll-theme-yat/">
+  <img class="site-favicon" title="매일 기록하는 코딩 공부 일지" src="%F0%9F%90%B1" onerror="this.style.display='none'">
+  매일 기록하는 코딩 공부 일지
+</a>
+</span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/jekyll-theme-yat/about.html">ABOUT</a><a class="page-link" href="/jekyll-theme-yat/archives.html">ARCHIVES</a><a class="page-link" href="/jekyll-theme-yat/categories.html">CATEGORIES</a><a class="page-link" href="/jekyll-theme-yat/">HOME</a><a class="page-link" href="/jekyll-theme-yat/tags.html">TAGS</a>
+
+
+
+
+
+
+
+
+
+<span class="page-link">
+
+
+
+<div id="google_translate_element" style="display: none;">
+</div>
+
+<span class="ct-language">
+  <ul class="list-unstyled ct-language-dropdown">
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="en">
+          
+          <img src="https://cdn.countryflags.com/thumbs/united-states-of-america/flag-400.png" title="English">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="fr">
+          
+          <img src="https://cdn.countryflags.com/thumbs/france/flag-400.png" title="French">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="zh-CN">
+          
+          <img src="https://cdn.countryflags.com/thumbs/china/flag-400.png" title="Chinese(Simple)">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ja">
+          
+          <img src="https://cdn.countryflags.com/thumbs/japan/flag-400.png" title="Japanese">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ko">
+          
+          <img src="https://cdn.countryflags.com/thumbs/south-korea/flag-400.png" title="Korean">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ru">
+          
+          <img src="https://cdn.countryflags.com/thumbs/russia/flag-400.png" title="Russian">
+          
+        </a>
+      </li>
+    
+  </ul>
+</span>
+
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({
+    pageLanguage: 'en',
+    autoDisplay: false,
+    layout: google.translate.TranslateElement.InlineLayout.VERTICAL
+  }, 'google_translate_element');
+
+  // Links to cross-origin destinations are unsafe
+  var gll = document.getElementsByClassName('goog-logo-link')[0];
+  if (gll) {
+    gll.setAttribute('rel', 'noopener');
+  }
+
+  function restoreLang() {
+    var iframe = document.getElementsByClassName('goog-te-banner-frame')[0];
+    if (!iframe) return;
+
+    var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+    var restore_el = innerDoc.getElementsByTagName("button");
+
+    for (var i = 0; i < restore_el.length; i++) {
+      if (restore_el[i].id.indexOf("restore") >= 0) {
+        restore_el[i].click();
+        var close_el = innerDoc.getElementsByClassName("goog-close-link");
+        close_el[0].click();
+        return;
+      }
+    }
+  }
+
+  function triggerHtmlEvent(element, eventName) {
+    var event;
+    if (document.createEvent) {
+      event = document.createEvent('HTMLEvents');
+      event.initEvent(eventName, true, true);
+      element.dispatchEvent(event);
+    } else {
+      event = document.createEventObject();
+      event.eventType = eventName;
+      element.fireEvent('on' + event.eventType, event);
+    }
+  }
+
+  var googleCombo = document.querySelector("select.goog-te-combo");
+  var langSelect = document.querySelector('.ct-language');
+  langSelect.addEventListener('click', function(event) {
+    if (!event.target) {
+      return;
+    }
+
+    var selected = document.querySelector('.ct-language .ct-language-selected');
+    if (selected) {
+      selected.classList.remove('ct-language-selected');
+    }
+
+    var target = event.target;
+    while (target && target !== langSelect ) {
+      if (target.matches('.lang-select')) {
+        break;
+      }
+      target = target.parentElement;
+    }
+
+    if (target && target.matches('.lang-select')) {
+      var lang = target.getAttribute('data-lang');
+      if (googleCombo.value == lang) {
+        restoreLang();
+      } else {
+        target.parentElement.classList.add('ct-language-selected');
+        googleCombo.value = lang;
+        triggerHtmlEvent(googleCombo, 'change');
+      }
+    }
+
+    event.preventDefault();
+  });
+}
+</script>
+
+<script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>
+</span>
+</div>
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;documentElement.setAttribute("data-header-transparent", "");var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+    html .page-banner {
+      background: #000;
+    }
+  </style>
+<style>html .page-banner {
+      height:  36.8vh;
+      min-height: 38vh;
+    }
+    html[data-scroll-status="top"] .page-banner {
+      height: 100vh;
+    }
+  </style>
+<style>
+    html .page-banner .page-banner-img > *:first-child {
+      opacity: 0.618;
+    }
+
+    html[data-theme="dark"] .page-banner .page-banner-img > *:first-child {
+      opacity: 0.443724;
+    }
+  </style>
+<style>
+    html .page-banner .page-banner-inner > *:first-child > *:nth-child(1) {
+      font-size: 4.25em; font-weight: bold; text-decoration: underline
+    }
+  </style>
+<style>
+    html .page-banner .page-banner-inner > *:first-child > *:nth-child(2) {
+      color: gold
+    }
+  </style>
+<section class="page-banner">
+    <div class="page-banner-img">
+<div style="background-image: url(https://github.com/CheeseYoung/Cheeseyoung.github.io/assets/132384527/596e7e85-0592-478a-adee-599a82e99df4)"></div>
+        <img class="img-placeholder" src="https://github.com/CheeseYoung/Cheeseyoung.github.io/assets/132384527/596e7e85-0592-478a-adee-599a82e99df4">
+</div>
+    <div class="wrapper">
+      <div class="page-banner-inner">
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">[데이터베이스] 9. 정규화(Normalization)</h1>
+  <h2 class="post-subtitle">Engineer Information Processing</h2>
+
+  <div class="post-meta">
+    <time class="dt-published" datetime="2024-03-19T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Mar 19, 2024
+    </time><span class="post-author left-vsplit"><i class="fa fa-pencil"></i> Jo</span>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 6 mins</span>
+  </div>
+<div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#Study">#Study</a></div></header>
+</div>
+    </div>
+  </section><script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div class="theme-toggle">
+  <input type="checkbox" id="theme-switch">
+  <label for="theme-switch">
+    <div class="toggle"></div>
+    <div class="names">
+      <p class="light">Light</p>
+      <p class="dark">Dark</p>
+    </div>
+  </label>
+</div>
+
+
+
+
+<script>
+  (function() {
+    var sw = document.getElementById('theme-switch');
+    var html = document.getElementsByTagName('html')[0];
+    var nightModeOption = ('auto' || 'auto').toLowerCase();
+    var storage = nightModeOption === 'manual'
+        ? localStorage
+        : sessionStorage;
+    var themeData = loadThemeData();
+
+    function saveThemeData(data) {
+      storage.setItem('theme', JSON.stringify(data));
+    }
+
+    function loadThemeData() {
+      var data = storage.getItem('theme');
+      try {
+        data = JSON.parse(data ? data : '');
+      } catch(e) {
+        data = { nightShift: undefined, autoToggleAt: 0 };
+        saveThemeData(data);
+      }
+      return data;
+    }
+
+    function handleThemeToggle(nightShift) {
+      themeData.nightShift = nightShift;
+      saveThemeData(themeData);
+      html.dataset.theme = nightShift ? 'dark' : 'light';
+      setTimeout(function() {
+        sw.checked = nightShift ? true : false;
+      }, 50);
+    }
+
+    function autoThemeToggle() {
+      // Next time point of theme toggle
+      var now = new Date();
+      var toggleAt = new Date();
+      var hours = now.getHours();
+      var nightShift = hours >= 19 || hours <=7;
+
+      if (nightShift) {
+        if (hours > 7) {
+          toggleAt.setDate(toggleAt.getDate() + 1);
+        }
+        toggleAt.setHours(7);
+      } else {
+        toggleAt.setHours(19);
+      }
+
+      toggleAt.setMinutes(0);
+      toggleAt.setSeconds(0);
+      toggleAt.setMilliseconds(0)
+
+      var delay = toggleAt.getTime() - now.getTime();
+
+      // auto toggle theme mode
+      setTimeout(function() {
+        handleThemeToggle(!nightShift);
+      }, delay);
+
+      return {
+        nightShift: nightShift,
+        toggleAt: toggleAt.getTime()
+      };
+    }
+
+    // Listen the theme toggle event
+    sw.addEventListener('change', function(event) {
+      handleThemeToggle(event.target.checked);
+    });
+
+    if (nightModeOption == 'auto') {
+      var data = autoThemeToggle();
+
+      // Toggle theme by local setting
+      if (data.toggleAt > themeData.autoToggleAt) {
+        themeData.autoToggleAt = data.toggleAt;
+        handleThemeToggle(data.nightShift);
+      } else {
+        handleThemeToggle(themeData.nightShift);
+      }
+    } else if (nightModeOption == 'manual') {
+      handleThemeToggle(themeData.nightShift);
+    } else {
+      var nightShift = themeData.nightShift;
+      if (nightShift === undefined) {
+        nightShift = nightModeOption === 'on';
+      }
+      handleThemeToggle(nightShift);
+    }
+  })();
+</script>
+<div id="click-to-top" class="click-to-top">
+  <i class="fa fa-arrow-up"></i>
+</div>
+<script>
+  (function () {
+    const clickToTop = document.getElementById('click-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 100) {
+        clickToTop.classList.add('show')
+      }else {
+        clickToTop.classList.remove('show')
+      }
+    });
+    clickToTop.addEventListener('click', () => {
+      window.smoothScrollTo(0);
+    });
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <h1 id="목차">목차</h1>
+<p>🕳 키(Key) <br>
+🕳 인덱스(Index) <br>
+📌 정규화(Normalization) <br>
+🕳 트랜잭션(Transaction) <br>
+🕳 이상현상(Anomaly) <br>
+🕳 병행제어(Concurrency Control) <br>
+<br></p>
+<hr>
+
+<blockquote>
+  <p>정처기 때문에 도부이결다조로 외웠던 정규화</p>
+</blockquote>
+
+<h2 id="정규화normalization란">정규화(Normalization)란?</h2>
+<p><strong>이상현상이 발생하는 릴레이션을 분해하여 이상현상을 없애는 과정</strong></p>
+<ul>
+  <li>이상현상이 존재하는 릴레이션을 분해하여 여러 개의 릴레이션을 생성하게 된다.</li>
+  <li>이를 구분하여 정규형이 높아질수록 이상현상은 줄어들게 된다.</li>
+  <li>정규화(Normalization)의 기본 목표는 <strong>테이블 간에 중복된 데이터를 허용하지 않는다는 것</strong>이다.</li>
+  <li>이로써 <strong>무결성(Integrity)를 유지</strong>할 수 있으며, <strong>DB의 저장 용량 역시 줄일 수 있다</strong>.</li>
+  <li>이러한 테이블을 분해하는 정규화 단계가 정의되어 있다.</li>
+</ul>
+
+<h2 id="정규화의-장단점">정규화의 장단점</h2>
+<h1 id="장점">장점</h1>
+<ul>
+  <li>데이터베이스 변경 시 이상 현상(Anomaly)을 제거할 수 있다.</li>
+  <li>정규화된 데이터베이스 구조에서는 새로운 데이터 형의 추가로 인한 확장 시, 그 구조를 변경하지 않아도 되거나 일부만 변경해도 된다.</li>
+  <li>데이터베이스와 연동된 응용 프로그램에 최소한의 영향만을 미치게 되어 응용프로그램의 생명을 연장시킨다.
+<br><br>
+</li>
+</ul>
+
+<h1 id="단점">단점</h1>
+<ul>
+  <li>릴레이션의 분해로 인해 릴레이션 간의 JOIN 연산이 많아진다.</li>
+  <li>질의에 대한 응답 시간이 느려질 수도 있다.
+    <ul>
+      <li>데이터의 중복 속성을 제거하고 결정자에 의해 동일한 의미의 일반 속성이 하나의 테이블로 집약되므로</li>
+      <li>한 테이블의 데이터 용량이 최소화되는 효과가 있다.</li>
+    </ul>
+  </li>
+  <li>따라서 데이터를 처리할 때 속도가 빨라질 수도 있고 느려질 수도 있다.</li>
+  <li>만약 조인이 많이 발생하여 성능 저하가 나타나면 반정규화(De-normalization)를 적용할 수도 있다.</li>
+</ul>
+
+<h2 id="제-1정규화1nf">제 1정규화(1NF)</h2>
+<h1 id="테이블의-컬럼이-원자값atomic-value-하나의-값을-갖도록-테이블을-분해하는-것">테이블의 컬럼이 원자값(Atomic Value, 하나의 값)을 갖도록 테이블을 분해하는 것</h1>
+<p>제 1 정규화는 다음과 같은 규칙들을 만족해야한다.</p>
+<ol>
+  <li>각 컬럼이 하나의 속성만을 가져야한다.</li>
+  <li>하나의 컬럼은 같은 종류나 타입(type)의 값을 가져야한다.</li>
+  <li>각 컬럼이 유일한 이름을 가져야한다.</li>
+  <li>칼럼의 순서가 상관없어야한다</li>
+</ol>
+
+<ul>
+  <li>예를 들면,</li>
+</ul>
+
+<table>
+  <thead>
+    <tr>
+      <th>이름</th>
+      <th>나이</th>
+      <th>수강과목</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>조</td>
+      <td>25</td>
+      <td>C,C++</td>
+    </tr>
+    <tr>
+      <td>영</td>
+      <td>26</td>
+      <td>Java</td>
+    </tr>
+    <tr>
+      <td>은</td>
+      <td>27</td>
+      <td>Python,Oracle</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>위와 같은 표를</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>이름</th>
+      <th>나이</th>
+      <th>수강과목</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>조</td>
+      <td>25</td>
+      <td>C</td>
+    </tr>
+    <tr>
+      <td>조</td>
+      <td>25</td>
+      <td>C++</td>
+    </tr>
+    <tr>
+      <td>영</td>
+      <td>26</td>
+      <td>Java</td>
+    </tr>
+    <tr>
+      <td>은</td>
+      <td>27</td>
+      <td>Python</td>
+    </tr>
+    <tr>
+      <td>은</td>
+      <td>27</td>
+      <td>Oracle</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>이렇게 고치는 것이다.</p>
+
+<h2 id="제-2정규화2nf">제 2정규화(2NF)</h2>
+<h1 id="제1-정규화를-진행한-테이블에-대해-완전-함수-종속을-만족하도록-테이블을-분해하는-것">제1 정규화를 진행한 테이블에 대해 완전 함수 종속을 만족하도록 테이블을 분해하는 것</h1>
+<ul>
+  <li>완전 함수 종속이라는 것은 기본키의 부분집합이 결정자가 되어선 안된다는 것을 의미</li>
+  <li>제 2정규화는 다음과 같은 규칙을 만족해야한다.
+    <ol>
+      <li>제 1정규화를 만족해야한다.</li>
+      <li>모든 컬럼이 <strong>부분적 종속(Partial Dependency)이 없어야한다.</strong> 모든 칼럼이 완전 함수 종속을 만족해야한다.</li>
+    </ol>
+  </li>
+  <li>제 1 정규화가 적용된 예시를 2정규화를 하면,</li>
+</ul>
+
+<table>
+  <thead>
+    <tr>
+      <th>이름</th>
+      <th>나이</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>조</td>
+      <td>25</td>
+    </tr>
+    <tr>
+      <td>영</td>
+      <td>26</td>
+    </tr>
+    <tr>
+      <td>은</td>
+      <td>27</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>이 테이블과,</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>이름</th>
+      <th>수강과목</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>조</td>
+      <td>C</td>
+    </tr>
+    <tr>
+      <td>조</td>
+      <td>C++</td>
+    </tr>
+    <tr>
+      <td>영</td>
+      <td>Java</td>
+    </tr>
+    <tr>
+      <td>은</td>
+      <td>Python</td>
+    </tr>
+    <tr>
+      <td>은</td>
+      <td>Oracle</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>이 테이블로 나누는 것이다.</p>
+
+<h2 id="제-3정규화">제 3정규화</h2>
+<h1 id="제-2정규화를-진행한-테이블에-대해-이행적-종속을-없애도록-테이블을-분해하는-것">제 2정규화를 진행한 테이블에 대해 이행적 종속을 없애도록 테이블을 분해하는 것</h1>
+<ul>
+  <li>이행적 종속이라는 것은 A-&gt;B, B-&gt;C가 성립할 때 A-&gt;C가 성립되는 것을 의미</li>
+  <li>제 3정규화는 다음과 같은 규칙을 만족해야 한다.
+    <ol>
+      <li>제 2 정규화를 만족해야한다.</li>
+      <li>기본키를 제외한 속성들 간의 <strong>이행 종속성(Transitive Dependency)이 없어야한다.</strong>
+</li>
+    </ol>
+  </li>
+  <li>ex) 아래와 같은 테이블이 있다고 가정하자</li>
+</ul>
+
+<table>
+  <thead>
+    <tr>
+      <th>사번</th>
+      <th>이름</th>
+      <th>Street</th>
+      <th>City</th>
+      <th>State</th>
+      <th>ZIP</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td colspan="7">
+</td>
+      
+      
+      
+      
+      
+    </tr>
+  </tbody>
+</table>
+
+<ul>
+  <li>사번이 기본키이고, 기본키가 하나이므로 2차 정규형은 만족한다.</li>
+  <li>하지만 ZIP(우편번호) 컬럼을 알면 Street, City, State 컬럼을 결정할 수 있다.</li>
+  <li>또한, 동일한 ZIP코드를 가지면, 동일한 Street, City, State를 가지므로, 중복된 데이터가 생길 가능성이 있다.</li>
+  <li>그러므로, 제 3정규화를 통해</li>
+</ul>
+
+<table>
+  <thead>
+    <tr>
+      <th>사번</th>
+      <th>이름</th>
+      <th>ZIP</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td colspan="4">
+</td>
+      
+      
+    </tr>
+  </tbody>
+</table>
+
+<p>테이블과</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>ZIP</th>
+      <th>Street</th>
+      <th>City</th>
+      <th>State</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td colspan="4">
+</td>
+      
+      
+      
+    </tr>
+  </tbody>
+</table>
+
+<p>테이블로 나누면 제 3정규화를 만족한다.</p>
+
+<h2 id="bcnfboyce-codd-normal-form">BCNF(Boyce-codd Normal Form)</h2>
+<h1 id="bcnf란-3차-정규화를-만족하면서-모든-결정자가-후보키-집합에-속한-정규형이다">BCNF란 3차 정규화를 만족하면서 모든 결정자가 후보키 집합에 속한 정규형이다.</h1>
+<p>BCNF는 다음과 같은 규칙을 만족해야 한다.</p>
+<ol>
+  <li>제 3 정규화를 만족해야 한다.</li>
+  <li>모든 결정자가 후보키 집합에 속해야 한다.</li>
+</ol>
+
+<ul>
+  <li>예를 들면,</li>
+  <li>
+    <table>
+      <thead>
+        <tr>
+          <th>학생</th>
+          <th>과목</th>
+          <th>교수</th>
+          <th>학점</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>Java</td>
+          <td>Ms.Jo</td>
+          <td>A</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Python</td>
+          <td>Maru</td>
+          <td>A</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>Python</td>
+          <td>Maru</td>
+          <td>B</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>위와 같이 테이블이 구성된 경우에 데이터가 중복되고, 갱신 이상이 발생한다.</li>
+  <li>정규화를 통해</li>
+</ul>
+
+<table>
+  <thead>
+    <tr>
+      <th>교수</th>
+      <th>과목</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Ms.Jo</td>
+      <td>Java</td>
+    </tr>
+    <tr>
+      <td>Maru</td>
+      <td>Python</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>교수 테이블과</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>학생</th>
+      <th>과목</th>
+      <th>학점</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>Java</td>
+      <td>A</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Python</td>
+      <td>A</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Python</td>
+      <td>B</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>수강 테이블로 나누면, BCNF 정규화를 만족하게 된다.</p>
+
+<p><br></p>
+<ul>
+  <li>보통 정규화는 BCNF까지만 하는 경우가 많다.</li>
+  <li>그 이상 정규화를 하면 정규화의 단점이 나타날 수도 있다.</li>
+</ul>
+
+<h2 id="제-4정규화4nf">제 4정규화(4NF)</h2>
+<p>제4 정규형은 다음과 같은 규칙을 만족해야 한다. </p>
+<ol>
+  <li>BCNF를 만족해야 한다.</li>
+  <li>
+<strong>다치 종속(Multi-valued Dependency)이 없어야</strong> 한다.
+    <ul>
+      <li>다치 종속이란?
+        <ul>
+          <li>A-&gt;B 일 때 하나의 A값에 여러 개의 B값이 존재하면 다치 종속성을 가진다고 하고 A↠B라고 표시한다.</li>
+          <li>최소 3개의 칼럼이 존재한다.</li>
+          <li>R(A, B, C)가 있을 때 A와 B 사이에 다치 종속성이 있을 때 B와 C가 독립적이다.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ol>
+
+<ul>
+  <li>예를 들면</li>
+</ul>
+
+<table>
+  <thead>
+    <tr>
+      <th>학생</th>
+      <th>과목</th>
+      <th>취미</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>101</td>
+      <td>Java</td>
+      <td>노래</td>
+    </tr>
+    <tr>
+      <td>101</td>
+      <td>C++</td>
+      <td>게임</td>
+    </tr>
+    <tr>
+      <td>102</td>
+      <td>DB</td>
+      <td>노래</td>
+    </tr>
+    <tr>
+      <td>102</td>
+      <td>Python</td>
+      <td>게임</td>
+    </tr>
+  </tbody>
+</table>
+
+<ul>
+  <li>위의 테이블을 보면, 학생 하나에 과목 여러 개와 취미 여러 개가 종속된다.</li>
+  <li>이렇게 되면 학생 번호를 토대로 값을 조회하면 아래와 같이 값의 중복이 발생하게 된다.</li>
+</ul>
+
+<table>
+  <thead>
+    <tr>
+      <th>학생</th>
+      <th>과목</th>
+      <th>취미</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>101</td>
+      <td>Java</td>
+      <td>노래</td>
+    </tr>
+    <tr>
+      <td>101</td>
+      <td>Java</td>
+      <td>게임</td>
+    </tr>
+    <tr>
+      <td>101</td>
+      <td>C++</td>
+      <td>노래</td>
+    </tr>
+    <tr>
+      <td>101</td>
+      <td>C++</td>
+      <td>게임</td>
+    </tr>
+  </tbody>
+</table>
+
+<ul>
+  <li>과목과 취미는 관계가 없는 독립적인 관계다.</li>
+  <li>하지만 같은 테이블의 학생이라는 칼럼에 다치 종속되어버려 중복이 발생하는 문제가 생긴다.</li>
+  <li>이러한 문제를 해결하기 위해서는 아래와 같이 분해해야한다.</li>
+</ul>
+
+<table>
+  <thead>
+    <tr>
+      <th>학생</th>
+      <th>과목</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>101</td>
+      <td>Java</td>
+    </tr>
+    <tr>
+      <td>101</td>
+      <td>C++</td>
+    </tr>
+    <tr>
+      <td>102</td>
+      <td>DB</td>
+    </tr>
+    <tr>
+      <td>102</td>
+      <td>Python</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <thead>
+    <tr>
+      <th>학생</th>
+      <th>취미</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>101</td>
+      <td>노래</td>
+    </tr>
+    <tr>
+      <td>101</td>
+      <td>게임</td>
+    </tr>
+    <tr>
+      <td>102</td>
+      <td>노래</td>
+    </tr>
+    <tr>
+      <td>102</td>
+      <td>게임</td>
+    </tr>
+  </tbody>
+</table>
+
+<ul>
+  <li>위 2개의 테이블은 여전히 다치 종속성을 가지지만, 2개 이상의 칼럼이 하나의 칼럼에 다치 종속되지는 않기 때문에 제4 정규형을 만족한다.</li>
+</ul>
+
+<h2 id="제5-정규형5nf">제5 정규형(5NF)</h2>
+<h1 id="제5-정규형은-중복을-제거하기-위해-분해할-수-있을-만큼-전부-분해하는-것">제5 정규형은 중복을 제거하기 위해 분해할 수 있을 만큼 전부 분해하는 것</h1>
+<ul>
+  <li>이러한 5NF는 Project Join Normal Form(PJNF)라고도 불린다.</li>
+  <li>제 5정규형은 다음과 같은 규칙을 만족해야 한다.
+    <ol>
+      <li>4NF를 만족해야 한다.</li>
+      <li>조인 종속(Join dependency)이 없어야 한다.</li>
+      <li>조인 연산을 했을 때 손실이 없어야 한다.</li>
+    </ol>
+  </li>
+  <li>조인 종속은 다치 종속의 좀 더 일반화된 형태이다.</li>
+  <li>만약 하나의 릴레이션을 여러 개의 릴레이션으로 무손실 분해했다가 다시 결합할 수 있다면 조인 종속이라고 한다. </li>
+</ul>
+
+
+
+    </div>
+
+</article>
+<div class="post-nav">
+<a class="previous" href="/jekyll-theme-yat/cs/2024/03/18/as80.html" title="[데이터베이스] 8. 인덱스(Index)">[데이터베이스] 8. 인덱스(Index)</a><a class="next" href="/jekyll-theme-yat/cs/2024/03/19/as82.html" title="[데이터베이스] 10. 트랜잭션(Transaction)">[데이터베이스] 10. 트랜잭션(Transaction)</a>
+</div>
+<div class="post-related">
+      <div>Related Articles</div>
+      <ul>
+        <li class="">
+          <a class="post-link" href="/jekyll-theme-yat/oracle/2023/06/13/Oracle08_2.html" title="Oracle_08_2_오라클 내장 함수 예제">
+            Oracle_08_2_오라클 내장 함수 예제<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/jekyll-theme-yat/cs/2024/03/11/as49.html" title="[네트워크] 19. 공인 IP와 사설 IP">
+            [네트워크] 19. 공인 IP와 사설 IP<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/jekyll-theme-yat/oracle/2023/06/20/Oracle13.html" title="Oracle_13_테이블 조인3">
+            Oracle_13_테이블 조인3<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+        </li>
+<li class="">
+          <a class="post-link" href="/jekyll-theme-yat/study/2024/01/24/study01.html" title="&lt;정보처리기사&gt; 1. 필기 공부 계획 짜기">
+            &lt;정보처리기사&gt; 1. 필기 공부 계획 짜기<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+        </li>
+</ul>
+    </div>
+<div class="post-comments"></div></section>
+</div>
+
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --><style type="text/css" media="screen">
+.post-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+</style>
+
+<div class="post-menu">
+  <div class="post-menu-title">TOC</div>
+  <div class="post-menu-content"></div>
+</div>
+
+<script>
+  function generateContent() {
+    var menu = document.querySelector(".post-menu");
+    var menuContent =  menu.querySelector(".post-menu-content");
+    var headings = document.querySelector(".post-content").querySelectorAll("h2, h3, h4, h5, h6");
+
+    // Hide menu when no headings
+    if (headings.length === 0) {
+      return menu.style.display = "none";
+    }
+
+    // Generate post menu
+    var menuHTML = '';
+    for (var i = 0; i < headings.length; i++) {
+      var h = headings[i];
+      menuHTML += (
+        '<li class="h-' + h.tagName.toLowerCase() + '">'
+        + '<a href="#h-' + h.getAttribute('id') + '">' + h.textContent + '</a></li>');
+    }
+
+    menuContent.innerHTML = '<ul>' + menuHTML + '</ul>';
+
+    // The header element
+    var header = document.querySelector('header.site-header');
+
+    function doMenuCollapse(index, over_items) {
+      var items = menuContent.firstChild.children;
+
+      if (over_items == undefined) {
+        over_items = 20;
+      }
+
+      if (items.length < over_items) {
+        return;
+      }
+
+      var activeItem = items[index];
+      var beginItem = activeItem
+      var endItem = activeItem
+      var beginIndex = index;
+      var endIndex = index + 1;
+      while (beginIndex >= 0
+        && !items[beginIndex].classList.contains('h-h2')) {
+        beginIndex -= 1;
+      }
+      while (endIndex < items.length
+        && !items[endIndex].classList.contains('h-h2')) {
+        endIndex += 1;
+      }
+      for (var i = 0; i < beginIndex; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+      for (var i = beginIndex + 1; i < endIndex; i++) {
+        item = items[i]
+        // if (!item.classList.contains('h-h2')) {
+          item.style.display = '';
+        // }
+      }
+      for (var i = endIndex; i < items.length; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+    }
+
+    // Init menu collapsed
+    doMenuCollapse(-1);
+
+    // Active the menu item
+    window.addEventListener('scroll', function (event) {
+      var lastActive = menuContent.querySelector('.active');
+      var changed = true;
+      var activeIndex = -1;
+      for (var i = headings.length - 1; i >= 0; i--) {
+        var h = headings[i];
+        var headingRect = h.getBoundingClientRect();
+        var headerRect = header.getBoundingClientRect();
+        var headerTop = Math.floor(headerRect.top);
+        var headerHeight = Math.floor(headerRect.height);
+        var headerHeight = headerTop + headerHeight + 20;
+        if (headingRect.top <= headerHeight) {
+          var id = 'h-' + h.getAttribute('id');
+          var a = menuContent.querySelector('a[href="#' + id  + '"]');
+          var curActive = a.parentNode;
+          if (curActive) {
+            curActive.classList.add('active');
+            activeIndex = i;
+          }
+          if (lastActive == curActive) {
+            changed = false;
+          }
+          break;
+        }
+      }
+      if (changed) {
+        if (lastActive) {
+          lastActive.classList.remove('active');
+        }
+        doMenuCollapse(activeIndex);
+      }
+      event.preventDefault();
+    });
+  }
+  generateContent();
+</script>
+</section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jekyll-theme-yat/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>Unpublished Work <span class="copyleft">©</span> 2017-2025 {YoungEun Jo}</div>
+      <div>Powered by <a title="Jekyll is a simple, blog-aware, static site
+      generator." href="https://jekyllrb.com/">Jekyll</a> &amp; <a title="Yat, yet
+      another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.</div>
+      <div class="footer-col rss-subscribe">Subscribe <a href="/jekyll-theme-yat/feed.xml">via RSS</a>
+</div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>
